@@ -12,7 +12,7 @@ my $path = $ARGV[4];
 #print "Output file: $output\n";
 #print "Output path: $path\n";
 system("cp $input /$path/tmp_$id.$type");
-system("./msconvert /$path/tmp_$id.$type --outfile tmp_$id.mzML -o $path");
+system("/$path/../../../gio_applications/proteowizard/msconvert /$path/tmp_$id.$type --outfile tmp_$id.mzML -o $path");
 system("mv /$path/tmp_$id.mzML $output");
 system("rm /$path/tmp_$id.$type");
 
