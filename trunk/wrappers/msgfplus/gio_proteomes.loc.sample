@@ -1,0 +1,19 @@
+#This is a sample file distributed with Galaxy that is used to define a
+#list of nucleotide BLAST databases, using three columns tab separated
+#(longer whitespace are TAB characters):
+#
+#<unique_id>	<database_caption>	<base_name_path>
+#
+#The captions typically contain spaces and might end with the build date.
+#It is important that the actual database name does not have a space in it,
+#and that the first tab that appears in the line is right before the path.
+#
+#So, for example, if your database is nt and the path to your base name 
+#is /depot/data2/galaxy/blastdb/nt/nt.chunk, then the blastdb.loc entry 
+#would look like this:
+#
+#nt_02_Dec_2009      nt 02 Dec 2009      /depot/data2/galaxy/blastdb/nt/nt.chunk
+#
+proteomes_all_species	All species May 2013	/home/jun/galaxy-dist/test-data/proteomes/uniprot_sprot.fasta
+proteomes_human	Human May 2013	/home/jun/galaxy-dist/test-data/proteomes/HUMAN.fasta
+

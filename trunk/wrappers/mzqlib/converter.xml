@@ -1,0 +1,23 @@
+<tool id="gio_mzq_converter" name="The converter for mzQuantML files" version="1.0.0">
+    <description>Convert the mzQuantML file into more widely-used formats, e.g. CSV</description>
+        <command >java -jar $__root_dir__/../gio_applications/mzqlib/mzqlib-converter.jar $type $mzq $output</command>
+<!--        <command interpreter="perl">show.pl $mzq $output</command>-->
+    <inputs>
+        <param name = "mzq" type="data" label="the mzQuantML file" help="The mzQuantML file to be converted" format="mzq"/>
+        <param name = "type" type="select" label="the output file format" multiple="False" help="The format to which the mzQuantML will be converted">
+	    <option value="csv">CSV</option>
+	    <option value="html">HTML</option>
+	    <option value="xls">Excel</option>
+	    <option value="mztab">mzTab</option>
+	</param>
+    </inputs>
+    <outputs>
+	<data name="output" format="csv">
+	    <change_format>
+	     	<when input="type" value="html" format="html"/>
+	     	<when input="type" value="xls" format="xls"/>
+	     	<when input="type" value="mztab" format="tabular"/>
+	    </change_format>
+	</data>
+    </outputs>
+</tool>

@@ -1,0 +1,231 @@
+<tool id="emPAI" name="emPAI parameter in X-Tracker" version="0.2.0">
+    <!--updates from 0.1.0:
+        1. allow select different spectra and identification format
+	2. set the file type properly after installing the data types
+    -->
+    <description>Execute emPAI quantitation method within X-Tracker</description>
+        <command >java -jar $__root_dir__/../gio_applications/xtracker/xTrackerGalaxy.jar $mzq $__new_file_path__ $output</command>
+    <inputs>
+    	<conditional name="spectra">
+      	    <param name="spectra_type" type="select" label="Spectral File Type">
+		<option value="mzml">mzml</option>        	
+		<option value="mgf">mgf</option>
+            </param>
+            <when value="mzml">
+		<param format="mzml" name="file" type="data" label="Input mzML"/>
+            </when>
+            <when value="mgf">
+		<param format="mgf" name="file" type="data" label="Input mgf"/>
+            </when>
+	</conditional>
+<!--        <param name = "identification" type="data" label="the identification file" help="The identification file in mzIdentML format" format="xml"/>-->
+    	<conditional name="identification">
+      	    <param name="identification_type" type="select" label="Identification File Type">
+		<option value="mzid">MzIdentML</option>
+		<option value="mascot">Mascot XML</option>        	
+            </param>
+            <when value="mzid">
+		<param format="mzid" name="file" type="data" label="Identification in MzIdentML format"/>
+            </when>
+            <when value="mascot">
+		<param format="xml" name="file" type="data" label="Mascot identification file"/>
+            </when>
+	</conditional>
+        <param name = "minimum" size="6" value="500" type="integer" label="the minimum molecular weight to be observed"/>
+        <param name = "maximum" size="6" value="3200" type="integer" label="the maximum molecular weight to be observed"/>
+        <!--
+                <xs:element name="enzyme">
+                        <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                        <xs:enumeration value="Trypsin"/>
+                                </xs:restriction>
+                        </xs:simpleType>
+                </xs:element>
+        -->
+        <repeat name="fastas" title="protein database" min="1">
+            <param name = "database" type="data" label="fasta file" help="The protein database used to search the spectra against" format="fasta"/>
+        </repeat>
+	</inputs>
+	<outputs>
+		<data name="output" format="mzq"/>
+	</outputs>
+    <configfiles>
+                <configfile name="mzid">
+<![CDATA[
+<SpectralIdentificationList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Plugins/loadMzIdentML.xsd">
+	<SpectralIdentificationPair spectra="$spectra.file" identification="$identification.file"/>
+</SpectralIdentificationList>
+]]>
+                </configfile>
+		<configfile name="mascot">
+<![CDATA[
+<param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Plugins/loadMascotIdent.xsd">
+	<!--
+	Specifies the rawdata file names and the corresponding identification names. Note that paths are relative to the xTracker folder.
+	-->
+<inputFiles>
+        <datafile identification_file="$identification.file">$spectra.file</datafile>
+</inputFiles>
+<modificationData>
+	 <modification delta="42.010559">Acetyl (K)</modification>
+	 <modification delta="42.010559">Acetyl (N-term)</modification>
+	 <modification delta="-0.984024">Amidated (C-term)</modification>
+	 <modification delta="226.077591">Biotin (K)</modification>
+	 <modification delta="226.077591">Biotin (N-term)</modification>
+	 <modification delta="57.021469">Carbamidomethyl (C)</modification>
+	 <modification delta="43.005814">Carbamyl (K)</modification>
+	 <modification delta="43.005814">Carbamyl (N-term)</modification>
+	 <modification delta="58.005478">Carboxymethyl (C)</modification>
+	 <modification delta="21.981934">Cation:Na (C-term)</modification>
+	 <modification delta="21.981949">Cation:Na (DE)</modification>
+	 <modification delta="-18.010559">Deamidated (NQ)</modification>
+	 <modification delta="-1.007812">Dehydro (C)</modification>
+	 <modification delta="31.989822">Dioxidation (M)</modification>
+	 <modification delta="44.026215">Ethanolyl (C)</modification>
+	 <modification delta="1030.352936">ExacTagAmine (K)</modification>
+	 <modification delta="972.365219">ExacTagThiol (C)</modification>
+	 <modification delta="27.994919">Formyl (N-term)</modification>
+	 <modification delta="42.021805">Guanidinyl (K)</modification>
+	 <modification delta="14.01564">Methyl (C-term)</modification>
+	 <modification delta="14.015656">Methyl (DE)</modification>
+	 <modification delta="45.987717">Methylthio (C)</modification>
+	 <modification delta="99.06842">NIPCAM (C)</modification>
+	 <modification delta="15.994919">Oxidation (HW)</modification>
+	 <modification delta="15.994919">Oxidation (M)</modification>
+	 <modification delta="79.966324">Phospho (ST)</modification>
+	 <modification delta="79.966324">Phospho (Y)</modification>
+	 <modification delta="71.037109">Propionamide (C)</modification>
+	 <modification delta="105.057846">Pyridylethyl (C)</modification>
+	 <modification delta="79.956818">Sulfo (S)</modification>
+	 <modification delta="79.956818">Sulfo (T)</modification>
+	 <modification delta="79.956818">Sulfo (Y)</modification>
+	 <modification delta="224.152481">TMT (K)</modification>
+	 <modification delta="224.152481">TMT (N-term)</modification>
+	 <modification delta="225.155838">TMT2plex (K)</modification>
+	 <modification delta="225.155823">TMT2plex (N-term)</modification>
+	 <modification delta="229.162933">TMT6plex (K)</modification>
+	 <modification delta="229.162933">TMT6plex (N-term)</modification>
+         <modification delta="144.1020633">iTRAQ4plex (K)</modification>
+         <modification delta="144.102063">iTRAQ4plex (N-term)</modification>
+</modificationData>
+<pep_score_threshold>50</pep_score_threshold>
+</param>
+]]>
+		</configfile>
+		<configfile name="quant">
+<![CDATA[
+<emPaiQuantitation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Plugins/emPaiQuantitation.xsd">
+	<!--the molecular weight of observable peptide-->
+	<peptideMwRange>
+    			<minimum>$minimum</minimum>
+    			<maximum>$maximum</maximum>
+	</peptideMwRange>
+	<fastaFiles>
+		#for $i, $s in enumerate( $fastas )
+			<fastaFile>${s.database.file_name}</fastaFile>
+		#end for
+	</fastaFiles>
+	<enzyme>Trypsin</enzyme>
+</emPaiQuantitation>
+]]>
+		</configfile>
+                <configfile name="out">
+<![CDATA[
+<output xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Plugins/outputGeneral.xsd">
+	<outputFilename>$output</outputFilename>
+</output>
+]]>
+                </configfile>
+		<configfile name="mzq">
+<![CDATA[
+<MzQuantML id="emPai_mzQuantML_example" creationDate="2013-04-30T16:00:00" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://psidev.info/psi/pi/mzQuantML/1.0.0 ../../../schema/mzQuantML_1_0_0.xsd"
+ xmlns="http://psidev.info/psi/pi/mzQuantML/1.0.0"
+ version="1.0.0">
+	<!--1:1-->
+	<CvList>
+		<Cv id="PSI-MS" fullName="Proteomics Standards Initiative Mass Spectrometry Vocabularies"
+			uri="http://psidev.cvs.sourceforge.net/viewvc/*checkout*/psidev/psi/psi-ms/mzML/controlledVocabulary/psi-ms.obo"
+			version="3.39.0"/>
+		<Cv id="UO" fullName="Unit Ontology"
+			uri="http://obo.cvs.sourceforge.net/*checkout*/obo/obo/ontology/phenotype/unit.obo"/>
+		<Cv id="PSI-MOD" fullName="Proteomics Standards Initiative Protein Modifications Vocabularies" uri="http://psidev.cvs.sourceforge.net/psidev/psi/mod/data/PSI-MOD.obo" version="1.2"/>
+	        <Cv id="UNIMOD" uri="http://www.unimod.org/obo/unimod.obo" fullName="UNIMOD"/>
+	</CvList>
+
+	<!--1:1-->
+	<AnalysisSummary>
+		<!--optional, if missed, xtracker will use the default value false, true, false, false for feature, peptide, protein, protein group quantitation-->
+	        <cvParam accession="MS:1001836" cvRef="PSI-MS" name="spectral counting quantitation analysis"/>
+        	<cvParam accession="MS:1002015" cvRef="PSI-MS" value="false" name="spectral count peptide level quantitation"/>
+        	<cvParam accession="MS:1002016" cvRef="PSI-MS" value="true" name="spectral count protein level quantitation"/>
+        	<cvParam accession="MS:1002017" cvRef="PSI-MS" value="false" name="spectral count proteingroup level quantitation"/>
+	</AnalysisSummary>
+
+	<!--1:1-->
+	<InputFiles>
+		<RawFilesGroup id="raw1">
+			<RawFile location="$spectra.file" id="r1"/>
+		</RawFilesGroup>
+		<IdentificationFiles>
+			<IdentificationFile location="$identification.file" id="id_file1"/>
+		</IdentificationFiles>
+	</InputFiles>
+		
+	<!--1:1-->
+	<SoftwareList>
+		<Software id="x-Tracker" version="2.0-ALPHA">
+	        	<cvParam accession="MS:1002123" cvRef="PSI-MS" name="x-Tracker"/>
+		</Software>
+	</SoftwareList>
+	
+	<!--1:1-->
+	<DataProcessingList>
+		<DataProcessing id="DP1"  software_ref="x-Tracker" order="1">
+		<!--used as xtracker configuration file-->
+			<ProcessingMethod order="1">
+				<userParam name="Plugin type" value="load identification"/>
+#if $identification.identification_type == "mzid"
+				<userParam name="Plugin name" value="loadMzIdentML"/>
+				<userParam name="Plugin configuration file" value="$mzid"/>
+#else
+				<userParam name="Plugin name" value="loadMascotIdent"/>
+				<userParam name="Plugin configuration file" value="$mascot"/>
+#end if
+			</ProcessingMethod>
+			<ProcessingMethod order="2">
+				<userParam name="Plugin type" value="feature detection and quantitation"/>
+				<userParam name="Plugin name" value="emPAIquantitation"/>
+				<userParam name="Plugin configuration file" value="$quant"/>
+			</ProcessingMethod>
+			<ProcessingMethod order="3">
+				<userParam name="Plugin type" value="Output"/>
+				<userParam name="Plugin name" value="outputMZQ"/>
+				<userParam name="Plugin configuration file" value="$out"/>
+			</ProcessingMethod>
+
+		</DataProcessing>
+	</DataProcessingList>
+	
+	<!--1:1-->
+	<AssayList id="AssayList1">
+		<Assay id="assay1" name="assay1" rawFilesGroup_ref="raw1">
+            		<Label>
+		                <Modification massDelta="0.0">
+                			<cvParam cvRef="PSI-MS" accession="MS:1002038" name="unlabeled sample"/>
+                		</Modification>
+            		</Label>
+		</Assay>
+	</AssayList>
+	<!--1:1-->
+	<StudyVariableList>
+		<StudyVariable id="SV_group" name="Group">
+			<Assay_refs>assay1</Assay_refs>
+		</StudyVariable>
+	</StudyVariableList>
+</MzQuantML>
+
+]]>
+		</configfile>
+     </configfiles>
+</tool>
