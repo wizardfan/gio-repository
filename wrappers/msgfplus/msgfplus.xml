@@ -1,0 +1,154 @@
+<tool id="msgfplus" name="MSGF+ MSMS Search" version="0.5.0">
+<!--update from 0.4.0: introduce macro-->
+    <description>Run an MSGF+ Search</description>
+    <command interpreter="perl">
+	#if $database.source_select=="built_in":
+$__root_dir__/../gio_applications/msgfplus/msgfplus.pl $input $type.input_type built-in $database.dbkey $output $mods $output.id $__new_file_path__ -inst $instrument -tda $decoy -t $precursor_ion_tol$precursor_tolu -e $enzyme -protocol $protocol
+	#else
+$__root_dir__/../gio_applications/msgfplus/msgfplus.pl $input $type.input_type upload $database.fasta_file $output $mods $output.id $__new_file_path__ -inst $instrument -tda $decoy -t $precursor_ion_tol$precursor_tolu -e $enzyme -protocol $protocol
+	#end if
+    </command>
+    <macros>
+	<macro name="mod_opts">
+	    <options from_file="gio_msgfplus_mods.loc">
+		<column name="name" index="0" />
+		<column name="value" index="1" />
+	    </options>
+	    <sanitizer>
+        	<valid>
+          	    <add value="&lt;"/>
+	      	    <add value="&gt;"/>
+          	    <add value="["/>
+          	    <add value="]"/>
+        	</valid>
+      	    </sanitizer>
+	</macro>
+    </macros>
+    <inputs>	
+    	<conditional name="type">
+      	    <param name="input_type" type="select" label="Input Type">
+		<option value="mzml">mzml</option>        	
+		<option value="mgf">mgf</option>
+        	<option value="mzxml">mzXML</option>
+        	<option value="ms2">ms2</option>
+            </param>
+            <when value="mzml">
+		<param format="mzml" name="input" type="data" label="Input mzML"/>
+            </when>
+            <when value="mgf">
+		<param format="mgf" name="input" type="data" label="Input mgf"/>
+            </when>
+            <when value="mzxml">
+		<param format="mzxml" name="input" type="data" label="Input mzXML"/>
+            </when>
+            <when value="ms2">
+        	<param format="ms2" name="input" type="data" label="Input ms2"/>
+            </when>
+	</conditional>
+	
+	<conditional name="database">
+	    <param name="source_select" type="select" label="Database source">
+		<option value="built_in">Built-In Databases</option>
+		<option value="upload">Your Upload File</option>
+	    </param>
+	    <when value="built_in">
+		<param name="dbkey" type="select" format="text" >
+		    <label>Database</label>
+		    <options from_file="gio_proteomes.loc">
+			<column name="name" index="1" />
+			<column name="value" index="2" />
+		    </options>
+		</param>
+	    </when>
+	    <when value="upload">
+		<param name="fasta_file" type="data" format="fasta" label="Uploaded FASTA file" />
+	    </when>
+	</conditional>
+
+	<param name="fixed_mods" type="select" multiple="true" label="Fixed Modifications">
+	    <expand macro="mod_opts" />
+	</param>
+
+	<param name="variable_mods" type="select" multiple="true" label="Variable Modifications">
+	    <expand macro="mod_opts" />
+	</param>
+
+<!--		<repeat name="custom_fix_mods" title="Custom Fixed Modifications" help="See https://bix-lab.ucsd.edu/pages/viewpage.action?pageId=13533355 for details on how to create these">
+			<param name="custom_mod" type="text">
+			</param>
+		</repeat>-->
+
+		<param name="decoy" type="select" format="text">
+		    <label>Decoy search?</label>
+		    <option value="0">No</option>
+		    <option value="1">Yes</option>
+		</param>
+		
+		<param name="enzyme" type="select" format="text">
+		    <label>Enzyme</label>
+		    <option value="1">Trypsin</option>
+		    <option value="2">Chymotrypsin</option>
+		    <option value="3">Lys-C</option>
+		    <option value="4">Lys-N</option>
+		    <option value="5">Glutamyl endopeptidase (Glu-C)</option>
+		    <option value="6">Arg-C</option>
+		    <option value="7">Asp-N</option>
+		    <option value="8">alphaLP</option>
+		    <option value="9">no cleavage for peptidomics studies</option>
+		    <option value="0">unspecific cleavage</option>
+		</param>
+
+		<param name="protocol" type="select" format="text">
+		    <label>Protocol</label>
+		    <option value="0">No protocol</option>
+		    <option value="1">Phosphorylation</option>
+		    <option value="2">iTRAQ</option>
+		    <option value="3">iTRAQPhospho</option>
+		</param>
+
+		<param name="instrument" type="select" format="text">
+	    		<label>Instrument Type</label>
+			<option value="0">Low-res LCQ/LTQ (Default for CID  and ETD)</option>
+			<option value="1">High-res LTQ(Default for HCD)</option>
+			<option value="2">TOF</option>
+			<option value="3">Q-Exactive</option>
+		</param>
+
+		<!--<param name="fragment_ion_tol" help="Fragment Ion Tolerance in Daltons" type="float" value="0.65" min="0" max="10000" label="Fragment ion tolerance"/>-->
+
+		<param name="precursor_ion_tol" help="Precursor Ion Tolerance (Da or ppm)" type="float" value="20" min="0" max="10000" label="Precursor ion tolerance"/>
+		<param name="precursor_tolu" type="select" format="text">
+		    <label>Precursor Ion Tolerance Units</label>
+		    <option value="ppm">ppm</option>		
+		    <option value="Da">Da</option>
+		</param>
+		
+    </inputs>
+
+
+    <outputs>
+		<!--<data format="raw_pepxml" name="output" metadata_source="input_file" label="MSGF+_vs_${database.dbkey if $database.has_key('dbkey') else $database.fasta_file.display_name}.${input_file.display_name}.${input_file.display_name}.pepXML"/>-->
+	<data format="mzid" name="output"/>
+    </outputs>
+    <configfiles>
+	<configfile name="mods">fixed
+$fixed_mods
+variable
+$variable_mods</configfile>
+    </configfiles>
+
+    <help>
+
+**What it does**
+
+Runs an MS/MS database search using the MSGFPlus search engine.
+
+----
+
+**References**
+
+Please see http://proteomics.ucsd.edu/Software/MSGFPlus.html for details of the MSGFPlus search engine and references describing its algorithm
+
+    </help>
+
+</tool>
