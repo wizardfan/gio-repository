@@ -2,99 +2,122 @@ package uk.ac.qmul.gio_installer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Properties;
 import java.util.Scanner;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Installer {
 
     private final static String SECTION_NAME = "Galaxy Integrated Omics";
     private final static String SECTION_ID = "gio";
-
-    public Installer() {
-        getRepository();
-        moveFolders();
-//        modifyToolConfByDOM();
-        modifyToolConfByFileOperation();
-    }
+    private static String GALAXY_PATH = "../galaxy-dist/";
+    private static String TEMP_PATH = "../delme/";
 
     public static void main(String[] args) {
+        Properties properties = System.getProperties();
+//        System.out.println(properties);
+//        Enumeration<Object> names = properties.keys();
+//        while(names.hasMoreElements()){
+//            Object name = names.nextElement();
+//            System.out.println(name+": "+properties.get(name));
+//        }
+        System.out.println(properties.getProperty("user.home"));
+        System.out.println(properties.getProperty("user.dir"));
+        System.out.println(properties.getProperty("os.name"));
+        System.exit(0);
+        if(args.length > 0){
+            GALAXY_PATH = args[0];
+        }
         new Installer();
     }
 
+    public Installer() {
+        checkGalaxyFolder();
+//        getRepository();
+        modifyToolConfByFileOperation();
+        moveFolders();
+        clear();
+    }
+
+    private void checkGalaxyFolder() {
+        File galaxy = new File(GALAXY_PATH);
+        File toolConfPath = new File(GALAXY_PATH + "tool_conf.xml");
+        File universePath = new File(GALAXY_PATH + "universe_wsgi.ini");
+        if(!galaxy.exists()){
+            System.out.println("Galaxy has not been found at the provided path: "+galaxy.getAbsolutePath());
+            System.exit(1);
+        }
+        if(!toolConfPath.exists()){
+            System.out.println("The tool_conf.xml file cannot be located at: "+toolConfPath.getAbsolutePath());
+            System.exit(1);
+        }
+        if(!universePath.exists()){
+            System.out.println("The universe_wsgi.ini file cannot be located at: "+universePath.getAbsolutePath());
+            System.exit(1);
+        }
+        System.out.println("Galaxy folder has been located");
+    }
+
     private void getRepository() {
-    }
-
-    private void moveFolders() {
-    }
-
-    private void modifyToolConfByDOM() {
+        System.out.println("Checking out the latest version of gio_repository. This process could take a while, please be patient.");
+        File delme = new File(GALAXY_PATH+TEMP_PATH);
         try {
-            String filepath = "tool_conf.xml";
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-            Document doc = docBuilder.parse(filepath);
-            Node root = doc.getFirstChild();
-            NodeList sections = doc.getElementsByTagName("section");
-            Node gio = null;
-//            for (int i = 0; i < sections.getLength(); i++) {
-//                Node node = sections.item(i).getAttributes().getNamedItem("name");
-//                if(node.getNodeValue().equalsIgnoreCase(SECTION_NAME)){
-//                    gio = node;
-//                    System.out.println(gio.getClass());
-//                    break;
-//                }
-//            }
-            //gio has never been installed
-            if (gio == null) {
-                gio = doc.createElement("new_test");
-                Attr name = doc.createAttribute("name");
-                name.setValue(SECTION_NAME);
-                Attr id = doc.createAttribute("id");
-                id.setValue(SECTION_ID);
-                gio.getAttributes().setNamedItem(name);
-                gio.getAttributes().setNamedItem(id);
-                for (int i = 0; i < 4; i++) {
-                    Element toolNode = doc.createElement("tool");
-                    Attr file = doc.createAttribute("file");
-                    file.setValue("wrapper_" + i);
-                    toolNode.getAttributes().setNamedItem(file);
-                    gio.appendChild(toolNode);
-                }
-                root.appendChild(gio);
-            }
-
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(filepath));
-            transformer.transform(source, result);
-        } catch (Exception e) {
-            e.printStackTrace();
+            Process proc = Runtime.getRuntime().exec("svn checkout https://gio-repository.googlecode.com/svn/trunk/ gio-repository", null, delme);
+            int value = proc.waitFor();
+            System.out.println(value);
+        } catch (IOException ex) {
+            Logger.getLogger(Installer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Installer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private void modifyToolConfByFileOperation() {
+//        String filepath = GALAXY_PATH+"tool_conf.xml";
+        System.out.println("Checking out finished.");
         String filepath = "tool_conf.xml";
+        File file = new File(filepath);
+//        System.out.println(file.getAbsolutePath());
         ArrayList<String> fileLines = new ArrayList<String>();
         ArrayList<String> gioEntry = new ArrayList<String>();
         String section = "  <section name=\""+SECTION_NAME+"\" id=\""+SECTION_ID+"\">";
         gioEntry.add(section);
-        for (int i = 1; i < 6; i++) {
-            String toolStr = "\t<tool file=\"gio/plugin_" + i + ".xml\"/>";
-            gioEntry.add(toolStr);
+        File wrappers = new File(GALAXY_PATH+TEMP_PATH+"gio-repository/wrappers/");
+        for(String appName:wrappers.list()){
+            final String appFolder = GALAXY_PATH+TEMP_PATH+"gio-repository/wrappers/"+appName+"/";
+            File appFolderFile = new File(appFolder);
+            String[] locFiles = appFolderFile.list(new FilenameFilter() {
+                public boolean accept(File dir, String name) {
+                    if(name.endsWith(".loc.sample")) return true;
+                    return false;
+                }
+            });
+            for(String loc:locFiles){
+                try {
+                    String cmd = "cp "+appFolder+loc+" "+GALAXY_PATH+"tool-data/";
+                    System.out.println(cmd);
+                    Process proc = Runtime.getRuntime().exec(cmd);
+                    int value = proc.waitFor();
+                } catch (IOException ex) {
+                    Logger.getLogger(Installer.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Installer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            final File wrapper_entry = new File(appFolder+"tool_conf_"+appName+".xml");
+            try {
+                Scanner wrapper = new Scanner(wrapper_entry);
+                gioEntry.add(wrapper.nextLine());
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Installer.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         gioEntry.add("  </section>");
         Scanner scanner = null;
@@ -140,5 +163,26 @@ public class Installer {
                 pw.close();
             }
         }
+    }
+
+    private void moveFolders() {
+//        File delme = new File(GALAXY_PATH+TEMP_PATH);
+//        try {
+            final String cmd = "mv -r "+GALAXY_PATH+TEMP_PATH+"gio-repository/wrappers "+GALAXY_PATH+"tools/gio";
+            System.out.println(cmd);
+//            Process proc = Runtime.getRuntime().exec(cmd);
+//            int value = proc.waitFor();
+//            System.out.println(value);
+//            proc = Runtime.getRuntime().exec("mv -r gio-repository/applications .", null, delme);
+//            proc.waitFor();
+//        } catch (IOException ex) {
+//            Logger.getLogger(Installer.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(Installer.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }
+
+    private void clear(){
+        
     }
 }
