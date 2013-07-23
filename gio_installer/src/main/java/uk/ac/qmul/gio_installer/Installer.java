@@ -16,8 +16,8 @@ public class Installer {
 
     private final static String SECTION_NAME = "Galaxy Integrated Omics";
     private final static String SECTION_ID = "gio";
-    private static String GALAXY_PATH = "../galaxy-dist/";
-    private static String TEMP_PATH = "../delme/";
+    private static String GALAXY_PATH = "";
+    private static String CURRENT_PATH = "";
 
     public static void main(String[] args) {
         Properties properties = System.getProperties();
@@ -27,10 +27,10 @@ public class Installer {
 //            Object name = names.nextElement();
 //            System.out.println(name+": "+properties.get(name));
 //        }
-        System.out.println(properties.getProperty("user.home"));
-        System.out.println(properties.getProperty("user.dir"));
-        System.out.println(properties.getProperty("os.name"));
-        System.exit(0);
+//        System.out.println(properties.getProperty("user.home"));
+//        System.out.println(properties.getProperty("user.dir"));
+//        System.out.println(properties.getProperty("os.name"));
+        CURRENT_PATH = properties.getProperty("user.dir");
         if(args.length > 0){
             GALAXY_PATH = args[0];
         }
@@ -38,35 +38,43 @@ public class Installer {
     }
 
     public Installer() {
-        checkGalaxyFolder();
+        locateGalaxyFolder();
 //        getRepository();
         modifyToolConfByFileOperation();
         moveFolders();
         clear();
     }
 
-    private void checkGalaxyFolder() {
-        File galaxy = new File(GALAXY_PATH);
-        File toolConfPath = new File(GALAXY_PATH + "tool_conf.xml");
-        File universePath = new File(GALAXY_PATH + "universe_wsgi.ini");
-        if(!galaxy.exists()){
-            System.out.println("Galaxy has not been found at the provided path: "+galaxy.getAbsolutePath());
-            System.exit(1);
-        }
-        if(!toolConfPath.exists()){
-            System.out.println("The tool_conf.xml file cannot be located at: "+toolConfPath.getAbsolutePath());
-            System.exit(1);
-        }
-        if(!universePath.exists()){
-            System.out.println("The universe_wsgi.ini file cannot be located at: "+universePath.getAbsolutePath());
-            System.exit(1);
+    private void locateGalaxyFolder() {
+        if(!checkGalaxyFolder()){
+            //if galaxy not located at the provided location, try the possible default installation folder
+            if(GALAXY_PATH.length()==0){
+                System.out.println("No galaxy path has been provided");
+            }else{
+                System.out.println("Galaxy has not been found at the provided path "+GALAXY_PATH);
+            }
+            System.out.println("Now trying to locate Galaxy at the default installation path");
+            GALAXY_PATH = System.getProperties().getProperty("user.home")+"/galaxy-dist/";
+            if(!checkGalaxyFolder()) {
+                System.out.println("Galaxy has not been found at the guessed path "+GALAXY_PATH+" either. Please make sure galaxy has been installed or the correct path has been supplied to the installer");
+                System.exit(1);
+            }
         }
         System.out.println("Galaxy folder has been located");
+    }
+    private boolean checkGalaxyFolder(){
+        File galaxy = new File(GALAXY_PATH);
+        if(!galaxy.exists()) return false;
+        File toolConfPath = new File(GALAXY_PATH + "tool_conf.xml");
+        if(!toolConfPath.exists())return false;
+        File universePath = new File(GALAXY_PATH + "universe_wsgi.ini");
+        if(!universePath.exists())return false;
+        return true;
     }
 
     private void getRepository() {
         System.out.println("Checking out the latest version of gio_repository. This process could take a while, please be patient.");
-        File delme = new File(GALAXY_PATH+TEMP_PATH);
+        File delme = new File(GALAXY_PATH+CURRENT_PATH);
         try {
             Process proc = Runtime.getRuntime().exec("svn checkout https://gio-repository.googlecode.com/svn/trunk/ gio-repository", null, delme);
             int value = proc.waitFor();
@@ -88,9 +96,9 @@ public class Installer {
         ArrayList<String> gioEntry = new ArrayList<String>();
         String section = "  <section name=\""+SECTION_NAME+"\" id=\""+SECTION_ID+"\">";
         gioEntry.add(section);
-        File wrappers = new File(GALAXY_PATH+TEMP_PATH+"gio-repository/wrappers/");
+        File wrappers = new File(GALAXY_PATH+CURRENT_PATH+"gio-repository/wrappers/");
         for(String appName:wrappers.list()){
-            final String appFolder = GALAXY_PATH+TEMP_PATH+"gio-repository/wrappers/"+appName+"/";
+            final String appFolder = GALAXY_PATH+CURRENT_PATH+"gio-repository/wrappers/"+appName+"/";
             File appFolderFile = new File(appFolder);
             String[] locFiles = appFolderFile.list(new FilenameFilter() {
                 public boolean accept(File dir, String name) {
@@ -168,7 +176,7 @@ public class Installer {
     private void moveFolders() {
 //        File delme = new File(GALAXY_PATH+TEMP_PATH);
 //        try {
-            final String cmd = "mv -r "+GALAXY_PATH+TEMP_PATH+"gio-repository/wrappers "+GALAXY_PATH+"tools/gio";
+            final String cmd = "mv -r "+GALAXY_PATH+CURRENT_PATH+"gio-repository/wrappers "+GALAXY_PATH+"tools/gio";
             System.out.println(cmd);
 //            Process proc = Runtime.getRuntime().exec(cmd);
 //            int value = proc.waitFor();
