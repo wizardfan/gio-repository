@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="iTraqQuantitation">
+  		<xs:complexType>
+    			<xs:sequence>
+				<xs:element name="AssayParamList" type="AssayParamListType"/>
+				<xs:element name="Setting" type="SettingType" />
+    			</xs:sequence>
+  		</xs:complexType>
+	</xs:element>
+	
+	<xs:complexType name="AssayParamListType">
+		<xs:annotation>
+			<xs:documentation>The list of the m/z values for the reporter ions</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AssayParam" type="AssayParamType" minOccurs="4" maxOccurs="8"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="AssayParamType">
+		<xs:annotation>
+			<xs:documentation>The single m/z value for one reporter ion</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AssayName" type="xs:string"/>
+			<xs:element name="mzValue" type="xs:decimal"/>
+			<xs:element name="CorrectionFactors" type="CorrectionFactorsType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+  	<xs:complexType name="CorrectionFactorsType">
+  		<xs:annotation>
+  			<xs:documentation>The correction factors provided by the kit company</xs:documentation>
+  		</xs:annotation>
+    		<xs:sequence>
+      			<xs:element name="factor" type="factorType"  minOccurs="4" maxOccurs="4"/>
+  		</xs:sequence>
+  	</xs:complexType>
+    
+	<xs:complexType name="factorType">
+		<xs:simpleContent>
+      			<xs:extension base="xs:decimal">
+      				<xs:attribute name="deltaMass" type="xs:int"  use="required"/>
+      			</xs:extension>
+      		</xs:simpleContent>
+	</xs:complexType>
+  
+	<xs:complexType name="SettingType">
+    		<xs:sequence>
+      			<xs:element name="mzRange">
+				<xs:complexType>
+    					<xs:sequence>
+      						<xs:element name="minus" type="xs:decimal" />
+      						<xs:element name="plus" type="xs:decimal" />
+    					</xs:sequence>
+  				</xs:complexType>
+  			</xs:element>
+      			<xs:element name="IntegrationMethod">
+      				<xs:simpleType>
+      					<xs:restriction base="xs:string">
+      						<xs:enumeration value="SumIntensities"/>
+      						<xs:enumeration value="Area"/>
+      						<xs:enumeration value="Highest"/>
+      					</xs:restriction>
+      				</xs:simpleType>
+      			</xs:element>
+    		</xs:sequence>
+    	</xs:complexType>
+</xs:schema>
+

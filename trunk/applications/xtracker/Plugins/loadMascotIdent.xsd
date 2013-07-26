@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+<xs:simpleType name="rawFile">
+  <xs:restriction base="xs:string">
+  		<!--<xs:pattern value="([\w|_|-|+|.]+.[\w|_|-|+|.]+)*" />-->
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="identFile">
+  	<xs:restriction base="xs:string">
+  	<!--<xs:pattern value="([\w|_|-|+|.]+.[\w|_|-|+|.]+)*"/>-->
+  </xs:restriction>
+</xs:simpleType>
+
+
+ 
+
+
+
+  <xs:simpleType name="modType">
+    <xs:restriction base="xs:string">
+	 <!-- 	<xs:pattern value="[\w|_|-|+|.]+\s\(([\w|_|-|+|.])+\)"/> -->
+		<xs:pattern value="[\w|_|\-|+|.|:]+\s\(([\w|_|\-|+|.|:])+\)"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+
+
+<xs:complexType name="dataFileType">
+  		<xs:simpleContent>
+   			<xs:extension base="rawFile">
+    			<xs:attribute name="identification_file" use="required" type="identFile" />
+   			</xs:extension>
+  		</xs:simpleContent>
+	</xs:complexType>
+
+
+<xs:complexType name="modificationsType">
+	<xs:sequence>	
+	<xs:element name="modification" maxOccurs="unbounded">
+		<xs:complexType>
+  		<xs:simpleContent>
+   			<xs:extension base="modType">
+    			<xs:attribute name="delta" use="required" type="xs:decimal" />
+   			</xs:extension>
+  		</xs:simpleContent>
+	</xs:complexType>
+	</xs:element>	
+    </xs:sequence>
+</xs:complexType>
+
+
+<xs:complexType name="paramType">
+  <xs:all>
+   
+   <xs:element name="inputFiles">
+	<xs:complexType>
+	<xs:sequence>	
+		<xs:element name="datafile" type="dataFileType" maxOccurs="unbounded" />
+	</xs:sequence>	
+	</xs:complexType>
+	</xs:element>
+   
+	<xs:element name="modificationData" type="modificationsType" />
+	
+	
+	
+	<xs:element name="pep_score_threshold" minOccurs="1" maxOccurs="1" type="xs:decimal" />
+		
+	
+  </xs:all>
+</xs:complexType>
+
+
+
+<xs:element name="param" type="paramType"/>
+
+
+</xs:schema>
+
+
+
+
+

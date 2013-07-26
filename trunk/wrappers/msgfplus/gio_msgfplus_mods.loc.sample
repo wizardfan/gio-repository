@@ -3,7 +3,7 @@
 #<Displayed Name>	<Modification String>
 #Display name is for display in the format of modification name(residue), , while modification string will be parsed in the perl script and then forms the standard MSGFPlus syntax. The modification string is in the format of mass_shift or composition,residue,position,name
 Oxidation(M)	15.994915:M:any:Oxidation
-Carbamidomethyl(C)	C2H3N1O1:C:any:Carbamidomethyl	
+Carbamidomethyl(C)	C2H3N1O1:C:any:Carbamidomethyl
 #
 #Standard MSGFPlus syntax is
 #

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="SpectralIdentificationList" type="SpectralIdentificationListType"/>
+<xs:complexType name="SpectralIdentificationListType">
+	<xs:annotation>
+        	<xs:documentation>List of SpectralIdentificationPair.</xs:documentation>
+        </xs:annotation>
+	<xs:sequence>
+		<xs:element name="SpectralIdentificationPair" type="SpectralIdentificationPairType" minOccurs="1" maxOccurs="unbounded"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SpectralIdentificationPairType">
+	<xs:annotation>
+		<xs:documentation>Description of the relationship between raw spectral file and identification file.</xs:documentation>
+	</xs:annotation>
+	<xs:attribute name="spectra" type="xs:string" use="required">
+		<xs:annotation>
+			<xs:documentation>The raw spectral file which is submitted to the search engine.</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="identification" type="xs:string" use="required">
+		<xs:annotation>
+			<xs:documentation>The mzIdentML file from the search engine or converted from the search result.</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+</xs:complexType>
+
+
+</xs:schema>
+
+
+
+
+
