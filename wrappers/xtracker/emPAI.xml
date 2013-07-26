@@ -1,10 +1,10 @@
-<tool id="emPAI" name="emPAI parameter in X-Tracker" version="0.2.0">
+<tool id="emPAI" name="emPAI analysis in X-Tracker" version="0.2.1">
     <!--updates from 0.1.0:
         1. allow select different spectra and identification format
 	2. set the file type properly after installing the data types
     -->
     <description>Execute emPAI quantitation method within X-Tracker</description>
-        <command >java -jar $__root_dir__/../gio_applications/xtracker/xTrackerGalaxy.jar $mzq $__new_file_path__ $output</command>
+        <command >java -jar $__root_dir__/../gio_applications/xtracker/xTrackerGalaxy.jar $mzq $__root_dir__/../gio_applications/xtracker/ $output</command>
     <inputs>
     	<conditional name="spectra">
       	    <param name="spectra_type" type="select" label="Spectral File Type">
