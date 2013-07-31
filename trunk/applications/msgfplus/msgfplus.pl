@@ -29,7 +29,7 @@ my $line = <IN>;
 my $flag = "fix";
 #first line is the flag line fixed
 open OUT,">/$path/tmp_$id.mods";
-print OUT "NumMods = 2\n";
+print OUT "NumMods = 4\n";
 while($line=<IN>){
 	chomp($line);
 	if($line eq "variable"){

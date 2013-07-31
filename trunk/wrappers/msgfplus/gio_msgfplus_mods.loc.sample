@@ -2,8 +2,85 @@
 #Each entry consists of 4 tab separated fields like this
 #<Displayed Name>	<Modification String>
 #Display name is for display in the format of modification name(residue), , while modification string will be parsed in the perl script and then forms the standard MSGFPlus syntax. The modification string is in the format of mass_shift or composition,residue,position,name
-Oxidation(M)	15.994915:M:any:Oxidation
-Carbamidomethyl(C)	C2H3N1O1:C:any:Carbamidomethyl
+Acetyl(K)	42.010565:K:Any:Acetyl
+Acetyl(N-term)	42.010565:*:N-term:Acetyl
+Acetyl(Protein N-term)	42.010565:*:Prot-N-term:Acetyl
+Amidated(C-term)	-0.984016:*:C-term:Amidated
+Amidated(Protein C-term)	-0.984016:*:Prot-C-term:Amidated
+Ammonia-loss(N-term C)	-17.026549:C:N-term:Ammonia-loss
+Biotin(K)	226.077598:K:Any:Biotin
+Biotin(N-term)	226.077598:*:N-term:Biotin
+Carbamidomethyl(C)	57.021464:C:Any:Carbamidomethyl
+Carbamyl(K)	43.005814:K:Any:Carbamyl
+Carbamyl(N-term)	43.005814:*:N-term:Carbamyl
+Carboxymethyl(C)	58.005479:C:Any:Carboxymethyl
+Cation:Na(C-term)	21.981943:*:C-term:Cation:Na
+Cation:Na(DE)	21.981943:DE:Any:Cation:Na
+Crotonyl(K)	68.026215:K:Any:Crotonyl
+cysTMT6plex(C)	304.177202:C:Any:cysTMT6plex
+Deamidated(QN)	0.984016:QN:Any:Deamidated
+Dehydrated(N-term C)	-18.010565:C:N-term:Dehydrated
+Dehydro(C)	-1.007825:C:Any:Dehydro
+DiLeu4plex(K)	145.132163:K:Any:DiLeu4plex
+DiLeu4plex(N-term)	145.132163:*:N-term:DiLeu4plex
+DiLeu4plex(Y)	145.132163:Y:Any:DiLeu4plex
+Dioxidation(M)	31.989829:M:Any:Dioxidation
+Ethanolyl(C)	44.026215:C:Any:Ethanolyl
+ExacTagAmine(K)	1046.347854:K:Any:ExacTagAmine
+ExacTagThiol(C)	972.365219:C:Any:ExacTagThiol
+Formyl(N-term)	27.994915:*:N-term:Formyl
+Formyl(Protein N-term)	27.994915:*:Prot-N-term:Formyl
+Gln->pyro-Glu(N-term Q)	-17.026549:Q:N-term:Gln->pyro-Glu
+Glu->pyro-Glu(N-term E)	-18.010565:E:N-term:Glu->pyro-Glu
+Guanidinyl(K)	42.021798:K:Any:Guanidinyl
+ICAT-C(C)	227.126991:C:Any:ICAT-C
+ICAT-C:13C(9)(C)	236.157185:C:Any:ICAT-C:13C(9)
+ICPL(K)	105.021464:K:Any:ICPL
+ICPL(Protein N-term)	105.021464:*:Prot-N-term:ICPL
+ICPL:13C(6)(K)	111.041593:K:Any:ICPL:13C(6)
+ICPL:13C(6)(Protein N-term)	111.041593:*:Prot-N-term:ICPL:13C(6)
+ICPL:13C(6)2H(4)(K)	115.0667:K:Any:ICPL:13C(6)2H(4)
+ICPL:13C(6)2H(4)(N-term)	115.0667:*:N-term:ICPL:13C(6)2H(4)
+ICPL:13C(6)2H(4)(Protein N-term)	115.0667:*:Prot-N-term:ICPL:13C(6)2H(4)
+ICPL:2H(4)(K)	109.046571:K:Any:ICPL:2H(4)
+ICPL:2H(4)(Protein N-term)	109.046571:*:Prot-N-term:ICPL:2H(4)
+iTRAQ4plex(K)	144.102063:K:Any:iTRAQ4plex
+iTRAQ4plex(N-term)	144.102063:*:N-term:iTRAQ4plex
+iTRAQ4plex(Y)	144.102063:Y:Any:iTRAQ4plex
+iTRAQ8plex(K)	304.20536:K:Any:iTRAQ8plex
+iTRAQ8plex(N-term)	304.20536:*:N-term:iTRAQ8plex
+iTRAQ8plex(Y)	304.20536:Y:Any:iTRAQ8plex
+Label:18O(1)(C-term)	2.004246:*:C-term:Label:18O(1)
+Label:18O(2)(C-term)	4.008491:*:C-term:Label:18O(2)
+Met->Hse(C-term M)	-29.992806:M:C-term:Met->Hse
+Met->Hsl(C-term M)	-48.003371:M:C-term:Met->Hsl
+Methyl(C-term)	14.01565:*:C-term:Methyl
+Methyl(ED)	14.01565:ED:Any:Methyl
+Methylthio(C)	45.987721:C:Any:Methylthio
+mTRAQ(K)	140.094963:K:Any:mTRAQ
+mTRAQ(N-term)	140.094963:*:N-term:mTRAQ
+mTRAQ(Y)	140.094963:Y:Any:mTRAQ
+mTRAQ:13C(3)15N(1)(K)	144.102063:K:Any:mTRAQ:13C(3)15N(1)
+mTRAQ:13C(3)15N(1)(N-term)	144.102063:*:N-term:mTRAQ:13C(3)15N(1)
+mTRAQ:13C(3)15N(1)(Y)	144.102063:Y:Any:mTRAQ:13C(3)15N(1)
+mTRAQ:13C(6)15N(2)(K)	148.109162:K:Any:mTRAQ:13C(6)15N(2)
+mTRAQ:13C(6)15N(2)(N-term)	148.109162:*:N-term:mTRAQ:13C(6)15N(2)
+mTRAQ:13C(6)15N(2)(Y)	148.109162:Y:Any:mTRAQ:13C(6)15N(2)
+NIPCAM(C)	99.068414:C:Any:NIPCAM
+Oxidation(M)	15.994915:M:Any:Oxidation
+Oxidation(WH)	15.994915:WH:Any:Oxidation
+Phospho(TS)	79.966331:TS:Any:Phospho
+Phospho(Y)	79.966331:Y:Any:Phospho
+Propionamide(C)	71.037114:C:Any:Propionamide
+Pyridylethyl(C)	105.057849:C:Any:Pyridylethyl
+Pyro-carbamidomethyl(N-term C)	39.994915:C:N-term:Pyro-carbamidomethyl
+Sulfo(STY)	79.956815:STY:Any:Sulfo
+TMT2plex(K)	225.155833:K:Any:TMT2plex
+TMT2plex(N-term)	225.155833:*:N-term:TMT2plex
+TMT6plex(K)	229.162932:K:Any:TMT6plex
+TMT6plex(N-term)	229.162932:*:N-term:TMT6plex
+#Oxidation(M)	15.994915:M:any:Oxidation
+#Carbamidomethyl(C)	C2H3N1O1:C:any:Carbamidomethyl	
 #
 #Standard MSGFPlus syntax is
 #
