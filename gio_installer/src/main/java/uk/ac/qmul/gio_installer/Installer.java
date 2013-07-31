@@ -6,7 +6,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -28,8 +27,9 @@ public class Installer {
 //            System.out.println(name+": "+properties.get(name));
 //        }
 //        System.out.println(properties.getProperty("user.home"));
-//        System.out.println(properties.getProperty("user.dir"));
+        System.out.println("Current path:"+properties.getProperty("user.dir"));
 //        System.out.println(properties.getProperty("os.name"));
+//        System.exit(0);
         CURRENT_PATH = properties.getProperty("user.dir");
         if(args.length > 0){
             GALAXY_PATH = args[0];
@@ -39,9 +39,10 @@ public class Installer {
 
     public Installer() {
         locateGalaxyFolder();
-//        getRepository();
+        getRepository();
         modifyToolConfByFileOperation();
         moveFolders();
+        System.out.println("Installation finished.");
         clear();
     }
 
@@ -62,23 +63,24 @@ public class Installer {
         }
         System.out.println("Galaxy folder has been located");
     }
+    
     private boolean checkGalaxyFolder(){
         File galaxy = new File(GALAXY_PATH);
         if(!galaxy.exists()) return false;
-        File toolConfPath = new File(GALAXY_PATH + "tool_conf.xml");
+        File toolConfPath = new File(GALAXY_PATH + "/tool_conf.xml");
         if(!toolConfPath.exists())return false;
-        File universePath = new File(GALAXY_PATH + "universe_wsgi.ini");
+        File universePath = new File(GALAXY_PATH + "/universe_wsgi.ini");
         if(!universePath.exists())return false;
         return true;
     }
 
     private void getRepository() {
         System.out.println("Checking out the latest version of gio_repository. This process could take a while, please be patient.");
-        File delme = new File(GALAXY_PATH+CURRENT_PATH);
+        File delme = new File(CURRENT_PATH);
         try {
             Process proc = Runtime.getRuntime().exec("svn checkout https://gio-repository.googlecode.com/svn/trunk/ gio-repository", null, delme);
             int value = proc.waitFor();
-            System.out.println(value);
+//            System.out.println(value);
         } catch (IOException ex) {
             Logger.getLogger(Installer.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
@@ -87,18 +89,20 @@ public class Installer {
     }
 
     private void modifyToolConfByFileOperation() {
-//        String filepath = GALAXY_PATH+"tool_conf.xml";
         System.out.println("Checking out finished.");
-        String filepath = "tool_conf.xml";
-        File file = new File(filepath);
+        System.out.println("Start to install");
+        String filepath = GALAXY_PATH+"/tool_conf.xml";
+//        String filepath = "tool_conf.xml";
+//        File file = new File(filepath);
 //        System.out.println(file.getAbsolutePath());
         ArrayList<String> fileLines = new ArrayList<String>();
         ArrayList<String> gioEntry = new ArrayList<String>();
         String section = "  <section name=\""+SECTION_NAME+"\" id=\""+SECTION_ID+"\">";
         gioEntry.add(section);
-        File wrappers = new File(GALAXY_PATH+CURRENT_PATH+"gio-repository/wrappers/");
+        File wrappers = new File(CURRENT_PATH+"/gio-repository/wrappers/");
         for(String appName:wrappers.list()){
-            final String appFolder = GALAXY_PATH+CURRENT_PATH+"gio-repository/wrappers/"+appName+"/";
+            if(appName.startsWith(".")) continue;//skip the hidden folder i.e. .svn or special folder
+            final String appFolder = CURRENT_PATH+"/gio-repository/wrappers/"+appName+"/";
             File appFolderFile = new File(appFolder);
             String[] locFiles = appFolderFile.list(new FilenameFilter() {
                 public boolean accept(File dir, String name) {
@@ -108,8 +112,8 @@ public class Installer {
             });
             for(String loc:locFiles){
                 try {
-                    String cmd = "cp "+appFolder+loc+" "+GALAXY_PATH+"tool-data/";
-                    System.out.println(cmd);
+                    String cmd = "cp "+appFolder+loc+" "+GALAXY_PATH+"/tool-data/";
+//                    System.out.println(cmd);
                     Process proc = Runtime.getRuntime().exec(cmd);
                     int value = proc.waitFor();
                 } catch (IOException ex) {
@@ -119,7 +123,7 @@ public class Installer {
                 }
             }
 
-            final File wrapper_entry = new File(appFolder+"tool_conf_"+appName+".xml");
+            final File wrapper_entry = new File(appFolder+"/tool_conf_"+appName+".xml");
             try {
                 Scanner wrapper = new Scanner(wrapper_entry);
                 gioEntry.add(wrapper.nextLine());
@@ -174,23 +178,48 @@ public class Installer {
     }
 
     private void moveFolders() {
-//        File delme = new File(GALAXY_PATH+TEMP_PATH);
-//        try {
-            final String cmd = "mv -r "+GALAXY_PATH+CURRENT_PATH+"gio-repository/wrappers "+GALAXY_PATH+"tools/gio";
-            System.out.println(cmd);
-//            Process proc = Runtime.getRuntime().exec(cmd);
-//            int value = proc.waitFor();
+//        File delme = new File(CURRENT_PATH);
+        try {
+            Process proc;
+            System.out.println("Deleting the old version of gio");
+            //delete all old installation
+            proc = Runtime.getRuntime().exec("rm -r "+GALAXY_PATH+"/tools/gio");
+            proc.waitFor();
+            proc = Runtime.getRuntime().exec("rm -r "+GALAXY_PATH+"/../gio_applications");
+            proc.waitFor();
+            final String cmd = "rm "+GALAXY_PATH+"tool-data/gio_*.loc";
+            System.out.println("Check out: "+cmd);
+            proc = Runtime.getRuntime().exec(cmd);
+            proc.waitFor();
+            System.out.println("Permission changed");
+            //change permission to 775
+            proc = Runtime.getRuntime().exec("chmod -R 775 "+CURRENT_PATH+"/gio-repository/applications/");
+            proc.waitFor();
+            //put the new version in
+            final String cmd1 = "cp -r "+CURRENT_PATH+"/gio-repository/wrappers/ "+GALAXY_PATH+"/tools/gio";
+//            System.out.println(cmd);
+            proc = Runtime.getRuntime().exec(cmd1);
+            int value = proc.waitFor();
 //            System.out.println(value);
-//            proc = Runtime.getRuntime().exec("mv -r gio-repository/applications .", null, delme);
-//            proc.waitFor();
-//        } catch (IOException ex) {
-//            Logger.getLogger(Installer.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(Installer.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+            proc = Runtime.getRuntime().exec("cp -r "+CURRENT_PATH+"/gio-repository/applications/ "+GALAXY_PATH+"/../gio_applications");
+            proc.waitFor();
+        } catch (IOException ex) {
+            Logger.getLogger(Installer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Installer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void clear(){
-        
+        try {
+            System.out.println("Clearing the temp files");
+            Process proc = Runtime.getRuntime().exec("rm -r "+CURRENT_PATH+"/gio-repository");
+            proc.waitFor();
+            System.out.println("Installation completed");
+        } catch (IOException ex) {
+            Logger.getLogger(Installer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Installer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
