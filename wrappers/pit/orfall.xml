@@ -1,0 +1,20 @@
+<tool id="PIT:ORFall" name="PIT:ORFall" force_history_refresh="True">
+    <description>The ORF prediction tool</description>
+<!--  <command interpreter="perl">print.pl $output $output.id $__new_file_path__</command>-->
+    <command interpreter="perl">$__root_dir__/../gio_applications/pit/orfall.pl $input $output -minMain $minMain -start $start -stop $stop</command>
+    <inputs>
+	<param  format="fasta" name="input" type="data" label="Input file"/>
+        <param name = "minMain" size="6" value="200" type="integer" label="the minimum length for the main ORFs in bps"/>
+    	<param name="start" type="select" label="Start type: ">
+	    <option value="M" selected = "true">Start codon</option>
+	    <option value="-">Stop codon</option>
+	</param>
+    	<param name="stop" type="select" label="Stop type: ">
+	    <option value="M">Start codon</option>
+	    <option value="-" selected = "true">Stop codon</option>
+	</param>
+    </inputs>
+  <outputs>
+    <data format="fasta" name="output" />
+  </outputs>
+</tool>
