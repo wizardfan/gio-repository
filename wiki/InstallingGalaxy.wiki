@@ -1,8 +1,8 @@
-The instructions that follow assume you are using *Ubuntu*, but should be easily adaptable to other Linux-based operating systems.
-*prerequisite*
+GIO has been developed within the Galaxy platform, so you must have Galaxy installed to use it. For completeness, instructions for installing Galaxy are provided below. These instructions have been tested on *Ubuntu*, but should be similar on other Linux-based operating systems.
+
   # Install the galaxy data analysis platform: follow [http://wiki.galaxyproject.org/Admin/Get%20Galaxy the tutorial] to install it
   # Run the Galaxy for the first time to generate necessary system files
-  # Set up Galaxy (i.e. change the _universe_wsgi.ini_ file under the Galaxy root folder. The Galaxy may be better to be stoped first)
+  # Set up Galaxy (i.e. change the _universe_wsgi.ini_ file under the Galaxy root folder. The Galaxy may be better to be stopped first).
      * Access Galaxy over the network: change the host setting to *host = 0.0.0.0*
      * Add admin user: uncomment and change the admin_users setting to *admin_users = your.galaxy.login@email* [http://wiki.galaxyproject.org/Admin/Interface More details]
      * Allow using tool shed: uncomment and change the tool_config_file setting to *tool_config_file = tool_conf.xml,shed_tool_conf.xml* [http://wiki.galaxyproject.org/InstallingRepositoriesToGalaxy#Installing_Galaxy_tool_shed_repository_tools_into_a_local_Galaxy_instance More details]
