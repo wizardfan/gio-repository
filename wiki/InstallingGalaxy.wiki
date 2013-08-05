@@ -2,7 +2,8 @@ GIO has been developed within the Galaxy platform, so you must have Galaxy insta
 
   # Install the galaxy data analysis platform: follow [http://wiki.galaxyproject.org/Admin/Get%20Galaxy the tutorial] to install it.
   # Run the Galaxy for the first time to generate necessary system files.
+  # Within Galaxy, create an account for yourself by clicking on User in the bar at the top and then clicking Register in.
   # Stop Galaxy, and make the following changes to the Galaxy configuration file (_universe_wsgi.ini_), which can be found in the Galaxy root folder.
      * Enable Galaxy over your network (optional): uncomment and change the host setting to *host = 0.0.0.0*
-     * Add yourself as an admin user: uncomment and change the admin_users setting to *admin_users = your_galaxy_login@your_domain* [http://wiki.galaxyproject.org/Admin/Interface More details]
+     * Add yourself as an admin user: uncomment and change the admin_users setting to include the email address that you registered in Step 3, e.g. *admin_users = w.moreland@example.com* [http://wiki.galaxyproject.org/Admin/Interface More details]
      * Allow access to Galaxy Tool Shed: uncomment and change the tool_config_file setting so that it reads *tool_config_file = tool_conf.xml,shed_tool_conf.xml* [http://wiki.galaxyproject.org/InstallingRepositoriesToGalaxy#Installing_Galaxy_tool_shed_repository_tools_into_a_local_Galaxy_instance More details]
