@@ -1,7 +1,7 @@
 GIO has been developed within the Galaxy platform, so you must have Galaxy installed to use it. For completeness, instructions for installing and setting up Galaxy are provided below. These instructions have been tested on *Ubuntu*, but should be similar on other Linux-based operating systems.
 
   # Install the galaxy data analysis platform: follow [http://wiki.galaxyproject.org/Admin/Get%20Galaxy the tutorial] to install it.
-  # Run the Galaxy for the first time to generate necessary system files.
+  # Run Galaxy for the first time to generate necessary system files.
   # Within Galaxy, create an account for yourself by clicking on User in the bar at the top and then clicking Register in.
   # Stop Galaxy, and make the following changes to the Galaxy configuration file (_universe_wsgi.ini_), which can be found in the Galaxy root folder.
      * Enable Galaxy over your network (optional): uncomment and change the host setting to *host = 0.0.0.0*
