@@ -10,8 +10,10 @@
 FalseDiscoveryRate $input $output -decoyRegex $main.decoyRegex -decoyValue $main.decoyValue -cvTerm $main.cvTerm -betterScoresAreLower $main.betterScoresAreLower
 	#elif $main.method=="threshold":
 Threshold $input $output -isPSMThreshold $main.isPSMThreshold -cvAccessionForScoreThreshold $main.cvAccessionForScoreThreshold -threshValue $main.threshValue -betterScoresAreLower $main.betterScoresAreLower -deleteUnderThreshold $main.deleteUnderThreshold	
-	#else
+	#elif $main.method=="proteogroup"
 ProteoGrouper $input $output -cvAccForSIIScore $main.cvAccForSIIScore -logTransScore $main.logTransScore -requireSIIsToPassThreshold $main.requireSIIsToPassThreshold -verboseOutput false
+	#else
+Mzid2Csv $input $output -exportType $main.exportType -verboseOutput false
 	#end if
     </command>
     <macros>
@@ -82,6 +84,14 @@ ProteoGrouper $input $output -cvAccForSIIScore $main.cvAccForSIIScore -logTransS
       		<option value="false">No</option>
 	    </param>
 	</macro>
+	<macro name="macro_mzid2csv">
+	    <param name="exportType" type="select" format="text">
+      		<option value="exportProteinGroups" selected = "true">exportProteinGroups</option>
+      		<option value="exportPSMs">exportPSMs</option>
+      		<option value="exportProteinsOnly">exportProteinsOnly</option>
+      		<option value="exportRepProteinPerPAGOnly">exportRepProteinPerPAGOnly</option>
+	    </param>
+	</macro>
     </macros>
     <inputs>	
 	<param  format="mzid" name="input" type="data" label="Input file"/>
@@ -90,6 +100,7 @@ ProteoGrouper $input $output -cvAccForSIIScore $main.cvAccForSIIScore -logTransS
 		<option value="fdr">False Discovery Rate</option>
 		<option value="threshold">Threshold</option>
 		<option value="proteogroup">ProteoGrouper</option>
+		<option value="mzid2csv">Export into CSV</option>
 	    </param>
 	    <when value="fdr">
 		<expand macro="macro_fdr"/>
@@ -99,6 +110,9 @@ ProteoGrouper $input $output -cvAccForSIIScore $main.cvAccForSIIScore -logTransS
 	    </when>
 	    <when value="proteogroup">
 		<expand macro="macro_proteogroup"/>
+	    </when>
+	    <when value="mzid2csv">
+		<expand macro="macro_mzid2csv"/>
 	    </when>
 	</conditional>
     </inputs>
