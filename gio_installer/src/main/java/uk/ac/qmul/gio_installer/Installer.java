@@ -126,7 +126,9 @@ public class Installer {
             final File wrapper_entry = new File(appFolder+"/tool_conf_"+appName+".xml");
             try {
                 Scanner wrapper = new Scanner(wrapper_entry);
-                gioEntry.add(wrapper.nextLine());
+                while(wrapper.hasNextLine()){
+                    gioEntry.add(wrapper.nextLine());
+                }
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Installer.class.getName()).log(Level.SEVERE, null, ex);
             }
