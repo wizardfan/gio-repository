@@ -1,0 +1,26 @@
+<tool id="mzidlib_converter" name="mzIdLib:Converter" version="1.0.0">
+<!--update from 0.4.0: introduce macro-->
+    <description>Using mzIdentML-Lib to convert mzIdentML to CSV format.</description>
+    <command>
+        java -Xms1024m -jar $__root_dir__/../gio_applications/mzidlib/mzidlib-maven.jar Mzid2Csv $input $output -exportType $exportType -verboseOutput false
+	#end if
+    </command>
+    <inputs>	
+	<param  format="mzid" name="input" type="data" label="Input file"/>
+    	<param name="exportType" type="select" format="text">
+      	    <option value="exportProteinGroups" selected = "true">exportProteinGroups</option>
+      	    <option value="exportPSMs">exportPSMs</option>
+      	    <option value="exportProteinsOnly">exportProteinsOnly</option>
+      	    <option value="exportRepProteinPerPAGOnly">exportRepProteinPerPAGOnly</option>
+	</param>
+    </inputs>
+
+    <outputs>
+	<data format="csv" name="output"/>
+    </outputs>
+
+    <help>
+	Using mzidLib (https://code.google.com/p/mzidentml-lib/) to convert the PSI standard mzIdentML format into a more common CSV format for further processing
+    </help>
+
+</tool>

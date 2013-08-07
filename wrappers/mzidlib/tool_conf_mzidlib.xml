@@ -1,1 +1,2 @@
     <tool file="gio/mzidlib/mzidlibPostProcessing.xml" />
+    <tool file="gio/mzidlib/mzidlibConverter.xml" />
