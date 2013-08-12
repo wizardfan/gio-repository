@@ -20,6 +20,6 @@
 	</conditional>
     </inputs>
     <outputs>
-	<data name="output" format="mzml"/>
+	<data name="output" format="mzml" label="#echo os.path.splitext (str ($input.name))[0]#-converted.mzML"/>
     </outputs>
 </tool>
