@@ -1,7 +1,14 @@
 <tool id="PIT:ORFall" name="PIT:ORFall" force_history_refresh="True">
     <description>The ORF prediction tool</description>
 <!--  <command interpreter="perl">print.pl $output $output.id $__new_file_path__</command>-->
-    <command interpreter="perl">$__root_dir__/../gio_applications/pit/orfall.pl $input $output -minMain $minMain -start $start -stop $stop</command>
+    <command interpreter="perl">$__root_dir__/../gio_applications/pit/orfall.pl $input $output -minMain $minMain -start $start -stop $stop
+        #if $u5orf.needu5=="true":
+-min5 $u5orf.min5 -max5 $u5orf.max5 -distance5 $u5orf.distance5 -uorf5output /$__new_file_path__/primary_${output.id}_uORF5_visible_fasta
+        #end if
+        #if $u3orf.needu3=="true":
+-min3 $u3orf.min3 -uorf3output /$__new_file_path__/primary_${output.id}_uORF3_visible_fasta
+        #end if
+    </command>
     <inputs>
 	<param  format="fasta" name="input" type="data" label="Input file"/>
         <param name = "minMain" size="6" value="200" type="integer" label="the minimum length for the main ORFs in bps"/>
@@ -13,8 +20,29 @@
 	    <option value="M">Start codon</option>
 	    <option value="-" selected = "true">Stop codon</option>
 	</param>
+	<conditional name="u5orf">
+            <param name="needu5" type="select" label="Want to detect 5' uORFs?">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </param>
+            <when value="true">
+        	<param name = "min5" size="6" value="21" type="integer" label="the minimum length of 5' uORFs in bps"/>
+        	<param name = "max5" size="6" value="180" type="integer" label="the maximum length of 5' uORFs in bps"/>
+        	<param name = "distance5" size="6" value="300" type="integer" label="the maximum distance between the end position of 5' uORF and the start position of its corresponding main ORF. When this value is set to 0, means that uORF must overlap with the main ORF"/>
+            </when>
+        </conditional>
+	<conditional name="u3orf">
+            <param name="needu3" type="select" label="Want to detect 3' uORFs?">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </param>
+            <when value="true">
+        	<param name = "min3" size="6" value="18" type="integer" label="the minimum length of 3' uORFs in bps"/>
+<!--        	<param name = "max3" size="6" value="180" type="integer" label="the maximum length of 3' uORFs in bps"/>-->
+            </when>
+        </conditional>
     </inputs>
   <outputs>
-    <data format="fasta" name="output" />
+    <data format="fasta" name="output" label="#echo os.path.splitext (str ($input.name))[0]#-ORF.fasta"/>
   </outputs>
 </tool>
