@@ -30,6 +30,7 @@
         	<param name = "max5" size="6" value="180" type="integer" label="the maximum length of 5' uORFs in bps"/>
         	<param name = "distance5" size="6" value="300" type="integer" label="the maximum distance between the end position of 5' uORF and the start position of its corresponding main ORF. When this value is set to 0, means that uORF must overlap with the main ORF"/>
             </when>
+            <when value="false"/>
         </conditional>
 	<conditional name="u3orf">
             <param name="needu3" type="select" label="Want to detect 3' uORFs?">
@@ -40,6 +41,7 @@
         	<param name = "min3" size="6" value="18" type="integer" label="the minimum length of 3' uORFs in bps"/>
 <!--        	<param name = "max3" size="6" value="180" type="integer" label="the maximum length of 3' uORFs in bps"/>-->
             </when>
+            <when value="false"/>
         </conditional>
     </inputs>
   <outputs>
