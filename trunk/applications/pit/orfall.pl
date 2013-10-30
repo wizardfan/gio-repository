@@ -4,10 +4,7 @@ use POSIX;
 # the default values for the main ORF is 200 bps, start and stop codons
 # Report ALL ORFs that meet the criteria in each frame. If no stop codon reached then yes, use the end of the mRNA as the stop.
 
-# For each ORF reported go to the initiating methionine and look upstream in the other two reading frames for an initiating methionine. 
-# If you find one then simply translate it and report it as a possible uORF (so long as the length is at least 6 amino acids - no upper limit). 
-# This will report all possible instances where two open reading frames may interfere with each other. This is very broad, be as inclusive as possible
-# the default values for the upstream uORFs are length in the range of 7 -60 AAs (21-180 bps) and overlapping with the main ORF
+# the default values for the upstream uORFs are length in the range of 7 -60 AAs (21-180 bps)
 # the uORF might overlap with the main orf but it does not have to 
 # it might be entirely upstream so it might be in the same frame
 
@@ -18,10 +15,10 @@ use POSIX;
 #developed by Dr Jun Fan@qmul based on Dr David Matthews@bristol's original idea 
  
 #global constant values
+use constant { true => 1, false => 0 };
+
 my $STOP = "-";
 my %translation = (TTT=>"F", TTC=>"F", TCT=>"S", TCC=>"S", TAT=>"Y", TAC=>"Y", TGT=>"C", TGC=>"C", TTA=>"L", TCA=>"S", TAA=>$STOP, TGA=>$STOP, TTG=>"L", TCG=>"S", TAG=>$STOP, TGG=>"W", CTT=>"L", CTC=>"L", CCT=>"P", CCC=>"P", CAT=>"H", CAC=>"H", CGT=>"R", CGC=>"R", CTA=>"L", CTG=>"L", CCA=>"P", CCG=>"P", CAA=>"Q", CAG=>"Q", CGA=>"R", CGG=>"R", ATT=>"I", ATC=>"I", ACT=>"T", ACC=>"T", AAT=>"N", AAC=>"N", AGT=>"S", AGC=>"S", ATA=>"I", ACA=>"T", AAA=>"K", AGA=>"R", ATG=>"M", ACG=>"T", AAG=>"K", AGG=>"R", GTT=>"V", GTC=>"V", GCT=>"A", GCC=>"A", GAT=>"D", GAC=>"D", GGT=>"G", GGC=>"G", GTA=>"V", GTG=>"V", GCA=>"A", GCG=>"A", GAA=>"E", GAG=>"E", GGA=>"G", GGG=>"G");
-#my %rev_translation = (GGC=>"A", ACT=>"S", TCA=>"*", ACA=>"C", TCG=>"R", GAT=>"I", GTT=>"N", GCT=>"S", GTA=>"Y", TGT=>"T", CGA=>"S", CGG=>"P", CAG=>"L", TGC=>"A", CAC=>"V", CTT=>"K", AAC=>"V", GTG=>"H", TCT=>"R", GGT=>"T", TGG=>"P", CCA=>"W", GAG=>"L", GCG=>"R", CAA=>"L", TTA=>"*", CTG=>"Q", CGT=>"T", CAT=>"M", TTT=>"K", TAC=>"V", CTA=>"*", AAG=>"L", TCC=>"G", GAC=>"V", GCA=>"C", TGA=>"S", AAT=>"I", ATA=>"Y", ATT=>"N", AGT=>"T", TTG=>"Q", GTC=>"D", ACC=>"G", GGA=>"S", AAA=>"F", CCT=>"R", ACG=>"R", CCG=>"R", ATG=>"H", TAT=>"I", GGG=>"P", CCC=>"G", TAA=>"L", CTC=>"E", TAG=>"L", ATC=>"D", AGA=>"S", GAA=>"F", CGC=>"A", GCC=>"G", AGC=>"A", TTC=>"E", AGG=>"P");
-#my %base_pair = (G=>"A", A=>"T", T=>"A", C=>"G");
 
 # the parameters (particularly need to think about wrapping in Galaxy) will be <input file> <output file> [parameter1] [parameter2] [...]
 #parameter length check
@@ -38,12 +35,24 @@ if(($lenARGV % 2)==1){
 	exit 2;
 }
 
-my $infile = $ARGV[0];
-my $outfile = $ARGV[1];
+my $infile = $ARGV[0];#the DNA/RNA sequence
+my $outfile = $ARGV[1];#the main ORF result file
 #default values
+#for main ORF
 my $minLength = 200;
 my $start = "M";
 my $stop = $STOP;
+#for 5' uORF
+my $need5uorf = false;
+my $out5uorf = "";
+my $max5 = 180;
+my $min5 = 21;
+my $distance5 = 300;
+#for 3' uORF
+my $need3uorf = false;
+my $out3uorf = "";
+my $min3 = 18;
+
 #set by the command line parameters
 for(my $i=2;$i<$lenARGV;$i+=2){
 	my $name = lc($ARGV[$i]);
@@ -53,6 +62,20 @@ for(my $i=2;$i<$lenARGV;$i+=2){
 		$start = $ARGV[$i+1];
 	}elsif ($name eq "-stop"){
 		$stop = $ARGV[$i+1];
+	}elsif ($name eq "-uorf5output"){
+		$need5uorf = true;
+		$out5uorf = $ARGV[$i+1];
+	}elsif ($name eq "-max5"){
+		$max5 = $ARGV[$i+1];
+	}elsif ($name eq "-min5"){
+		$min5 = $ARGV[$i+1];
+	}elsif ($name eq "-distance5"){
+		$distance5 = $ARGV[$i+1];
+	}elsif ($name eq "-uorf3output"){
+		$need3uorf = true;
+		$out3uorf = $ARGV[$i+1];
+	}elsif ($name eq "-min3"){
+		$min3 = $ARGV[$i+1];
 	}else{
 		print "Error: Unexpected parameter name $ARGV[$i]\n";
 		&usage();
@@ -61,32 +84,72 @@ for(my $i=2;$i<$lenARGV;$i+=2){
 }
 #print "minimum ORF length: $minLength\nStart codon: $start\nStop codon: $stop\n";
 my $minAA = ceil($minLength/3);
+my $min5AA = ceil($min5/3);
+my $max5AA = floor($max5/3);
+my $min3AA = ceil($min5/3);
 
 open IN,"$infile";
 my $header="";
 my $seq="";
+my $totalCount = 0;
 my %totalORF;
+my %total5uorf;
+my %total3uorf;
+my @noORFtranscripts;
 open OUT,">$outfile";
 while(my $line=<IN>){
 	chomp $line;
 	if($line=~/^>/){
 		unless(length $seq==0){
 			&doORF($header,$seq);
+			$totalCount++;
 			$seq="";
 		}
 		$header=substr($line,1);
 	}else{
-        	 $seq .= $line; # add sequence
+        	$seq .= $line; # add sequence
 	}
 }
 unless(length $seq==0){
 	&doORF($header,$seq);
+	$totalCount++;
 	$seq="";
 }
 
 foreach my $pep(sort {$a cmp $b} keys %totalORF){
 	print OUT ">$totalORF{$pep}\n$pep\n";
 }
+close OUT;
+
+print "Total number of transcripts without ORFs: ".(scalar @noORFtranscripts)." within total $totalCount transcipts\n";
+foreach my $transcript(@noORFtranscripts){
+	print "$transcript\n";
+}
+
+if($need5uorf){
+	open OUT,">$out5uorf";
+	foreach my $rna(sort {$a cmp $b} keys %total5uorf){
+		print OUT ">$total5uorf{$rna}\n$rna\n";
+	}
+	close OUT;
+}
+if($need3uorf){
+	open OUT,">$out3uorf";
+	foreach my $rna(sort {$a cmp $b} keys %total3uorf){
+		print OUT ">$total3uorf{$rna}\n$rna\n";
+	}
+	close OUT;
+}
+
+sub translate(){
+	my $dna = $_[0];
+	my $len = length $dna;
+	my $peptide = "";
+	for (my $i=0;$i<$len-2;$i+=3){
+		my $codon = substr($dna,$i,3);
+		$peptide .= $translation{$codon};
+	}
+	return $peptide;}
 sub doORF(){
 	my $header = $_[0];
 	$header =~ s/\s.*//;#only keeps the part before the first white space
@@ -113,54 +176,100 @@ sub doORF(){
 	my @orfs;
 	my %orfs;
 	my $orfCount = 0;
+	my $orfNegaMaxIndex = 0;#as frame is checked in the order of -3,-2,-1,1,2,3
+	my %uorf5;
+	my $u5count = 0;
+	my $u5orfNegaMaxIndex = 0;
+	my %uorf3;
+	my $u3count = 0;
+	my $u3orfNegaMaxIndex = 0;
 	for my $frame(sort {$a<=>$b} keys %frame){
-		my $orfStart = $frame; #original dna position
+		my $currStopPosi = $frame - 1; #the end position for the current stop codon
 		my $strand = 1;
 		if ($frame<0){
-			$orfStart = $len + $frame + 1;#because when calculating the frame, it was calculated as -1+$offset, so frame -1 start from the last, frame -2, start from the second to last
+			$currStopPosi = $len + $frame + 2;#because when calculating the frame, it was calculated as -1+$offset, so frame -1 start from the last, frame -2, start from the second to last
 			$strand = -1;
 		}
 		my $aa = $frame{$frame};
-		my @segments = split($start,$aa);#
-		$orfStart += (length $segments[0])*3*$strand;
-		my $orf = $start; #@segments does not have the start codon after splitting
-		my $segLen = 3; #should change whenever $orf changes
-		for(my $i=1;$i<scalar @segments;$i++){
-			my $pos = index($segments[$i],$stop);#locate the stop codon
-			$segLen += (length $segments[$i])*3;
-			if($pos >-1){ #if found, judge the length
-				my $orfLen = (length $orf)+$pos;
+		my @segments = split($stop,$aa);#
+		for(my $i=0;$i<scalar @segments;$i++){
+			$currStopPosi += ((length $segments[$i])+1)*3*$strand;
+			my $pos = index($segments[$i],$start);#locate the first start codon, which should be the longest ORF for the current stop codon
+			if($pos >-1){ #if found, the current segment has both start and stop codon, could be an ORF, judge the length
+				my $orfLen = (length $segments[$i])-$pos;#because $pos is the actual value - 1
 				if($orfLen >= $minAA){#main orf found
-					$orf .= substr($segments[$i],0,$pos);
+					my $orf = substr($segments[$i],$pos);
 					$orfCount++;
+					$orfNegaMaxIndex = $orfCount if ($frame < 0); 
 					$orfs{$orfCount}{"frame"}=$frame;
 					$orfs{$orfCount}{"orf"}=$orf;
+					my $orfStart = $currStopPosi - $strand*((length $orf)*3+3-1);
 					$orfs{$orfCount}{"start"}=$orfStart;
-					my $orfStop = $orfStart + $strand*((length $orf)*3-1);
-					$orfs{$orfCount}{"stop"}=$orfStop;
+					$orfs{$orfCount}{"stop"}=$currStopPosi-3*$strand;#the stop codon is not accounted in the orf
 					push (@orfs,$orf);
 				}
-				$orfStart = $orfStart+$segLen*$strand;
-				$orf = $start;
-				$segLen = 3;
-			}else{#if no stop codon found, extend to next segment
-				$orf .= "$segments[$i]$start"; 
-				$segLen += 3;
+				if($need5uorf && $orfLen >= $min5AA && $orfLen <= $max5AA){
+					$u5count++;
+					$u5orfNegaMaxIndex = $u5count if ($frame < 0);
+					$uorf5{$u5count}{"frame"}=$frame;
+					my $uorfStart = $currStopPosi - $strand*(((length $segments[$i])-$pos)*3+3-1);
+					$uorf5{$u5count}{"start"}=$uorfStart;
+					$uorf5{$u5count}{"stop"}=$currStopPosi;#as uorf focus on dna/rna, better to keep the actual stop codon
+					if($frame>0){
+#						$uorf5{$u5count}{"orf"}=substr($seq,$uorfStart-1, ((length $segments[$i])-$pos)*3+3);
+						my $coding = substr($seq,$uorfStart-1, ((length $segments[$i])-$pos)*3);
+						my $pep = &translate($coding);
+						$uorf5{$u5count}{"orf"}=$pep;
+					}else{
+#						$uorf5{$u5count}{"orf"}=substr($reversecomp,$len-$uorfStart,((length $segments[$i])-$pos)*3+3);
+						$uorf5{$u5count}{"orf"}=&translate(substr($reversecomp,$len-$uorfStart,((length $segments[$i])-$pos)*3));
+					}
+				}
+				if($need3uorf && $orfLen >= $min3AA){
+					$u3count++;
+					$u3orfNegaMaxIndex = $u3count if ($frame < 0);
+					$uorf3{$u3count}{"frame"}=$frame;
+					my $uorfStart = $currStopPosi - $strand*(((length $segments[$i])-$pos)*3+3-1);
+					$uorf3{$u3count}{"start"}=$uorfStart;
+					$uorf3{$u3count}{"stop"}=$currStopPosi;#as uorf focus on dna/rna, better to keep the actual stop codon
+					if($frame>0){
+#						$uorf3{$u3count}{"orf"}=substr($seq,$uorfStart-1, ((length $segments[$i])-$pos)*3+3);
+						$uorf3{$u3count}{"orf"}=&translate(substr($seq,$uorfStart-1, ((length $segments[$i])-$pos)*3));
+					}else{
+#						$uorf3{$u3count}{"orf"}=substr($reversecomp,$len-$uorfStart,((length $segments[$i])-$pos)*3+3);
+						$uorf3{$u3count}{"orf"}=&translate(substr($reversecomp,$len-$uorfStart,((length $segments[$i])-$pos)*3));
+					}
+				}
 			}
-		}
-		if ((length $orf)>=$minAA){#if no stop codon found in the last one, treat it as an ORF (if found, the value held in $orf will be only the start codon
-			$orf = substr($orf,0,(length $orf)-1);
-			$orfCount++;
-			$orfs{$orfCount}{"frame"}=$frame;
-			$orfs{$orfCount}{"orf"}=$orf;
-			$orfs{$orfCount}{"start"}=$orfStart;
-			my $orfStop;
-			$orfStop = $orfStart+((length $orf)*3-1)*$strand;
-			$orfs{$orfCount}{"stop"}=$orfStop;
-			push (@orfs,$orf); 
+#			#5'uorf for one stop codon multiple start codons need to be detected separately
+#			my $remaining = $segments[$i];
+#			while ($pos > -1){
+#				$remaining = substr($remaining, $pos);
+#			}
 		}
 	}
 
+#	foreach my $index(sort {$a<=>$b} keys %uorf5){
+#		print "uORFs $index\n";
+#		print "Frame: $uorf5{$index}{'frame'}\n";
+#		print "Sequence: $uorf5{$index}{'orf'} length: ".(length $uorf5{$index}{'orf'})."\n";
+#		print "Start: $uorf5{$index}{'start'}\n";
+#		print "Stop: $uorf5{$index}{'stop'}\n";
+#	}
+#	foreach my $index(sort {$a<=>$b} keys %uorf5){
+#		for(my $i=1;$i<=$orfCount;$i++){
+#			my $strand = 1;
+#			$strand = -1 if ($uorf5{$index}{'frame'}<0);
+#			next if (($orfs{$i}{'frame'}*$uorf5{$index}{'frame'})<0);
+#			next unless (($orfs{$i}{'start'}-$uorf5{$index}{'start'})*$strand>0);#uorf start must be less than orf start
+#			next unless (($orfs{$i}{'start'}-$uorf5{$index}{'stop'})*$strand<$distance5);#uorf stop must be within distance of orf start
+#			print "could be uorf for ORF${i}_$orfs{$i}{'frame'}_$orfs{$i}{'start'}_$orfs{$i}{'stop'}\n";#		}
+#		print "\n";
+#	}
+	if($orfCount==0){
+		push (@noORFtranscripts, $header);
+		return;
+	}
 	foreach my $index(sort {$a<=>$b} keys %orfs){
 #		print "ORF $index\n";
 #		print "Frame: $orfs{$index}{'frame'}\n";
@@ -173,7 +282,50 @@ sub doORF(){
 		}else{
 			$totalORF{$orfs{$index}{'orf'}} = "${header}_ORF${index}_Frame_$orfs{$index}{'frame'}_$orfs{$index}{'start'}-$orfs{$index}{'stop'}";
 		}
-		
+		if($need5uorf){
+			my $startIndex = 1;
+			my $endIndex = $u5orfNegaMaxIndex;
+			my $strand = -1;
+			if($orfs{$index}{'frame'}>0){
+				$startIndex = $u5orfNegaMaxIndex + 1;
+				$endIndex = $u5count;
+				$strand = 1;
+			}
+			for (my $i=$startIndex;$i<=$endIndex;$i++){
+				next unless (($orfs{$index}{'start'}-$uorf5{$i}{'start'})*$strand>0);#uorf start must be less than orf start
+				next unless (($orfs{$index}{'start'}-$uorf5{$i}{'stop'})*$strand<$distance5);#uorf stop must be within distance of orf start
+				my $u5orfHeader = "${header}_u5orf${i}_($uorf5{$i}{'frame'}_$uorf5{$i}{'start'}_$uorf5{$i}{'stop'})_for_ORF${index}_($orfs{$index}{'frame'}_$orfs{$index}{'start'}_$orfs{$index}{'stop'})";
+#				print ">$u5orfHeader\n$uorf5{$i}{'orf'}\n";
+				if(exists $total5uorf{$uorf5{$i}{'orf'}}){
+					$total5uorf{$uorf5{$i}{'orf'}} .= ",$u5orfHeader";
+				}else{
+					$total5uorf{$uorf5{$i}{'orf'}} = "$u5orfHeader";
+				}
+			}
+		}
+		if($need3uorf){
+			my $startIndex = 1;
+			my $endIndex = $u3orfNegaMaxIndex;
+			my $strand = -1;
+			if($orfs{$index}{'frame'}>0){
+				$startIndex = $u3orfNegaMaxIndex + 1;
+				$endIndex = $u3count;
+				$strand = 1;
+			}
+			for (my $i=$startIndex;$i<=$endIndex;$i++){
+				next unless (($orfs{$index}{'frame'}*$uorf3{$i}{'frame'})>0 && ($orfs{$index}{'frame'}!=$uorf3{$i}{'frame'}));#must be the same direction (
+				next unless (($orfs{$index}{'stop'}-$uorf3{$i}{'stop'})*$strand<0);
+				next unless (($orfs{$index}{'start'}-$uorf3{$i}{'start'})*$strand<0);
+				next unless (($orfs{$index}{'stop'}-$uorf3{$i}{'start'})*$strand>0);
+				my $u3orfHeader = "${header}_u3orf${i}_($uorf3{$i}{'frame'}_$uorf3{$i}{'start'}_$uorf3{$i}{'stop'})_for_ORF${index}_($orfs{$index}{'frame'}_$orfs{$index}{'start'}_$orfs{$index}{'stop'})";
+#				print "$u3orfHeader\n";
+				if(exists $total3uorf{$uorf3{$i}{'orf'}}){
+					$total3uorf{$uorf3{$i}{'orf'}} .= ",$u3orfHeader";
+				}else{
+					$total3uorf{$uorf3{$i}{'orf'}} = "$u3orfHeader";
+				}
+			}
+		}
 	}
 }
 
@@ -184,4 +336,10 @@ sub usage(){
 	print "-minMain: the minimum length of the main ORF, the default value is 200bps\n";
 	print "-start: the start codon used to search for ORFs, the default value is M (methionine, corresponding to codon ATG)\n";
 	print "-stop: the stop codon used to search for ORFs, the default value is $STOP (corresponding to codons TAA, TAG and TGA)\n";
+	print "-uorf5output: the file name of the list of 5' uORFs, this also indicates that 5 uORFs is required\n";
+	print "-max5: the maximum length of 5' uORFs, only works when -uorf5output is set\n";
+	print "-min5: the minimum length of 5' uORFs, only works when -uorf5output is set\n";
+	print "-distance5: the maximum distance between the end position of 5' uORF and the start position of its corresponding main ORF, only works when -uorf5output is set. When this value is set to 0, means that uORF must overlap with the main ORF\n";
+	print "-uorf3output: the file name of the list of 3' uORFs, this also indicates that 3 uORFs is required\n";
+	print "-min3: the minimum length of 3' uORFs, only works when -uorf3output is set\n";
 }

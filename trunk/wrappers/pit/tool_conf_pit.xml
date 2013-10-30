@@ -1,1 +1,3 @@
     <tool file="gio/pit/orfall.xml" />
+    <tool file="gio/pit/proteinSummary.xml" />
+    <tool file="gio/pit/pit.xml" />
