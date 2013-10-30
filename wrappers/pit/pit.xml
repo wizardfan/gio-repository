@@ -1,0 +1,36 @@
+<tool id="PIT:pit" name="PIT:PIT" force_history_refresh="True">
+    <description>The tool links sam file from GMAP to the peptide identification file with the defined regular expression</description>
+<!--    <command interpreter="perl">$__root_dir__/tools/proteomics/show.pl $config $output</command>-->
+    <command interpreter="perl">$__root_dir__/../gio_applications/pit/pitGalaxy.pl $sam $peptide $pattern $maxFold $output /$__new_file_path__/primary_${output.id}_samWithPeptides_visible_sam /$__new_file_path__/primary_${output.id}_longestORFs_visible_fasta
+    </command>
+    <configfiles>
+	<configfile name="config">
+$__root_dir__/../gio_applications/pit/pitGalaxy.pl $sam $peptide $pattern $maxFold $output /$__new_file_path__/primary_${output.id}_samWithPeptides_visible_sam /$__new_file_path__/primary_${output.id}_longestORFs_visible_fasta	
+	</configfile>
+    </configfiles>
+    <inputs>
+	<param  format="sam" name="sam" type="data" label="Input sam file"/>
+	<param  format="tsv" name="peptide" type="data" label="Input peptide file"/>
+	<param name="pattern" type="select" label="Regular expression ">
+            <option value="comp\d+_c\d+_seq\d+">For Trinity</option>
+<!--        </param>
+        <param name = "pattern" size="50" value="^(comp&#92;d{1,5}_c\d+_seq&#92;d+)$" type="text" label="The maximum fold change to be capped">-->
+	    <sanitizer>
+		<valid initial="string.printable">
+		    <remove value="\"/>
+		    <remove value="("/>
+		    <remove value=")"/>
+		</valid>
+		<mapping initial="none">
+		    <add source="\" target="\\"/>
+		    <add source="(" target="\("/>
+		    <add source=")" target="\)"/>
+		</mapping>
+	    </sanitizer>	
+	</param>
+        <param name = "maxFold" size="3" value="2" type="integer" label="The maximum fold change to be capped"/>
+    </inputs>
+    <outputs>
+        <data format="txt" name="output"/>
+    </outputs>
+</tool>
