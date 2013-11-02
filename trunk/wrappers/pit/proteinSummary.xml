@@ -1,4 +1,4 @@
-<tool id="PIT:proteinSummary" name="PIT:Protein Summary" force_history_refresh="True">
+<tool id="PIT:proteinSummary" name="PIT:Protein Summary" force_history_refresh="True" version="1.0.0">
     <description>The tool summaries the characteristics of protein sequence files</description>
     <command interpreter="perl">$__root_dir__/../gio_applications/pit/proteinSummaryGalaxy.pl 
 	#for $i, $s in enumerate( $fastas )
