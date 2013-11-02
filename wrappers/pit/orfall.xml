@@ -1,4 +1,4 @@
-<tool id="PIT:ORFall" name="PIT:ORFall" force_history_refresh="True">
+<tool id="PIT:ORFall" name="PIT:ORFall" force_history_refresh="True" version="1.0.0">
     <description>The ORF prediction tool</description>
 <!--  <command interpreter="perl">print.pl $output $output.id $__new_file_path__</command>-->
     <command interpreter="perl">$__root_dir__/../gio_applications/pit/orfall.pl $input $output -minMain $minMain -start $start -stop $stop

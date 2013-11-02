@@ -1,4 +1,4 @@
-<tool id="PIT:pit" name="PIT:PIT" force_history_refresh="True">
+<tool id="PIT:pit" name="PIT:PIT" force_history_refresh="True" version="1.0.0">
     <description>The tool links sam file from GMAP to the peptide identification file with the defined regular expression</description>
 <!--    <command interpreter="perl">$__root_dir__/tools/proteomics/show.pl $config $output</command>-->
     <command interpreter="perl">$__root_dir__/../gio_applications/pit/pitGalaxy.pl $sam $peptide $pattern $maxFold $output /$__new_file_path__/primary_${output.id}_samWithPeptides_visible_sam /$__new_file_path__/primary_${output.id}_longestORFs_visible_fasta
