@@ -1,0 +1,4 @@
+
+    <label text="General Proteomics" id="proteomics"/>
+	<tool file="gio/proteomics/msgfplus/msgfplus.xml" />
+	<tool file="gio/proteomics/xtracker/emPAI.xml" />
