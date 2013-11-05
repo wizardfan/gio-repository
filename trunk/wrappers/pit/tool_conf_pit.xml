@@ -2,4 +2,5 @@
     <label text="PIT" id="pit"/>
 	<tool file="gio/pit/orfall.xml" />
 	<tool file="gio/pit/proteinSummary.xml" />
+	<tool file="gio/pit/extractPeptides.xml" />
 	<tool file="gio/pit/pit.xml" />
