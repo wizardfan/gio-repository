@@ -1,0 +1,48 @@
+<tool id="extract_peptide" name="Extract peptides" version="0.2.0">
+    <description>Extract peptide information from various files for PIT analysis</description>
+<!--    <command interpreter="perl">show.pl $config $output</command>-->
+    <command> 
+	#if $type_selection.type=="maxquant":
+java -jar $__root_dir__/../gio_applications/pit/extractPeptide.jar $type_selection.input $output $type_selection.type $type_selection.peptide $type_selection.protein $type_selection.reverse $type_selection.contaminant $type_selection.score $type_selection.quant	$type_selection.option
+	#else
+java -jar $__root_dir__/../gio_applications/pit/extractPeptide.jar $type_selection.input $output $type_selection.type
+	#end if
+    </command>
+    <inputs>
+	<conditional name="type_selection">
+	    <param name="type" type="select" label="Input file type">
+		<option value="maxquant" selected="True">MaxQuant</option>
+        	<option value="mzid">mzIdentML</option>
+        	<option value="mzq">mzQuantML</option>
+      	    </param>
+     	    <when value="mzid">
+		<param format="mzid" name="input" type="data" label="The mzIdentML file"/>
+     	    </when>
+     	    <when value="mzq">
+		<param format="mzq" name="input" type="data" label="The mzQuantML file"/>
+     	    </when>
+     	    <when value="maxquant">
+		<param format="tabular" name="input" type="data" label="The MaxQuant result file"/>
+          	<param name = "peptide" size="3" value="8" type="integer" label="Peptide column" help="The column contains peptide sequence"/>
+          	<param name = "protein" size="3" value="33" type="integer" label="Protein column" help="The column contains identified proteins"/>
+          	<param name = "reverse" size="3" value="58" type="integer" label="Reverse column" help="The reverse column"/>
+          	<param name = "contaminant" size="3" value="59" type="integer" label="Contaminant column" help="The contaminant column"/>
+          	<param name = "score" size="3" value="41" type="integer" label="Score column" help="The column contains the value representing how reliable the identification is, e.g. Mascot score, pvalue FDRscore etc."/>
+          	<param name = "quant" size="3" value="43" type="integer" label="Quantitation column" help="The column will be used as main quantitation. Other quantitation columns can also be included as optional columns"/>
+         	<param name = "option"  size="100" value="" type="text" label="Optional columns" help="The optional column to be included in the result file, in the form of a string of integers separated by space, e.g. &quot;47 51&quot;"/>
+	    </when>
+       </conditional>
+    </inputs>
+    <configfiles>
+        <configfile name="config">
+	#if $type_selection.type=="maxquant":
+java -jar $__root_dir__/../gio_applications/pit/extractPeptide.jar $type_selection.input $output $type_selection.type $type_selection.peptide $type_selection.protein $type_selection.reverse $type_selection.contaminant $type_selection.score $type_selection.quant	$type_selection.option
+	#else
+java -jar $__root_dir__/../gio_applications/pit/extractPeptide.jar $type_selection.input $output $type_selection.type
+	#end if
+	</configfile>
+    </configfiles>
+    <outputs>
+    	<data format="txt" name="output"/>
+    </outputs>
+</tool>
