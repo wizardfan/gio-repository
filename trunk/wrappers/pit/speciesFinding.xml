@@ -1,0 +1,24 @@
+<tool id="gio_species_finding" name="Species Finding" version="1.0.0">
+    <description>Use BLAST to determine which species the protein sequences come from</description>
+        <command interpreter="perl">$__root_dir__/../gio_applications/pit/speciesFinding.pl $input $threshold $output	#for $i, $s in enumerate($dbs)
+		 ${s.species}
+	#end for
+ 2> null
+	</command>
+    <inputs>
+	<param format="fasta" name="input" type="data" label="The protein sequence file"/>
+        <param name = "threshold" size="3" value="60" type="integer" label="The threshold" help="The cutoff value for the percentage of identity above which will be treated as a hit"/>
+        <repeat name="dbs" title="BLAST databases" min="0">
+	    <param name="species" type="select" format="text" >
+	    	<label>Database</label>
+	    	<options from_file="protein_blastdb.loc">
+		    <column name="name" index="1" />
+		    <column name="value" index="0" />
+	    	</options>
+	    </param>
+        </repeat>
+    </inputs>
+    <outputs>
+	<data name="output" format="tabular" label="#echo os.path.splitext (str ($input.name))[0]#-speciesFinding.tsv"/>
+    </outputs>
+</tool>
