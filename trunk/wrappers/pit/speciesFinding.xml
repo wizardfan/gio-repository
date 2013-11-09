@@ -11,7 +11,7 @@
         <repeat name="dbs" title="BLAST databases" min="0">
 	    <param name="species" type="select" format="text" >
 	    	<label>Database</label>
-	    	<options from_file="protein_blastdb.loc">
+	    	<options from_file="gio_protein_blastdb.loc">
 		    <column name="name" index="1" />
 		    <column name="value" index="0" />
 	    	</options>
