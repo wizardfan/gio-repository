@@ -1,7 +1,7 @@
 <tool id="PIT:pit" name="PIT:PIT" force_history_refresh="True" version="1.0.0">
     <description>The tool links sam file from GMAP to the peptide identification file with the defined regular expression</description>
 <!--    <command interpreter="perl">$__root_dir__/tools/proteomics/show.pl $config $output</command>-->
-    <command interpreter="perl">$__root_dir__/../gio_applications/pit/pitGalaxy.pl $sam $peptide $pattern $maxFold $output /$__new_file_path__/primary_${output.id}_samWithPeptides_visible_sam /$__new_file_path__/primary_${output.id}_longestORFs_visible_fasta
+    <command interpreter="perl">$__root_dir__/../gio_applications/pit/pitGalaxy.pl $sam $peptide $pattern $maxFold $outputGff $outputSam $outputFasta
     </command>
     <inputs>
 	<param  format="sam" name="sam" type="data" label="Input sam file"/>
@@ -26,6 +26,8 @@
         <param name = "maxFold" size="3" value="2" type="integer" label="The maximum fold change to be capped"/>
     </inputs>
     <outputs>
-        <data format="gff3" name="output"/>
+        <data format="gff3" name="outputGff"/>
+        <data format="fasta" name="outputFasta"/>
+        <data format="sam" name="outputSam"/>
     </outputs>
 </tool>
