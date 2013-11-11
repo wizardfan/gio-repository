@@ -3,7 +3,7 @@
         <command interpreter="perl">$__root_dir__/../gio_applications/pit/speciesFinding.pl $input $threshold $output	#for $i, $s in enumerate($dbs)
 		 ${s.species}
 	#end for
- 2> null
+ 2> /dev/null
 	</command>
     <inputs>
 	<param format="fasta" name="input" type="data" label="The protein sequence file"/>
