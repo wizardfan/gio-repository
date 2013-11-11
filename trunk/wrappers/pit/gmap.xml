@@ -1,20 +1,17 @@
 <tool id="gio_gmap" name="GMAP" version="1.0.0">
     <description>align the reads to reference genome</description>
-        <command>$__root_dir__/../gio_applications/pit/gmap -d $species -f samse $input > $output 2> null</command>
+        <command>$__root_dir__/../gio_applications/pit/gmap -D $__root_dir__/tool-data/data -d $species -f samse $input > $output 2> /dev/null</command>
     <inputs>
 	<param format="fasta" name="input" type="data" label="The reads"/>
-<!--	<param name="species" type="select" format="text" >
+	<param name="species" type="select" format="text" >
 	    <label>Database</label>
-	    <options from_file="gmap.loc">
+	    <options from_file="gio_gmap.loc">
 		<column name="name" index="1" />
-		<column name="value" index="2" />
+		<column name="value" index="0" />
 	    </options>
-	</param>-->
-	<param name="species" type="select" label="Species" >
-	    <option value="hg19">Human</option>
 	</param>
     </inputs>
     <outputs>
-	<data name="output" format="sam" label="#echo os.path.splitext (str ($input.name))[0]#-GMAP.sam"/>
+		<data name="output" format="sam" label="#echo os.path.splitext (str ($input.name))[0]#-GMAP.sam"/>
     </outputs>
 </tool>
