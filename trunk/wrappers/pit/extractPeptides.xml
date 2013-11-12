@@ -1,6 +1,5 @@
 <tool id="extract_peptide" name="Extract peptides" version="0.2.0">
     <description>Extract peptide information from various files for PIT analysis</description>
-<!--    <command interpreter="perl">show.pl $config $output</command>-->
     <command> 
 	#if $type_selection.type=="maxquant":
 java -jar $__root_dir__/../gio_applications/pit/extractPeptide.jar $type_selection.input $output $type_selection.type $type_selection.peptide $type_selection.protein $type_selection.reverse $type_selection.contaminant $type_selection.score $type_selection.quant	$type_selection.option
@@ -33,16 +32,7 @@ java -jar $__root_dir__/../gio_applications/pit/extractPeptide.jar $type_selecti
 	    </when>
        </conditional>
     </inputs>
-    <configfiles>
-        <configfile name="config">
-	#if $type_selection.type=="maxquant":
-java -jar $__root_dir__/../gio_applications/pit/extractPeptide.jar $type_selection.input $output $type_selection.type $type_selection.peptide $type_selection.protein $type_selection.reverse $type_selection.contaminant $type_selection.score $type_selection.quant	$type_selection.option
-	#else
-java -jar $__root_dir__/../gio_applications/pit/extractPeptide.jar $type_selection.input $output $type_selection.type
-	#end if
-	</configfile>
-    </configfiles>
     <outputs>
-    	<data format="txt" name="output"/>
+    	<data format="tabular" name="output"/>
     </outputs>
 </tool>
