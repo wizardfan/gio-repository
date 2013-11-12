@@ -13,7 +13,7 @@
         </repeat>
     </inputs>
     <outputs>
-<!--	<data name="output" format="txt" label="#echo os.path.splitext (str ($input.name))[0]#-summary.txt"/>-->
-	<data name="output" format="txt"/>
+<!--	<data name="output" format="tabular" label="#echo os.path.splitext (str ($input.name))[0]#-summary.txt"/>-->
+	<data name="output" format="tabular"/>
     </outputs>
 </tool>

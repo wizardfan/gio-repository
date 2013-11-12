@@ -5,7 +5,7 @@
     </command>
     <inputs>
 	<param  format="sam" name="sam" type="data" label="Input sam file"/>
-	<param  format="tsv" name="peptide" type="data" label="Input peptide file"/>
+	<param  format="tabular" name="peptide" type="data" label="Input peptide file"/>
 	<param name="pattern" type="select" label="Regular expression ">
             <option value="comp\d+_c\d+_seq\d+">For Trinity</option>
 <!--        </param>
