@@ -70,10 +70,10 @@ public class GenerateDocument {
             Document doc = docBuilder.parse(filename);
             Node root = doc.getFirstChild();
             
-            value.append("*Name:*");
+            value.append("*Name:* ");
             value.append(getAttributeText(root, "name"));
             
-            value.append("\n*Description:*\n");
+            value.append("<br>\n*Description:*<br>\n");
             value.append(getElementContent(doc,"description"));
             
             NodeList inputs = doc.getElementsByTagName("inputs").item(0).getChildNodes();
@@ -90,7 +90,7 @@ public class GenerateDocument {
 //                            inputSb.append("Input file ");
 //                            inputSb.append(inputCount);
 //                            inputSb.append(": ");
-                            inputSb.append("  # ");
+                            inputSb.append("  * ");
                             inputSb.append(getAttributeText(node, "name"));
                             inputSb.append(" ");
                             inputSb.append(getAttributeText(node,"label"));
@@ -99,7 +99,7 @@ public class GenerateDocument {
                             inputSb.append("\n");
                         }else{
 //                            paramSb.append("Paramter: ");
-                            paramSb.append("  # ");
+                            paramSb.append("  * ");
                             paramSb.append(getAttributeText(node, "name"));
                             paramSb.append(" ");
                             paramSb.append(getAttributeText(node, "label"));
@@ -108,18 +108,18 @@ public class GenerateDocument {
                             paramSb.append("\n");
                         }
                     }else if(node.getNodeName().equals("repeat")){
-                        paramSb.append("  # Repeat element ");
+                        paramSb.append("  * Repeat element ");
                         paramSb.append(node.getAttributes().getNamedItem("title").getTextContent());
                         paramSb.append("\n");
                     }
                 }
             }
-            value.append("\n*Input files:*\n");
+            value.append("<br>\n*Input files:*\n");
             value.append(inputSb.toString());
-            value.append("*Parameters:*\n");
+            value.append("<br>*Parameters:*<br>\n");
             value.append(paramSb.toString());
             
-            value.append("*Outputs:*\n");
+            value.append("<br>*Outputs:*<br>\n");
             NodeList outputs = doc.getElementsByTagName("outputs").item(0).getChildNodes();
 //            int count = 0;
             for (int i = 0; i < outputs.getLength(); i++) {
@@ -130,7 +130,7 @@ public class GenerateDocument {
 //                    sb.append("Output file ");
 //                    sb.append(count);
 //                    sb.append(": Name ");
-                    sb.append("  # ");
+                    sb.append("  * ");
                     sb.append(getAttributeText(node, "name"));
                     sb.append(" with Type ");
                     sb.append(getAttributeText(node,"format"));
@@ -139,9 +139,9 @@ public class GenerateDocument {
                 }
             }
             
-            value.append("*Details:*\n");
+            value.append("<br>*Details:*<br>\n");
             value.append(getElementContent(doc,"help"));
-            value.append("\n");
+            value.append("<br>\n");
         } catch (Exception e) {
             e.printStackTrace();
         }

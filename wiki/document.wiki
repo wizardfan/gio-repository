@@ -1,115 +1,115 @@
 ==Section inclusion==
-*Name:*Digest
-*Description:*
-Theoretically digest all protein seqeunce from a fasta file by trypsin
+*Name:* Digest<br>
+*Description:*<br>
+Theoretically digest all protein seqeunce from a fasta file by trypsin<br>
 *Input files:*
-  # input Input file 
-*Parameters:*
-  # minLength the minimum length for the digested peptides to be included in the result file 
-  # maxLength the maximum length for the digested peptides to be included in the result file 
-  # unique Only keeps proteotypic peptides? 
-*Outputs:*
-  # output with Type fasta
-*Details:*
-
-*Name:*Peptide MW and hydro
-*Description:*
-Calculate the molecular weight and hydrophobicity for peptides within a fasta file
+  * input Input file 
+<br>*Parameters:*<br>
+  * minLength the minimum length for the digested peptides to be included in the result file 
+  * maxLength the maximum length for the digested peptides to be included in the result file 
+  * unique Only keeps proteotypic peptides? 
+<br>*Outputs:*<br>
+  * output with Type fasta
+<br>*Details:*<br>
+<br>
+*Name:* Peptide MW and hydro<br>
+*Description:*<br>
+Calculate the molecular weight and hydrophobicity for peptides within a fasta file<br>
 *Input files:*
-  # input Input file 
-*Parameters:*
-*Outputs:*
-  # output with Type tabular
-*Details:*
-
+  * input Input file 
+<br>*Parameters:*<br>
+<br>*Outputs:*<br>
+  * output with Type tabular
+<br>*Details:*<br>
+<br>
 ==Section pit==
-*Name:*Extract peptides
-*Description:*
-Extract peptide information from various files for PIT analysis
+*Name:* Extract peptides<br>
+*Description:*<br>
+Extract peptide information from various files for PIT analysis<br>
 *Input files:*
-*Parameters:*
-*Outputs:*
-  # output with Type tabular
-*Details:*
-
-*Name:*GMAP
-*Description:*
-align the reads to reference genome
+<br>*Parameters:*<br>
+<br>*Outputs:*<br>
+  * output with Type tabular
+<br>*Details:*<br>
+<br>
+*Name:* GMAP<br>
+*Description:*<br>
+align the reads to reference genome<br>
 *Input files:*
-  # input The reads 
-*Parameters:*
-  # species  
-*Outputs:*
-  # output with Type sam
-*Details:*
-
-*Name:*PIT:ORFall
-*Description:*
-The ORF prediction tool
+  * input The reads 
+<br>*Parameters:*<br>
+  * species  
+<br>*Outputs:*<br>
+  * output with Type sam
+<br>*Details:*<br>
+<br>
+*Name:* PIT:ORFall<br>
+*Description:*<br>
+The ORF prediction tool<br>
 *Input files:*
-  # input Input file 
-*Parameters:*
-  # minMain the minimum length for the main ORFs in bps 
-  # start Start type:  
-  # stop Stop type:  
-*Outputs:*
-  # output with Type fasta
-*Details:*
-
-*Name:*PIT:PIT
-*Description:*
-The tool links sam file from GMAP to the peptide identification file with the defined regular expression
+  * input Input file 
+<br>*Parameters:*<br>
+  * minMain the minimum length for the main ORFs in bps 
+  * start Start type:  
+  * stop Stop type:  
+<br>*Outputs:*<br>
+  * output with Type fasta
+<br>*Details:*<br>
+<br>
+*Name:* PIT:PIT<br>
+*Description:*<br>
+The tool links sam file from GMAP to the peptide identification file with the defined regular expression<br>
 *Input files:*
-  # sam Input sam file 
-  # peptide Input peptide file 
-*Parameters:*
-  # pattern Regular expression  
-  # maxFold The maximum fold change to be capped 
-*Outputs:*
-  # outputGff with Type gff3
-  # outputFasta with Type fasta
-  # outputSam with Type sam
-*Details:*
-
-*Name:*PIT:Protein Summary
-*Description:*
-The tool summaries the characteristics of protein sequence files
+  * sam Input sam file 
+  * peptide Input peptide file 
+<br>*Parameters:*<br>
+  * pattern Regular expression  
+  * maxFold The maximum fold change to be capped 
+<br>*Outputs:*<br>
+  * outputGff with Type gff3
+  * outputFasta with Type fasta
+  * outputSam with Type sam
+<br>*Details:*<br>
+<br>
+*Name:* PIT:Protein Summary<br>
+*Description:*<br>
+The tool summaries the characteristics of protein sequence files<br>
 *Input files:*
-*Parameters:*
-  # Repeat element protein sequence files
-*Outputs:*
-  # output with Type tabular
-*Details:*
-
-*Name:*Species Finding
-*Description:*
-Use BLAST to determine which species the protein sequences come from
+<br>*Parameters:*<br>
+  * Repeat element protein sequence files
+<br>*Outputs:*<br>
+  * output with Type tabular
+<br>*Details:*<br>
+<br>
+*Name:* Species Finding<br>
+*Description:*<br>
+Use BLAST to determine which species the protein sequences come from<br>
 *Input files:*
-  # input The protein sequence file 
-*Parameters:*
-  # threshold The threshold The cutoff value for the percentage of identity above which will be treated as a hit
-  # Repeat element BLAST databases
-*Outputs:*
-  # output with Type tabular
-*Details:*
-
+  * input The protein sequence file 
+<br>*Parameters:*<br>
+  * threshold The threshold The cutoff value for the percentage of identity above which will be treated as a hit
+  * Repeat element BLAST databases
+<br>*Outputs:*<br>
+  * output with Type tabular
+<br>*Details:*<br>
+<br>
 ==Section proteomics==
-*Name:*MSGF+ MSMS Search
-*Description:*
-Run an MSGF+ Search
+*Name:* MSGF+ MSMS Search<br>
+*Description:*<br>
+Run an MSGF+ Search<br>
 *Input files:*
-*Parameters:*
-  # fixed_mods Fixed Modifications 
-  # variable_mods Variable Modifications 
-  # decoy  
-  # enzyme  
-  # protocol  
-  # instrument  
-  # precursor_ion_tol Precursor ion tolerance Precursor Ion Tolerance (Da or ppm)
-  # precursor_tolu  
-*Outputs:*
-  # output with Type mzid
-*Details:*
+<br>*Parameters:*<br>
+  * fixed_mods Fixed Modifications 
+  * variable_mods Variable Modifications 
+  * decoy  
+  * enzyme  
+  * protocol  
+  * instrument  
+  * precursor_ion_tol Precursor ion tolerance Precursor Ion Tolerance (Da or ppm)
+  * precursor_tolu  
+<br>*Outputs:*<br>
+  * output with Type mzid
+<br>*Details:*<br>
 
 **What it does**
 
@@ -120,62 +120,62 @@ Runs an MS/MS database search using the MSGFPlus search engine.
 **References**
 
 Please see http://proteomics.ucsd.edu/Software/MSGFPlus.html for details of the MSGFPlus search engine and references describing its algorithm
-    
-*Name:*emPAI analysis in X-Tracker
-*Description:*
-Execute emPAI quantitation method within X-Tracker
+    <br>
+*Name:* emPAI analysis in X-Tracker<br>
+*Description:*<br>
+Execute emPAI quantitation method within X-Tracker<br>
 *Input files:*
-*Parameters:*
-  # minimum the minimum molecular weight to be observed 
-  # maximum the maximum molecular weight to be observed 
-  # Repeat element protein database
-*Outputs:*
-  # output with Type mzq
-*Details:*
-
+<br>*Parameters:*<br>
+  * minimum the minimum molecular weight to be observed 
+  * maximum the maximum molecular weight to be observed 
+  * Repeat element protein database
+<br>*Outputs:*<br>
+  * output with Type mzq
+<br>*Details:*<br>
+<br>
 ==Section standard==
-*Name:*mzIdLib:Converter
-*Description:*
-Using mzIdentML-Lib to convert mzIdentML to CSV format.
+*Name:* mzIdLib:Converter<br>
+*Description:*<br>
+Using mzIdentML-Lib to convert mzIdentML to CSV format.<br>
 *Input files:*
-  # input Input file 
-*Parameters:*
-  # exportType  
-*Outputs:*
-  # output with Type csv
-*Details:*
+  * input Input file 
+<br>*Parameters:*<br>
+  * exportType  
+<br>*Outputs:*<br>
+  * output with Type csv
+<br>*Details:*<br>
 
 	Using mzidLib (https://code.google.com/p/mzidentml-lib/) to convert the PSI standard mzIdentML format into a more common CSV format for further processing
-    
-*Name:*mzIdLib:PostProcessing
-*Description:*
-Using mzIdentML-Lib to do some post processing including FDR calculation etc.
+    <br>
+*Name:* mzIdLib:PostProcessing<br>
+*Description:*<br>
+Using mzIdentML-Lib to do some post processing including FDR calculation etc.<br>
 *Input files:*
-  # input Input file 
-*Parameters:*
-*Outputs:*
-  # output with Type mzid
-*Details:*
+  * input Input file 
+<br>*Parameters:*<br>
+<br>*Outputs:*<br>
+  * output with Type mzid
+<br>*Details:*<br>
 
 	Using mzidLib (https://code.google.com/p/mzidentml-lib/) to do the post processing. This wrapper is highly recommended for MS/MS search engines which only produce peptide identification, e.g. MSGF+.
-    
-*Name:*The converter for mzQuantML files
-*Description:*
-Convert the mzQuantML file into more widely-used formats, e.g. CSV
+    <br>
+*Name:* The converter for mzQuantML files<br>
+*Description:*<br>
+Convert the mzQuantML file into more widely-used formats, e.g. CSV<br>
 *Input files:*
-  # mzq the mzQuantML file The mzQuantML file to be converted
-*Parameters:*
-  # type the output file format The format to which the mzQuantML will be converted
-*Outputs:*
-  # output with Type csv
-*Details:*
-
-*Name:*Convert spectral file into mzML file
-*Description:*
-Convert non PSI standard mass spectral file into the PSI standard format mzML
+  * mzq the mzQuantML file The mzQuantML file to be converted
+<br>*Parameters:*<br>
+  * type the output file format The format to which the mzQuantML will be converted
+<br>*Outputs:*<br>
+  * output with Type csv
+<br>*Details:*<br>
+<br>
+*Name:* Convert spectral file into mzML file<br>
+*Description:*<br>
+Convert non PSI standard mass spectral file into the PSI standard format mzML<br>
 *Input files:*
-*Parameters:*
-*Outputs:*
-  # output with Type mzml
-*Details:*
-
+<br>*Parameters:*<br>
+<br>*Outputs:*<br>
+  * output with Type mzml
+<br>*Details:*<br>
+<br>
