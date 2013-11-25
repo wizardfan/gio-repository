@@ -92,7 +92,7 @@ public class GenerateDocument {
 //                            inputSb.append(": ");
                             inputSb.append("  * ");
                             inputSb.append(getAttributeText(node, "name"));
-                            inputSb.append(" ");
+                            inputSb.append("   ");
                             inputSb.append(getAttributeText(node,"label"));
                             inputSb.append(" ");
                             inputSb.append(getAttributeText(node,"help"));
@@ -101,7 +101,7 @@ public class GenerateDocument {
 //                            paramSb.append("Paramter: ");
                             paramSb.append("  * ");
                             paramSb.append(getAttributeText(node, "name"));
-                            paramSb.append(" ");
+                            paramSb.append("   ");
                             paramSb.append(getAttributeText(node, "label"));
                             paramSb.append(" ");
                             paramSb.append(getAttributeText(node, "help"));
@@ -116,10 +116,10 @@ public class GenerateDocument {
             }
             value.append("<br>\n*Input files:*\n");
             value.append(inputSb.toString());
-            value.append("<br>*Parameters:*<br>\n");
+            value.append("*Parameters:*<br>\n");
             value.append(paramSb.toString());
             
-            value.append("<br>*Outputs:*<br>\n");
+            value.append("*Outputs:*<br>\n");
             NodeList outputs = doc.getElementsByTagName("outputs").item(0).getChildNodes();
 //            int count = 0;
             for (int i = 0; i < outputs.getLength(); i++) {
@@ -139,7 +139,7 @@ public class GenerateDocument {
                 }
             }
             
-            value.append("<br>*Details:*<br>\n");
+            value.append("*Details:*<br>\n");
             value.append(getElementContent(doc,"help"));
             value.append("<br>\n");
         } catch (Exception e) {
