@@ -1,6 +1,5 @@
-<tool id="PIT:pit" name="PIT:PIT" force_history_refresh="True" version="1.0.0">
+<tool id="PIT:pit" name="PIT:Integrate" force_history_refresh="True" version="1.0.0">
     <description>The tool links sam file from GMAP to the peptide identification file with the defined regular expression</description>
-<!--    <command interpreter="perl">$__root_dir__/tools/proteomics/show.pl $config $output</command>-->
     <command interpreter="perl">$__root_dir__/../gio_applications/pit/pitGalaxy.pl $sam $peptide $pattern $maxFold $outputGff $outputSam $outputFasta
     </command>
     <inputs>
@@ -8,8 +7,6 @@
 	<param  format="tabular" name="peptide" type="data" label="Input peptide file"/>
 	<param name="pattern" type="select" label="Regular expression ">
             <option value="comp\d+_c\d+_seq\d+">For Trinity</option>
-<!--        </param>
-        <param name = "pattern" size="50" value="^(comp&#92;d{1,5}_c\d+_seq&#92;d+)$" type="text" label="The maximum fold change to be capped">-->
 	    <sanitizer>
 		<valid initial="string.printable">
 		    <remove value="\"/>
@@ -30,4 +27,7 @@
         <data format="fasta" name="outputFasta"/>
         <data format="sam" name="outputSam"/>
     </outputs>
+	<help>
+	Proteomics Informed by Transcriptomics (PIT) provides the advantage over traditional proteomics methods (http://www.nature.com/nmeth/journal/v9/n12/abs/nmeth.2227.html). This tool is the core of PIT, which combines the proteomics and transcriptomics data by id mapping using the pre-defined regular expression. It generates three output files: the gff3 file, the SAM file which is the original SAM file from GMAP plus the annotation of proteomics data, and the longest ORF fasta files.
+	</help>
 </tool>

@@ -1,17 +1,19 @@
 <tool id="digest" name="Digest" force_history_refresh="True" version="1.0.0">
-    <description>Theoretically digest all protein seqeunce from a fasta file by trypsin</description>
-<!--  <command interpreter="perl">print.pl $output $output.id $__new_file_path__</command>-->
+    <description>Theoretically digest all protein sequences from a fasta file by trypsin</description>
     <command interpreter="perl">$__root_dir__/../gio_applications/inclusion/digestGalaxy.pl $input $output -minLength $minLength -maxLength $maxLength -unique $unique</command>
     <inputs>
-	<param  format="fasta" name="input" type="data" label="Input file"/>
+		<param  format="fasta" name="input" type="data" label="Input file"/>
         <param name = "minLength" size="6" value="4" type="integer" label="the minimum length for the digested peptides to be included in the result file"/>
         <param name = "maxLength" size="6" value="25" type="integer" label="the maximum length for the digested peptides to be included in the result file"/>
     	<param name="unique" type="select" label="Only keeps proteotypic peptides?">
-	    <option value="yes" selected = "true">Yes</option>
-	    <option value="no">No</option>
-	</param>
-   </inputs>
-   <outputs>
-    <data format="fasta" name="output" label="#echo os.path.splitext (str ($input.name))[0]#-digestedPeptides.fasta"/>
-   </outputs>
+		    <option value="yes" selected = "true">Yes</option>
+		    <option value="no">No</option>
+		</param>
+    </inputs>
+    <outputs>
+		<data format="fasta" name="output" label="#echo os.path.splitext (str ($input.name))[0]#-digestedPeptides.fasta"/>
+	</outputs>
+	<help>
+	     The theoretical digestion by trypsin is a common practice. The additional filters for peptide length and proteotypic peptides are useful for SRM (Selected Reaction Monitoring) to filter out the peptides won't be observed on a specific MS/MS instrument.
+	</help>
 </tool>

@@ -21,4 +21,7 @@
     <outputs>
 	<data name="output" format="tabular" label="#echo os.path.splitext (str ($input.name))[0]#-speciesFinding.tsv"/>
     </outputs>
+	<help>
+	This tool BLASTs each sequence in the fasta file against the list of selected species BLAST database(s) and determines whether the sequence comes from the species by comparing the identity percentage against the threshold. If no species is found from the given species list, the all-species BLAST database will be searched.
+	</help>
 </tool>
