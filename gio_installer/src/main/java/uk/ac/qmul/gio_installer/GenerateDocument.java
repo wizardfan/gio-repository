@@ -109,7 +109,23 @@ public class GenerateDocument {
                         }
                     }else if(node.getNodeName().equals("repeat")){
                         paramSb.append("  * Repeat element ");
-                        paramSb.append(node.getAttributes().getNamedItem("title").getTextContent());
+                        paramSb.append(getAttributeText(node, "title"));
+                        paramSb.append("\n");
+                    }else if(node.getNodeName().equals("conditional")){
+                        paramSb.append("  * Conditional element: ");
+                        paramSb.append(getAttributeText(node, "name"));
+                        paramSb.append("\n");
+                        NodeList conditions = node.getChildNodes();
+                        for (int j = 0; j < conditions.getLength(); j++) {
+                            Node condition = conditions.item(j);
+                            if (condition.getNodeType() == Node.ELEMENT_NODE){
+                                if(condition.getNodeName().equals("when")){
+                                    paramSb.append("    * ");
+                                    paramSb.append(getAttributeText(condition, "value"));
+                                    paramSb.append("\n");
+                                }
+                            }
+                        }
                         paramSb.append("\n");
                     }
                 }
@@ -132,16 +148,36 @@ public class GenerateDocument {
 //                    sb.append(": Name ");
                     sb.append("  * ");
                     sb.append(getAttributeText(node, "name"));
-                    sb.append(" with Type ");
-                    sb.append(getAttributeText(node,"format"));
+                    boolean singleFormat = true;
+                    NodeList changeFormats = node.getChildNodes();
+                    for (int j = 0; j < changeFormats.getLength(); j++) {
+                        Node tmp = changeFormats.item(j);
+                        if(tmp.getNodeType() == Node.ELEMENT_NODE && tmp.getNodeName().equals("change_format")){
+                            singleFormat = false;
+                            sb.append(" in the one of the listed formats: ");
+                            sb.append(getAttributeText(node, "format"));
+                            NodeList formats = tmp.getChildNodes();
+                            for (int k = 0; k < formats.getLength(); k++) {
+                                Node format = formats.item(k);
+                                if(format.getNodeType()==Node.ELEMENT_NODE && format.getNodeName().equals("when")){
+                                    sb.append(", ");
+                                    sb.append(getAttributeText(format, "value"));
+                                }
+                            }
+                        }
+                    }
+                    if(singleFormat){
+                        sb.append(" with Type ");
+                        sb.append(getAttributeText(node,"format"));
+                    }
                     value.append(sb.toString());
                     value.append("\n");
                 }
             }
             
-            value.append("*Details:*<br>\n");
+            value.append("*Details:*<br>");
             value.append(getElementContent(doc,"help"));
-            value.append("<br>\n");
+            value.append("<br>\n\n");
         } catch (Exception e) {
             e.printStackTrace();
         }

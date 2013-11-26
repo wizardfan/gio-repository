@@ -9,11 +9,14 @@
     <inputs>
         <repeat name="fastas" title="protein sequence files" min="1">
             <param name = "file" type="data" label="fasta file" help="The protein sequence file to be summaried" format="fasta"/>
-	    <param name = "display" size="30" type="text" value="Noname" label="Display name in the result file"/>
+            <param name = "display" size="30" type="text" value="Noname" label="Display name in the result file"/>
         </repeat>
     </inputs>
     <outputs>
 <!--	<data name="output" format="tabular" label="#echo os.path.splitext (str ($input.name))[0]#-summary.txt"/>-->
 	<data name="output" format="tabular"/>
     </outputs>
+	<help>
+	This tool summaries the characteristics of selected protein sequence files and output into a table with rows as characteristics and columns as different datasets.
+	</help>
 </tool>

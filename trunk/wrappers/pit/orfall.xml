@@ -1,6 +1,5 @@
 <tool id="PIT:ORFall" name="PIT:ORFall" force_history_refresh="True" version="1.0.0">
     <description>The ORF prediction tool</description>
-<!--  <command interpreter="perl">print.pl $output $output.id $__new_file_path__</command>-->
     <command interpreter="perl">$__root_dir__/../gio_applications/pit/orfall.pl $input $output -minMain $minMain -start $start -stop $stop
         #if $u5orf.needu5=="true":
 -min5 $u5orf.min5 -max5 $u5orf.max5 -distance5 $u5orf.distance5 -uorf5output /$__new_file_path__/primary_${output.id}_uORF5_visible_fasta
@@ -15,11 +14,11 @@
     	<param name="start" type="select" label="Start type: ">
 	    <option value="M" selected = "true">Start codon</option>
 	    <option value="-">Stop codon</option>
-	</param>
+        </param>
     	<param name="stop" type="select" label="Stop type: ">
 	    <option value="M">Start codon</option>
 	    <option value="-" selected = "true">Stop codon</option>
-	</param>
+	    </param>
 	<conditional name="u5orf">
             <param name="needu5" type="select" label="Want to detect 5' uORFs?">
                 <option value="true">Yes</option>
@@ -44,7 +43,10 @@
 	    <when value="false"/>
         </conditional>
     </inputs>
-  <outputs>
+    <outputs>
     <data format="fasta" name="output" label="#echo os.path.splitext (str ($input.name))[0]#-ORF.fasta"/>
-  </outputs>
+    </outputs>
+    <help>
+	This tool does the normal ORF prediction from the DNA sequences as well as detects the uORF which allows the user to do further analysis to see the effect uORFs bring to the protein expression level.
+	</help>
 </tool>

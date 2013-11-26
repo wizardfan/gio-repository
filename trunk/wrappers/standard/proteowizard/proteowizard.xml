@@ -4,22 +4,25 @@
     <inputs>
     	<conditional name="type">
       	    <param name="input_type" type="select" label="Input Type">
-        	<option value="mgf">mgf</option>
-        	<option value="mzxml">mzXML</option>
-        	<option value="ms2">ms2</option>
+                <option value="mgf">mgf</option>
+        	    <option value="mzxml">mzXML</option>
+        	    <option value="ms2">ms2</option>
             </param>
             <when value="mgf">
-		<param format="mgf" name="input" type="data" label="Input mgf"/>
+                <param format="mgf" name="input" type="data" label="Input mgf"/>
             </when>
             <when value="mzxml">
-		<param format="mzxml" name="input" type="data" label="Input mzXML"/>
+                <param format="mzxml" name="input" type="data" label="Input mzXML"/>
             </when>
             <when value="ms2">
-        	<param format="ms2" name="input" type="data" label="Input ms2"/>
+                <param format="ms2" name="input" type="data" label="Input ms2"/>
             </when>
-	</conditional>
+        </conditional>
     </inputs>
     <outputs>
 	<data name="output" format="mzml"/>
     </outputs>
+	<help>
+	Proteowizard (http://proteowizard.sourceforge.net/downloads.shtml) is a widely-used spectral file converter, which is used to convert non PSI standard spectral file into the PSI standard format mzML
+	</help>
 </tool>

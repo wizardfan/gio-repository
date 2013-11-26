@@ -19,6 +19,9 @@ public class Installer {
     private static String CURRENT_PATH = "";
 
     public static void main(String[] args) {
+//        GenerateDocument gd = new GenerateDocument("C:\\gio-repository\\trunk\\wrappers");
+//        gd.execute();
+//        System.exit(0);
         Properties properties = System.getProperties();
 //        System.out.println(properties);
 //        Enumeration<Object> names = properties.keys();
