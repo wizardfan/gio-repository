@@ -1,4 +1,4 @@
-<tool id="proteowizard" name="Convert spectral file into mzML file" version="1.0.0">
+<tool id="proteowizard" name="Convert spectral file" version="1.0.0">
     <description>Convert non PSI standard mass spectral file into the PSI standard format mzML</description>
         <command interpreter="perl">$__root_dir__/../gio_applications/proteowizard/proteowizard.pl $input $type.input_type $output $output.id $__new_file_path__</command>
     <inputs>

@@ -1,5 +1,5 @@
-<tool id="digest" name="Digest" force_history_refresh="True" version="1.0.0">
-    <description>Theoretically digest all protein sequences from a fasta file by trypsin</description>
+<tool id="digest" name="Digest" force_history_refresh="True" version="0.1.0">
+    <description>Theoretically digest all protein sequences from a FASTA file by trypsin</description>
     <command interpreter="perl">$__root_dir__/../gio_applications/inclusion/digestGalaxy.pl $input $output -minLength $minLength -maxLength $maxLength -unique $unique</command>
     <inputs>
 		<param  format="fasta" name="input" type="data" label="Input file"/>
@@ -14,6 +14,6 @@
 		<data format="fasta" name="output" label="#echo os.path.splitext (str ($input.name))[0]#-digestedPeptides.fasta"/>
 	</outputs>
 	<help>
-	     The theoretical digestion by trypsin is a common practice. The additional filters for peptide length and proteotypic peptides are useful for SRM (Selected Reaction Monitoring) to filter out the peptides won't be observed on a specific MS/MS instrument.
+	     This tool digests protein sequences passed to in FASTA format and outputs the results of this digest as individual entries in a new FASTA file where the entries are named &lt;protein&gt;-pep&lt;peptide_number&gt;.  The additional filters for peptide length and proteotypic peptides are useful for SRM (Selected Reaction Monitoring) to filter out the peptides won't be observed on a specific MS/MS instrument.
 	</help>
 </tool>
