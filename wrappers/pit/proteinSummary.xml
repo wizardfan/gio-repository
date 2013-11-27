@@ -1,5 +1,5 @@
 <tool id="PIT:proteinSummary" name="PIT:Protein Summary" force_history_refresh="True" version="1.0.0">
-    <description>The tool summaries the characteristics of protein sequence files</description>
+    <description>Provides a tabular summary of the characteristics of protein sequence files</description>
     <command interpreter="perl">$__root_dir__/../gio_applications/pit/proteinSummaryGalaxy.pl 
 	#for $i, $s in enumerate( $fastas )
 		${s.file.file_name} ${s.display}
@@ -17,6 +17,6 @@
 	<data name="output" format="tabular"/>
     </outputs>
 	<help>
-	This tool summaries the characteristics of selected protein sequence files and output into a table with rows as characteristics and columns as different datasets.
+	This tool summaries the characteristics of selected protein sequence files and output into a table with rows as characteristics and columns as different datasets. The characteristics include the total number of unique FASTA entries and amino acids, average length, lengths of the longest and shortest peptide, and N50 value (i.e. length of FASTA entry where 50% are longer and 50% are shorter).
 	</help>
 </tool>

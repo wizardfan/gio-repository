@@ -50,7 +50,7 @@
 		<data name="output" format="mzq"/>
 	</outputs>
 	<help>
-	X-Tracker is a PSI-standards-compliant software framework for supporting mass spectrometry-based protein quantitation. Through an abstraction of the main steps involved in quantitation, X-Tracker should technically be able to support quantitation by means of all the current protocols, both at MS1 and/or MS2 level, and provide a flexible, platform-independent quantitation environment. More details can be found at https://code.google.com/p/x-tracker/.
+	X-Tracker is a PSI-standards-compliant software framework for supporting mass spectrometry-based protein quantitation. Through an abstraction of the main steps involved in quantitation, X-Tracker should technically be able to support quantitation by means of all the current protocols, both at MS1 and/or MS2 level, and provide a flexible, platform-independent quantitation environment. More details can be found at http://www.x-tracker.info/.
 	This tool demonstrates the ability of X-Tracker to do an emPAI analyses.
 	</help>
     <configfiles>
