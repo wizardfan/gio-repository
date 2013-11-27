@@ -66,7 +66,7 @@ public class GenerateDocument {
     }
 
     
-    private void generateDocument(String section, String toolName, String filename){
+    private String generateDocument(String section, String toolName, String filename){
         StringBuilder value = new StringBuilder();
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -186,9 +186,11 @@ public class GenerateDocument {
             BufferedWriter writer = new BufferedWriter(new FileWriter(outfile));
             writer.append(value.toString());
             writer.close();
+            return getAttributeText(root, "name");
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "";
     }
 
     private String getElementContent(Document doc,String tagName) throws DOMException {
@@ -208,13 +210,16 @@ public class GenerateDocument {
     }
 
     private void docForOneTool(BufferedWriter out, String filename, String section, String toolName) throws IOException {
+        section = section.replace(" ", "");
+        toolName = toolName.replace(" ", "");
+        String display = generateDocument(section, toolName, filename);
+        display = display.replace(" ", "_");
         out.append("  * [");
         out.append(section);
         out.append("_");
         out.append(toolName);
         out.append(" ");
-        out.append(toolName);
+        out.append(display);
         out.append("]\n");
-        generateDocument(section, toolName, filename);
     }
 }
