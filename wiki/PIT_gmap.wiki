@@ -1,0 +1,16 @@
+*Name:* GMAP<br>
+*Description:*<br>
+align the reads to reference genome<br>
+*Input files:*
+  * input   The reads 
+*Parameters:*<br>
+  * species    
+*Outputs:*<br>
+  * output with Type sam
+*Details:*<br>
+This tool maps and aligns reads to the reference genome. The reads can be the result file either TopHat or Trinity method. At the moment, we only provide Human hg19 reference genome, more will be added later. More details of the GMAP tool and examples can be found at http://research-pub.gene.com/gmap/.
+
+**References**
+Thomas D. Wu and Colin K. Watanabe  GMAP: a genomic mapping and alignment program for mRNA and EST sequences   Bioinformatics 2005 21:1859-1875
+    <br>
+

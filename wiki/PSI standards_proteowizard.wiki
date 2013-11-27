@@ -1,0 +1,16 @@
+*Name:* Convert spectral file<br>
+*Description:*<br>
+Convert non PSI standard mass spectral file into the PSI standard format mzML<br>
+*Input files:*
+*Parameters:*<br>
+  * Conditional element: type
+    * mgf
+    * mzxml
+    * ms2
+
+*Outputs:*<br>
+  * output with Type mzml
+*Details:*<br>
+	Proteowizard (http://proteowizard.sourceforge.net/downloads.shtml) is a widely-used spectral file converter, which is used to convert non PSI standard spectral file into the PSI standard format mzML
+	<br>
+

@@ -1,0 +1,15 @@
+*Name:* Digest<br>
+*Description:*<br>
+Theoretically digest all protein sequences from a FASTA file by trypsin<br>
+*Input files:*
+  * input   Input file 
+*Parameters:*<br>
+  * minLength   the minimum length for the digested peptides to be included in the result file 
+  * maxLength   the maximum length for the digested peptides to be included in the result file 
+  * unique   Only keeps proteotypic peptides? 
+*Outputs:*<br>
+  * output with Type fasta
+*Details:*<br>
+	     This tool digests protein sequences passed to in FASTA format and outputs the results of this digest as individual entries in a new FASTA file where the entries are named <protein>-pep<peptide_number>.  The additional filters for peptide length and proteotypic peptides are useful for SRM (Selected Reaction Monitoring) to filter out the peptides won't be observed on a specific MS/MS instrument.
+	<br>
+

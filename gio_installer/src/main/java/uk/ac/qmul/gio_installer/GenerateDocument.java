@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -24,6 +25,8 @@ public class GenerateDocument {
     }
     
     public void execute(){
+//        generateDocument("C:\\gio-repository\\trunk\\wrappers\\pit\\extractPeptides.xml");
+//        System.exit(0);
         BufferedWriter out = null;
         try {
             out = new BufferedWriter(new FileWriter("../wiki/document.wiki"));
@@ -33,19 +36,19 @@ public class GenerateDocument {
                 System.exit(1);
             }
             String[] sections = dir.list();
-            for(String tmp:sections){
-                File section = new File(folder+"/"+tmp);
-                out.append("==Section "+tmp+"==\n");
-                String[] files = section.list();
+            for(String section:sections){
+                File sectionFolder = new File(folder+"/"+section);
+                out.append("==Section "+section+"==\n");
+                String[] files = sectionFolder.list();
                 for(String file:files){
                     if(file.endsWith(".xml")){
-                        if(!file.startsWith("tool_conf")) out.append(generateDocument(folder+"/"+tmp+"/"+file));
+                        if(!file.startsWith("tool_conf")) docForOneTool(out, folder+"/"+section+"/"+file, section, file.substring(0, file.length()-4));
                     }else if(!file.endsWith(".sample")){
-                        File aa = new File(folder+"/"+tmp+"/"+file);
+                        File aa = new File(folder+"/"+section+"/"+file);
                         if (aa.isDirectory()){
                             String[] abc = aa.list();
                             for (String cba:abc){
-                                if(cba.endsWith(".xml")) out.append(generateDocument(folder+"/"+tmp+"/"+file+"/"+cba));
+                                if(cba.endsWith(".xml")) docForOneTool(out, folder+"/"+section+"/"+file+"/"+cba, section, cba.substring(0, cba.length()-4));
                             }
                         }
                     }
@@ -62,7 +65,8 @@ public class GenerateDocument {
         }
     }
 
-    private String generateDocument(String filename){
+    
+    private void generateDocument(String section, String toolName, String filename){
         StringBuilder value = new StringBuilder();
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -178,10 +182,13 @@ public class GenerateDocument {
             value.append("*Details:*<br>");
             value.append(getElementContent(doc,"help"));
             value.append("<br>\n\n");
+            String outfile = "../wiki/"+section+"_"+toolName+".wiki";
+            BufferedWriter writer = new BufferedWriter(new FileWriter(outfile));
+            writer.append(value.toString());
+            writer.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return value.toString();
     }
 
     private String getElementContent(Document doc,String tagName) throws DOMException {
@@ -198,5 +205,16 @@ public class GenerateDocument {
             return attr.getTextContent();
         }
         return "";
+    }
+
+    private void docForOneTool(BufferedWriter out, String filename, String section, String toolName) throws IOException {
+        out.append("  * [");
+        out.append(section);
+        out.append("_");
+        out.append(toolName);
+        out.append(".wiki ");
+        out.append(toolName);
+        out.append("]\n");
+        generateDocument(section, toolName, filename);
     }
 }

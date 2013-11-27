@@ -1,0 +1,13 @@
+*Name:* mzIdLib:Converter<br>
+*Description:*<br>
+Using mzIdentML-Lib to convert mzIdentML to CSV format.<br>
+*Input files:*
+  * input   Input file 
+*Parameters:*<br>
+  * exportType    
+*Outputs:*<br>
+  * output with Type csv
+*Details:*<br>
+	Using mzidLib (https://code.google.com/p/mzidentml-lib/) to convert the PSI standard mzIdentML format into a more common CSV format for further processing
+    <br>
+

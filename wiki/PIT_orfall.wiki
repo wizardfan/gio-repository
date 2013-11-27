@@ -1,0 +1,23 @@
+*Name:* PIT:ORFall<br>
+*Description:*<br>
+The ORF prediction tool<br>
+*Input files:*
+  * input   Input file 
+*Parameters:*<br>
+  * minMain   the minimum length for the main ORFs in bps 
+  * start   Start type:  
+  * stop   Stop type:  
+  * Conditional element: u5orf
+    * true
+    * false
+
+  * Conditional element: u3orf
+    * true
+    * false
+
+*Outputs:*<br>
+  * output with Type fasta
+*Details:*<br>
+	This tool does the normal ORF prediction from the DNA sequences as well as detects the uORF which allows the user to do further analysis to see the effect uORFs bring to the protein expression level.
+	<br>
+
