@@ -212,7 +212,7 @@ public class GenerateDocument {
         out.append(section);
         out.append("_");
         out.append(toolName);
-        out.append(".wiki ");
+        out.append(" ");
         out.append(toolName);
         out.append("]\n");
         generateDocument(section, toolName, filename);
