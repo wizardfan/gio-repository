@@ -1,4 +1,4 @@
-<tool id="gio_mzq_converter" name="The converter for mzQuantML files" version="1.0.0">
+<tool id="gio_mzq_converter" name="mzqLib:Converter" version="1.0.0">
     <description>Convert the mzQuantML file into more widely-used formats, e.g. CSV</description>
     <command >java -jar $__root_dir__/../gio_applications/mzqlib/mzqlib-converter.jar $type $mzq $output</command>
     <inputs>

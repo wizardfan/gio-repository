@@ -1,5 +1,5 @@
 <tool id="gio_species_finding" name="Species Finding" version="1.0.0">
-    <description>Use BLAST to determine which species the protein sequences come from</description>
+    <description>Use BLAST to determine which species protein sequences come from</description>
         <command interpreter="perl">$__root_dir__/../gio_applications/pit/speciesFinding.pl $input $threshold $output	#for $i, $s in enumerate($dbs)
 		 ${s.species}
 	#end for
@@ -22,6 +22,6 @@
 	<data name="output" format="tabular" label="#echo os.path.splitext (str ($input.name))[0]#-speciesFinding.tsv"/>
     </outputs>
 	<help>
-	This tool BLASTs each sequence in the fasta file against the list of selected species BLAST database(s) and determines whether the sequence comes from the species by comparing the identity percentage against the threshold. If no species is found from the given species list, the all-species BLAST database will be searched.
+	This tool BLASTs each sequence in the FASTA file against the list of selected species BLAST database(s) and determines whether the sequence comes from the species by comparing the identity percentage against the threshold. If no species is found from the given species list, the all-species BLAST database will be searched.
 	</help>
 </tool>

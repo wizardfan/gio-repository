@@ -1,31 +1,3 @@
-==Section inclusion==
-*Name:* Digest<br>
-*Description:*<br>
-Theoretically digest all protein sequences from a fasta file by trypsin<br>
-*Input files:*
-  * input   Input file 
-*Parameters:*<br>
-  * minLength   the minimum length for the digested peptides to be included in the result file 
-  * maxLength   the maximum length for the digested peptides to be included in the result file 
-  * unique   Only keeps proteotypic peptides? 
-*Outputs:*<br>
-  * output with Type fasta
-*Details:*<br>
-	     The theoretical digestion by trypsin is a common practice. The additional filters for peptide length and proteotypic peptides are useful for SRM (Selected Reaction Monitoring) to filter out the peptides won't be observed on a specific MS/MS instrument.
-	<br>
-
-*Name:* Peptide MW and hydrophobicity<br>
-*Description:*<br>
-Calculate the molecular weight and hydrophobicity for peptides within a fasta file<br>
-*Input files:*
-  * input   Input peptide fasta file 
-*Parameters:*<br>
-*Outputs:*<br>
-  * output with Type tabular
-*Details:*<br>
-		This tool reads in each peptide sequences in the FASTA file, calculates the monoisotopic molecular weight and hydrophobicity using Krokin et 2004 algorithm and outputs the result in a tsv file
-	<br>
-
 ==Section pit==
 *Name:* Extract peptides<br>
 *Description:*<br>
@@ -40,8 +12,7 @@ Extract peptide information from various file formats for PIT analysis<br>
 *Outputs:*<br>
   * output with Type tabular
 *Details:*<br>
-	    PIT needs to combine transcripts data with proteomics data to do the analyses. The proteomics data can come in various formats, including but not limited to PSI standards (mzQuantML and mzIdentML) and widely-used TSV(tab-separated-value) formats which is used by MaxQuant. This tools converts
-the information in different formats to a fixed-header tsv which will be used in the PIT:Integrate tool. Of course it can be used standard-alone to extract the essential information from those more-complex formats.
+	    The proteomics data can come in various formats, including but not limited to PSI standards (mzQuantML and mzIdentML) and widely-used TSV(tab-separated-value) formats which is used by MaxQuant. This tools converts the information in different formats to a fixed-header tsv which will be used in the PIT:Integrate tool. The headers are in the order of Peptide, Protein, Reverse, Contamination, Score, Quantitation and unlimited optional columns. Of course it can be used standard-alone to extract the essential information from those more-complex formats.
 	<br>
 
 *Name:* GMAP<br>
@@ -54,15 +25,10 @@ align the reads to reference genome<br>
 *Outputs:*<br>
   * output with Type sam
 *Details:*<br>
-**What it does**
-
-Maps and aligns reads to the reference genome.
-
-----
+This tool maps and aligns reads to the reference genome. The reads can be the result file either TopHat or Trinity method. At the moment, we only provide Human hg19 reference genome, more will be added later. More details of the GMAP tool and examples can be found at http://research-pub.gene.com/gmap/.
 
 **References**
-
-Please see http://research-pub.gene.com/gmap/ for details of the GMAP tool and examples
+Thomas D. Wu and Colin K. Watanabe  GMAP: a genomic mapping and alignment program for mRNA and EST sequences   Bioinformatics 2005 21:1859-1875
     <br>
 
 *Name:* PIT:ORFall<br>
@@ -103,23 +69,25 @@ The tool links sam file from GMAP to the peptide identification file with the de
   * outputSam with Type sam
 *Details:*<br>
 	Proteomics Informed by Transcriptomics (PIT) provides the advantage over traditional proteomics methods (http://www.nature.com/nmeth/journal/v9/n12/abs/nmeth.2227.html). This tool is the core of PIT, which combines the proteomics and transcriptomics data by id mapping using the pre-defined regular expression. It generates three output files: the gff3 file, the SAM file which is the original SAM file from GMAP plus the annotation of proteomics data, and the longest ORF fasta files.
+**References**
+V.C. Evans et al.  De novo derivation of proteomes from transcriptomes for transcript and protein identification   Nature Method 2012 9:1207-1211
 	<br>
 
 *Name:* PIT:Protein Summary<br>
 *Description:*<br>
-The tool summaries the characteristics of protein sequence files<br>
+Provides a tabular summary of the characteristics of protein sequence files<br>
 *Input files:*
 *Parameters:*<br>
   * Repeat element protein sequence files
 *Outputs:*<br>
   * output with Type tabular
 *Details:*<br>
-	This tool summaries the characteristics of selected protein sequence files and output into a table with rows as characteristics and columns as different datasets.
+	This tool summaries the characteristics of selected protein sequence files and output into a table with rows as characteristics and columns as different datasets. The characteristics include the total number of unique FASTA entries and amino acids, average length, lengths of the longest and shortest peptide, and N50 value (i.e. length of FASTA entry where 50% are longer and 50% are shorter).
 	<br>
 
 *Name:* Species Finding<br>
 *Description:*<br>
-Use BLAST to determine which species the protein sequences come from<br>
+Use BLAST to determine which species protein sequences come from<br>
 *Input files:*
   * input   The protein sequence file 
 *Parameters:*<br>
@@ -128,7 +96,7 @@ Use BLAST to determine which species the protein sequences come from<br>
 *Outputs:*<br>
   * output with Type tabular
 *Details:*<br>
-	This tool BLASTs each sequence in the fasta file against the list of selected species BLAST database(s) and determines whether the sequence comes from the species by comparing the identity percentage against the threshold. If no species is found from the given species list, the all-species BLAST database will be searched.
+	This tool BLASTs each sequence in the FASTA file against the list of selected species BLAST database(s) and determines whether the sequence comes from the species by comparing the identity percentage against the threshold. If no species is found from the given species list, the all-species BLAST database will be searched.
 	<br>
 
 ==Section proteomics==
@@ -188,7 +156,7 @@ Execute emPAI quantitation method within X-Tracker<br>
 *Outputs:*<br>
   * output with Type mzq
 *Details:*<br>
-	X-Tracker is a PSI-standards-compliant software framework for supporting mass spectrometry-based protein quantitation. Through an abstraction of the main steps involved in quantitation, X-Tracker should technically be able to support quantitation by means of all the current protocols, both at MS1 and/or MS2 level, and provide a flexible, platform-independent quantitation environment. More details can be found at https://code.google.com/p/x-tracker/.
+	X-Tracker is a PSI-standards-compliant software framework for supporting mass spectrometry-based protein quantitation. Through an abstraction of the main steps involved in quantitation, X-Tracker should technically be able to support quantitation by means of all the current protocols, both at MS1 and/or MS2 level, and provide a flexible, platform-independent quantitation environment. More details can be found at http://www.x-tracker.info/.
 	This tool demonstrates the ability of X-Tracker to do an emPAI analyses.
 	<br>
 
@@ -223,7 +191,7 @@ Using mzIdentML-Lib to do some post processing including FDR calculation etc.<br
 	Using mzidLib (https://code.google.com/p/mzidentml-lib/) to do the post processing including calculating false discovery rate (FDR), protein inference etc.. This wrapper is highly recommended for MS/MS search engines which only produce peptide identification, e.g. MSGF+.
     <br>
 
-*Name:* The converter for mzQuantML files<br>
+*Name:* mzqLib:Converter<br>
 *Description:*<br>
 Convert the mzQuantML file into more widely-used formats, e.g. CSV<br>
 *Input files:*
@@ -236,7 +204,7 @@ Convert the mzQuantML file into more widely-used formats, e.g. CSV<br>
 	mzq-lib (https://code.google.com/p/mzq-lib/) is a Java library to process the quantitation PSI standard file format mzQuantML. This tool uses the Java library to convert mzQuantML files into various other common formats.
 	<br>
 
-*Name:* Convert spectral file into mzML file<br>
+*Name:* Convert spectral file<br>
 *Description:*<br>
 Convert non PSI standard mass spectral file into the PSI standard format mzML<br>
 *Input files:*
@@ -250,5 +218,33 @@ Convert non PSI standard mass spectral file into the PSI standard format mzML<br
   * output with Type mzml
 *Details:*<br>
 	Proteowizard (http://proteowizard.sourceforge.net/downloads.shtml) is a widely-used spectral file converter, which is used to convert non PSI standard spectral file into the PSI standard format mzML
+	<br>
+
+==Section Targeted Proteomics==
+*Name:* Digest<br>
+*Description:*<br>
+Theoretically digest all protein sequences from a FASTA file by trypsin<br>
+*Input files:*
+  * input   Input file 
+*Parameters:*<br>
+  * minLength   the minimum length for the digested peptides to be included in the result file 
+  * maxLength   the maximum length for the digested peptides to be included in the result file 
+  * unique   Only keeps proteotypic peptides? 
+*Outputs:*<br>
+  * output with Type fasta
+*Details:*<br>
+	     This tool digests protein sequences passed to in FASTA format and outputs the results of this digest as individual entries in a new FASTA file where the entries are named <protein>-pep<peptide_number>.  The additional filters for peptide length and proteotypic peptides are useful for SRM (Selected Reaction Monitoring) to filter out the peptides won't be observed on a specific MS/MS instrument.
+	<br>
+
+*Name:* Peptide MW and hydrophobicity<br>
+*Description:*<br>
+Calculate the molecular weight and hydrophobicity for peptides within a fasta file<br>
+*Input files:*
+  * input   Input peptide fasta file 
+*Parameters:*<br>
+*Outputs:*<br>
+  * output with Type tabular
+*Details:*<br>
+		This tool reads in each peptide sequences in the FASTA file, calculates the monoisotopic molecular weight and hydrophobicity using Krokin et 2004 algorithm and outputs the result in a tsv file
 	<br>
 
