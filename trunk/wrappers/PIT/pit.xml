@@ -28,7 +28,7 @@
         <data format="sam" name="outputSam"/>
     </outputs>
 	<help>
-	Proteomics Informed by Transcriptomics (PIT) provides the advantage over traditional proteomics methods (http://www.nature.com/nmeth/journal/v9/n12/abs/nmeth.2227.html). This tool is the core of PIT, which combines the proteomics and transcriptomics data by id mapping using the pre-defined regular expression. It generates three output files: the gff3 file, the SAM file which is the original SAM file from GMAP plus the annotation of proteomics data, and the longest ORF fasta files.
+This tool is the core part of PIT technology. It combines the reference genome mapping information from the SAM file and the identified peptides and quantitation values from the TSV file by parsing the CIGAR value in the SAM file to locate the exact coordinates of coding DNA for the identified peptides. The tool generates three output files: 1) the gff3 file each row of which represents one identified peptide and related genome coordinates, quantitation, coding DNA sequence etc, 2) the SAM file which is the input SAM file plus the annotation of proteomics data in the optional column with tag pt:Z, and 3) the fasta file containing the longest ORFs associated with the identified peptide.
 **References**
 V.C. Evans et al.  De novo derivation of proteomes from transcriptomes for transcript and protein identification   Nature Method 2012 9:1207-1211
 	</help>

@@ -1,8 +1,8 @@
 <tool id="gio_gmap" name="GMAP" version="1.0.0">
-    <description>align the reads to reference genome</description>
+    <description>align the DNA sequence to reference genome</description>
     <command>$__root_dir__/../gio_applications/pit/gmap -D $__root_dir__/tool-data/data -d $species -f samse $input > $output 2> /dev/null</command>
     <inputs>
-	    <param format="fasta" name="input" type="data" label="The reads"/>
+	    <param format="fasta" name="input" type="data" label="The DNA sequence"/>
 	    <param name="species" type="select" format="text" >
 	        <label>Database</label>
 	        <options from_file="gio_gmap.loc">
@@ -15,7 +15,7 @@
 		<data name="output" format="sam" label="#echo os.path.splitext (str ($input.name))[0]#-GMAP.sam"/>
     </outputs>
 	<help>
-This tool maps and aligns reads to the reference genome. The reads can be the result file either TopHat or Trinity method. At the moment, we only provide Human hg19 reference genome, more will be added later. More details of the GMAP tool and examples can be found at http://research-pub.gene.com/gmap/.
+This tool maps and aligns the DNA sequence to the reference genome. The DNA sequence can be the result file from either TopHat or Trinity method. At the moment, we only provide Human hg19 reference genome, more will be added later. More details of the GMAP tool and examples can be found at http://research-pub.gene.com/gmap/. The result SAM file contains the information about where and how the DNA sequences align to the reference genome.
 
 **References**
 Thomas D. Wu and Colin K. Watanabe  GMAP: a genomic mapping and alignment program for mRNA and EST sequences   Bioinformatics 2005 21:1859-1875

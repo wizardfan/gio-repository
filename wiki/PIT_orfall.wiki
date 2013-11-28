@@ -18,6 +18,6 @@ The ORF prediction tool<br>
 *Outputs:*<br>
   * output with Type fasta
 *Details:*<br>
-	This tool does the normal ORF prediction from the DNA sequences as well as detects the uORF which allows the user to do further analysis to see the effect uORFs bring to the protein expression level.
+	This tool does the normal ORF prediction from the DNA sequences as well as detects the uORF which allows the user to do further analysis to see the effect uORFs bring to the protein expression level. There will be each result file for main ORFs, 5'-uORFs and 3'-uORFs.
 	<br>
 

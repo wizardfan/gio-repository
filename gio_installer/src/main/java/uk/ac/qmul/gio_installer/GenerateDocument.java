@@ -190,6 +190,7 @@ public class GenerateDocument {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //should never reach here as long as the wrapper is written according to the specification
         return "";
     }
 

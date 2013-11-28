@@ -22,6 +22,6 @@
 	<data name="output" format="tabular" label="#echo os.path.splitext (str ($input.name))[0]#-speciesFinding.tsv"/>
     </outputs>
 	<help>
-	This tool BLASTs each sequence in the FASTA file against the list of selected species BLAST database(s) and determines whether the sequence comes from the species by comparing the identity percentage against the threshold. If no species is found from the given species list, the all-species BLAST database will be searched.
+	This tool BLASTs each sequence in the FASTA file against the list of selected species BLAST database(s) and determines whether the sequence comes from the species by comparing the identity percentage against the threshold. If no species is found from the given species list, the all-species BLAST database will be searched. The result tabular file has columns of protein sequence and its header, the name and identity percentage of top hit protein from each selected BLAST database and the highest identity protein and its protein description. Each row of the result table is for a protein sequence.
 	</help>
 </tool>
