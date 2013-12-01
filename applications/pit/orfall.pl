@@ -149,7 +149,9 @@ sub translate(){
 		my $codon = substr($dna,$i,3);
 		$peptide .= $translation{$codon};
 	}
-	return $peptide;}
+	return $peptide;
+}
+
 sub doORF(){
 	my $header = $_[0];
 	$header =~ s/\s.*//;#only keeps the part before the first white space
@@ -161,7 +163,13 @@ sub doORF(){
 	for(my $offset = 1;$offset<4;$offset++){
 		for (my $i=-1+$offset;$i<$len-2;$i+=3){
 			my $codon = substr($seq,$i,3);
-			$frame{$offset}.= $translation{$codon};
+			my $aa;
+			if(exists $translation{$codon}){
+				$aa = $translation{$codon};
+			}else{
+				$aa = "X";
+			}
+			$frame{$offset}.= $aa;
 		}
 	}
 	#3'->5' - strand
@@ -170,7 +178,13 @@ sub doORF(){
 	for(my $offset = 1;$offset<4;$offset++){
 		for (my $i=-1+$offset;$i<$len-2;$i+=3){
 			my $codon = substr($reversecomp,$i,3);
-			$frame{-$offset}.= $translation{$codon};
+			my $aa;
+			if(exists $translation{$codon}){
+				$aa = $translation{$codon};
+			}else{
+				$aa = "X";
+			}
+			$frame{-$offset}.= $aa;
 		}
 	}
 	my @orfs;
