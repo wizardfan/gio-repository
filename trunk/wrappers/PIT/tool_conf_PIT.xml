@@ -1,8 +1,8 @@
 
     <label text="PIT" id="pit"/>
-	<tool file="gio/pit/orfall.xml" />
-	<tool file="gio/pit/proteinSummary.xml" />
-	<tool file="gio/pit/extractPeptides.xml" />
-	<tool file="gio/pit/gmap.xml" />
-	<tool file="gio/pit/pit.xml" />
-	<tool file="gio/pit/speciesFinding.xml" />
+	<tool file="gio/PIT/orfall.xml" />
+	<tool file="gio/PIT/proteinSummary.xml" />
+	<tool file="gio/PIT/extractPeptides.xml" />
+	<tool file="gio/PIT/gmap.xml" />
+	<tool file="gio/PIT/pit.xml" />
+	<tool file="gio/PIT/speciesFinding.xml" />
