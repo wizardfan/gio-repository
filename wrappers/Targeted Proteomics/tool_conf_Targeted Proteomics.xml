@@ -1,4 +1,4 @@
 
     <label text="Targeted proteomics" id="inclusion"/>
-	<tool file="gio/inclusion/digest.xml" />
-	<tool file="gio/inclusion/peptideMW.xml" />
+	<tool file="gio/Targeted Proteomics/digest.xml" />
+	<tool file="gio/Targeted Proteomics/peptideMW.xml" />
