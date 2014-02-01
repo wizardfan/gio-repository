@@ -133,7 +133,8 @@ if($need5uorf){
 	}
 	close OUT;
 }
-if($need3uorf){
+
+if($need3uorf){
 	open OUT,">$out3uorf";
 	foreach my $rna(sort {$a cmp $b} keys %total3uorf){
 		print OUT ">$total3uorf{$rna}\n$rna\n";
@@ -147,7 +148,11 @@ sub translate(){
 	my $peptide = "";
 	for (my $i=0;$i<$len-2;$i+=3){
 		my $codon = substr($dna,$i,3);
-		$peptide .= $translation{$codon};
+		if(exists $translation{$codon}){
+			$peptide .= $translation{$codon};
+		}else{
+			$peptide .= "X";
+		}
 	}
 	return $peptide;
 }
@@ -197,6 +202,7 @@ sub doORF(){
 	my %uorf3;
 	my $u3count = 0;
 	my $u3orfNegaMaxIndex = 0;
+
 	for my $frame(sort {$a<=>$b} keys %frame){
 		my $currStopPosi = $frame - 1; #the end position for the current stop codon
 		my $strand = 1;
@@ -222,6 +228,7 @@ sub doORF(){
 					$orfs{$orfCount}{"stop"}=$currStopPosi-3*$strand;#the stop codon is not accounted in the orf
 					push (@orfs,$orf);
 				}
+
 				if($need5uorf && $orfLen >= $min5AA && $orfLen <= $max5AA){
 					$u5count++;
 					$u5orfNegaMaxIndex = $u5count if ($frame < 0);
@@ -262,7 +269,6 @@ sub doORF(){
 #			}
 		}
 	}
-
 #	foreach my $index(sort {$a<=>$b} keys %uorf5){
 #		print "uORFs $index\n";
 #		print "Frame: $uorf5{$index}{'frame'}\n";
@@ -270,14 +276,16 @@ sub doORF(){
 #		print "Start: $uorf5{$index}{'start'}\n";
 #		print "Stop: $uorf5{$index}{'stop'}\n";
 #	}
-#	foreach my $index(sort {$a<=>$b} keys %uorf5){
+
+#	foreach my $index(sort {$a<=>$b} keys %uorf5){
 #		for(my $i=1;$i<=$orfCount;$i++){
 #			my $strand = 1;
 #			$strand = -1 if ($uorf5{$index}{'frame'}<0);
 #			next if (($orfs{$i}{'frame'}*$uorf5{$index}{'frame'})<0);
 #			next unless (($orfs{$i}{'start'}-$uorf5{$index}{'start'})*$strand>0);#uorf start must be less than orf start
 #			next unless (($orfs{$i}{'start'}-$uorf5{$index}{'stop'})*$strand<$distance5);#uorf stop must be within distance of orf start
-#			print "could be uorf for ORF${i}_$orfs{$i}{'frame'}_$orfs{$i}{'start'}_$orfs{$i}{'stop'}\n";#		}
+#			print "could be uorf for ORF${i}_$orfs{$i}{'frame'}_$orfs{$i}{'start'}_$orfs{$i}{'stop'}\n";
+#		}
 #		print "\n";
 #	}
 	if($orfCount==0){
@@ -296,6 +304,7 @@ sub doORF(){
 		}else{
 			$totalORF{$orfs{$index}{'orf'}} = "${header}_ORF${index}_Frame_$orfs{$index}{'frame'}_$orfs{$index}{'start'}-$orfs{$index}{'stop'}";
 		}
+
 		if($need5uorf){
 			my $startIndex = 1;
 			my $endIndex = $u5orfNegaMaxIndex;
@@ -305,6 +314,7 @@ sub doORF(){
 				$endIndex = $u5count;
 				$strand = 1;
 			}
+
 			for (my $i=$startIndex;$i<=$endIndex;$i++){
 				next unless (($orfs{$index}{'start'}-$uorf5{$i}{'start'})*$strand>0);#uorf start must be less than orf start
 				next unless (($orfs{$index}{'start'}-$uorf5{$i}{'stop'})*$strand<$distance5);#uorf stop must be within distance of orf start
@@ -317,6 +327,7 @@ sub doORF(){
 				}
 			}
 		}
+
 		if($need3uorf){
 			my $startIndex = 1;
 			my $endIndex = $u3orfNegaMaxIndex;
@@ -326,6 +337,7 @@ sub doORF(){
 				$endIndex = $u3count;
 				$strand = 1;
 			}
+
 			for (my $i=$startIndex;$i<=$endIndex;$i++){
 				next unless (($orfs{$index}{'frame'}*$uorf3{$i}{'frame'})>0 && ($orfs{$index}{'frame'}!=$uorf3{$i}{'frame'}));#must be the same direction (
 				next unless (($orfs{$index}{'stop'}-$uorf3{$i}{'stop'})*$strand<0);
