@@ -6,34 +6,6 @@ my $blastDBdir = "";
 my $deleteCmd = "";
 my $cmdLocation = "";
 
-print "$^O\n";
-my $os = lc($^O);
-#http://perldoc.perl.org/perlport.html#DOS-and-Derivatives
-if($os eq "mswin32" || $os eq "cygwin" || $os eq "dos" || $os eq "os2"){
-	if(exists $ENV{BLASTDB}){
-		$blastDBdir = $ENV{BLASTDB};
-	}
-	$deleteCmd = "del";
-	print "OS system detected as Windows\n";
-}else{
-	open IN, "$ENV{HOME}/.ncbirc" or die "The OS is detected as linux based. Can not find the BLAST environment file .ncbirc\n";
-	<IN>;
-	my $line = <IN>;
-	chomp $line;
-	my @elmts = split("=",$line);
-	$blastDBdir = $elmts[1];
-	$deleteCmd = "rm";
-	$cmdLocation = "$ENV{HOME}/gio_applications/pit/";
-	print "OS system detected as Unix-based\n";
-}
-if(length $blastDBdir == 0){
-	print "No environment variable found for BLASTDB which tells the program where the BLAST db is. Please ask the admin to set up properly\n";
-	exit 2;
-}
-print "program blastp location: $cmdLocation\n";
-my %availableDBs;
-&getAvailableBLASTdbs();
-
 my $argLen = scalar @ARGV;
 if($argLen < 3){
 	&usage();
@@ -51,8 +23,45 @@ if ($threshold < 50){
 	print "WARNING: the given threshold is below 50, which is automatically set to 50 to make it reasonable\n";
 }
 
+#print "$^O\n";
+my $os = lc($^O);
+#http://perldoc.perl.org/perlport.html#DOS-and-Derivatives
+if($os eq "mswin32" || $os eq "cygwin" || $os eq "dos" || $os eq "os2"){
+	if(exists $ENV{BLASTDB}){
+		$blastDBdir = $ENV{BLASTDB};
+	}
+	$deleteCmd = "del";
+	print "OS system detected as Windows\n";
+}else{
+	open IN, "$ENV{HOME}/.ncbirc" or die "The OS is detected as linux based. Can not find the BLAST environment file $ENV{HOME}/.ncbirc\n";
+	<IN>;
+	my $line = <IN>;
+	chomp $line;
+	my @elmts = split("=",$line);
+	$blastDBdir = $elmts[1];
+	$deleteCmd = "rm";
+	my @tmp = split("\/",$file);
+	my @kept;
+	for (my $i = 0;$i < ((scalar @tmp)-1);$i++){
+		last if ($tmp[$i] eq "database" && $tmp[$i+1] eq "files");
+		push (@kept,$tmp[$i]);
+	}
+	pop @kept;
+	my $abc = join("\/",@kept);
+	$cmdLocation = "$abc/gio_applications/pit/";
+	print "OS system detected as Unix-based\n";
+}
+
+if(length $blastDBdir == 0){
+	print "No environment variable found for BLASTDB which tells the program where the BLAST db is. Please ask the admin to set up properly\n";
+	exit 2;
+}
+#print "program blastp location: $cmdLocation\n";
+my %availableDBs;
+&getAvailableBLASTdbs();
+
 my @dbs;
-print "Fasta file: $file\n";
+#print "Fasta file: $file\n";
 print "Threshold: $threshold\n";
 $"="\n";
 #check whether the selected BLAST database is available on the server to use
