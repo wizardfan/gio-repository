@@ -134,8 +134,13 @@ public class GenerateDocument {
                     }
                 }
             }
-            value.append("<br>\n*Input files:*\n");
-            value.append(inputSb.toString());
+            value.append("<br>\n*Input files:*");
+            if(inputSb.length()==0){
+                value.append("<br>\n");
+            }else{
+                value.append("\n");
+                value.append(inputSb.toString());
+            }
             value.append("*Parameters:*<br>\n");
             value.append(paramSb.toString());
             

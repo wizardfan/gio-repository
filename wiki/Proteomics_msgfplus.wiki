@@ -1,7 +1,7 @@
 *Name:* MSGF+ MSMS Search<br>
 *Description:*<br>
 Run an MSGF+ Search<br>
-*Input files:*
+*Input files:*<br>
 *Parameters:*<br>
   * Conditional element: type
     * mzml

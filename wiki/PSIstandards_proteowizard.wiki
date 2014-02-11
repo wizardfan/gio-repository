@@ -1,7 +1,7 @@
 *Name:* Convert spectral file<br>
 *Description:*<br>
 Convert non PSI standard mass spectral file into the PSI standard format mzML<br>
-*Input files:*
+*Input files:*<br>
 *Parameters:*<br>
   * Conditional element: type
     * mgf

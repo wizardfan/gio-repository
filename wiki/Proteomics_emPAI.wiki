@@ -1,7 +1,7 @@
 *Name:* emPAI analysis in X-Tracker<br>
 *Description:*<br>
 Execute emPAI quantitation method within X-Tracker<br>
-*Input files:*
+*Input files:*<br>
 *Parameters:*<br>
   * Conditional element: spectra
     * mzml

@@ -2,3 +2,4 @@ MS-GF+ is a MS/MS database search tool. There are two ways to provide the protei
   * the first column is the unique id, e.g. proteomes_all_species
   * the second column is the name displayed in the interface, e.g. All species May 2013
   * the third column is the location of the fasta file, e.g. /home/jun/galaxy-dist/test-data/proteomes/uniprot_sprot.fasta
+It is strongly recommended to index the built-in database prior to the database search by running BuildSA. The details are available at [https://bix-lab.ucsd.edu/pages/viewpage.action?pageId=13533355#MS-GF+-BuildSA here].

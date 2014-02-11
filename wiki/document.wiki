@@ -1,6 +1,7 @@
 ==Section PIT==
-  * [PIT_extractPeptides Extract_peptides]
+  * [PIT_extractPeptides Extract_hits]
   * [PIT_gmap GMAP]
+  * [PIT_integrateNoRefGenome Get_sequences_for_identified_proteins]
   * [PIT_orfall PIT:ORFall]
   * [PIT_pit PIT:Integrate]
   * [PIT_proteinSummary PIT:Protein_Summary]

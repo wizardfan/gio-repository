@@ -2,7 +2,7 @@
 *Description:*<br>
 The ORF prediction tool<br>
 *Input files:*
-  * input   Input file 
+  * input   Input DNA file 
 *Parameters:*<br>
   * minMain   the minimum length for the main ORFs in bps 
   * start   Start type:  
