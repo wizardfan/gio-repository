@@ -1,0 +1,42 @@
+<tool id="getFasta" name="Get sequences for identified proteins" version="1.0.0">
+    <description>Get identified protein sequences</description>
+    <command interpreter="perl">
+	#if $database.source_select=="built_in":
+$__root_dir__/../gio_applications/pit/integrateNoRefGenome.pl $database.dbkey $input $output
+	#else
+$__root_dir__/../gio_applications/pit/integrateNoRefGenome.pl $database.fasta_file $input $output
+	#end if
+    </command>
+    <inputs>	
+	<param format="tabular" name="input" type="data" label="The list of identified proteins"/>
+	<conditional name="database">
+	    <param name="source_select" type="select" label="Fasta file source">
+			<option value="built_in">Built-In Databases</option>
+			<option value="upload">Your Upload File</option>
+	    </param>
+	    <when value="built_in">
+		<param name="dbkey" type="select" format="text" >
+		    <label>Database</label>
+		    <options from_file="gio_proteomes.loc">
+			<column name="name" index="1" />
+			<column name="value" index="2" />
+		    </options>
+		</param>
+	    </when>
+	    <when value="upload">
+		<param name="fasta_file" type="data" format="fasta" label="Uploaded FASTA file" />
+	    </when>
+	</conditional>
+    </inputs>
+
+    <outputs>
+	<data format="fasta" name="output"/>
+    </outputs>
+    <help>
+	This tool extracts fasta sequences for the identified protein from the fasta file used in the MS/MS search. It becomes handy when there is no protein sequence
+available in the result mzIdentML file from the MS/MS search, e.g. MS-GF+ search engine. The result mzIdentML file can first processed by Extract Peptide tool to generate
+a list of identified peptides (first column) and their corresponding proteins (second column). The list then is used as input of this tool to get the protein sequences. 
+Of course, the user can manually create the list to be used with this tool as long as the list is in the tsv format with one-line header.
+    In the PIT workflow, this tool can be used for the scenario when no reference genome is available for GMAP to map to the genome.
+    </help>
+</tool>
