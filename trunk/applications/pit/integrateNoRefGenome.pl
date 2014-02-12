@@ -25,6 +25,7 @@ while (my $line = <IN>){
 	#next if ($elmts[2] eq '+' || $elmts[3] eq '+');#2 Reverse 3 contaminant, if true that record should not be used
 	my $peptide = $elmts[0];
 	my $protein_name = $elmts[1];#Protein, e.g. >96407_5 [2245 - 587] (REVERSE SENSE);>96409_5 [2116 - 566] (REVERSE SENSE);>96408_5 [2043 - 613] (REVERSE SENSE),96410_5 [2172 - 742] (REVERSE SENSE)
+	next if (length $protein_name == 0);#decoy hit in MS-GF+
 	$protein_name =~ s/,/>/g; #replace , with >
 	my @protein_entries = split(/>/, $protein_name); #some elements may have ; at the end which does not matter due to the RE
 	for (my $i=1;$i<scalar @protein_entries;$i++){#start from index 1 as the first element is always empty due to the fasta header format
@@ -35,6 +36,12 @@ while (my $line = <IN>){
 
 my %result;
 foreach my $protein (keys %proteins){
+#	my $seq;
+#	if(exists $seqs{$protein}){
+#		$seq = $seqs{$protein};
+#	}else{
+#		next;
+#	}
 	my $seq = $seqs{$protein};
 	if(exists $result{$seq}){
 		$result{$seq} .= ",$protein";
@@ -61,7 +68,11 @@ sub readFasta(){
 				$header =~ s/,/>/g; #replace , with >
 				my @tmp = split(/>/, $header); 
 				for (my $i=0;$i<scalar @tmp;$i++){#start from index 1 as the first element is always empty due to the fasta header format
-					$seqs{$tmp[$i]}=$seq;
+					#in the mzIdentML file only the first part may be used as accession
+					my $id = $tmp[$i];
+					$seqs{$id}=$seq;
+					my ($first) = split(" ",$id);
+					$seqs{$first} = $seq;
 				}
 				$seq="";
 			}
@@ -74,7 +85,10 @@ sub readFasta(){
 		$header =~ s/,/>/g; #replace , with >
 		my @tmp = split(/>/, $header); 
 		for (my $i=0;$i<scalar @tmp;$i++){#start from index 1 as the first element is always empty due to the fasta header format
-			$seqs{$tmp[$i]}=$seq;
+			my $id = $tmp[$i];
+			$seqs{$id}=$seq;
+			my ($first) = split(" ",$id);
+			$seqs{$first} = $seq;
 		}
 	}
 	close IN;
