@@ -1,8 +1,8 @@
-#This file lists the names of inbuilt chemical modifications accepted by msgfplus
-#Each entry consists of 4 tab separated fields like this
+#This file lists the names of inbuilt chemical modifications accepted by MS-GF+
+#Each entry consists of 2 tab separated fields like this
 #<Displayed Name>	<Modification String>
 #Display name is for display in the format of modification name(site), while modification string will be parsed in the perl script and then forms the standard MSGFPlus syntax. The modification string is in the format of mass_shift or composition:residue:position:name
-#NOTE: do NOT use "," in the name
+#NOTE: do NOT use "," anywhere
 Acetyl(K)	42.010565:K:Any:Acetyl
 Acetyl(N-term)	42.010565:*:N-term:Acetyl
 Acetyl(Protein N-term)	42.010565:*:Prot-N-term:Acetyl
@@ -75,13 +75,15 @@ Phospho(Y)	79.966331:Y:Any:Phospho
 Propionamide(C)	71.037114:C:Any:Propionamide
 Pyridylethyl(C)	105.057849:C:Any:Pyridylethyl
 Pyro-carbamidomethyl(N-term C)	39.994915:C:N-term:Pyro-carbamidomethyl
+SILAC:13C(6)(K)	6.020129:K:Any:Heavy-Lysine-13C6
+SILAC:13C(6)(R)	6.020129:R:Any:Heavy-Arginine-13C6
+SILAC:13C(6)15N(2)(K)	8.014199:K:Any:Heavy-Lysine-13C6-15N2
+SILAC:13C(6)15N(4)(R)	10.008269:R:Any:Heavy-Arginine-13C6-15N4
 Sulfo(STY)	79.956815:STY:Any:Sulfo
 TMT2plex(K)	225.155833:K:Any:TMT2plex
 TMT2plex(N-term)	225.155833:*:N-term:TMT2plex
 TMT6plex(K)	229.162932:K:Any:TMT6plex
 TMT6plex(N-term)	229.162932:*:N-term:TMT6plex
-#Oxidation(M)	15.994915:M:any:Oxidation
-#Carbamidomethyl(C)	C2H3N1O1:C:any:Carbamidomethyl	
 #
 #Standard MSGFPlus syntax is
 #
