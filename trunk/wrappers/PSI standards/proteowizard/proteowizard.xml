@@ -1,21 +1,25 @@
 <tool id="proteowizard" name="Convert spectral file" version="1.0.0">
     <description>Convert non PSI standard mass spectral file into the PSI standard format mzML</description>
-        <command interpreter="perl">$__root_dir__/../gio_applications/proteowizard/proteowizard.pl $input $type.input_type $output $output.id $__new_file_path__</command>
+        <command interpreter="perl">proteowizard.pl $input $type.input_type $output $output.id $__new_file_path__</command>
     <inputs>
     	<conditional name="type">
       	    <param name="input_type" type="select" label="Input Type">
                 <option value="mgf">mgf</option>
         	    <option value="mzxml">mzXML</option>
         	    <option value="ms2">ms2</option>
+        	    <option value="RAW">Raw</option>
             </param>
             <when value="mgf">
-                <param format="mgf" name="input" type="data" label="Input mgf"/>
+                <param format="mgf" name="input" type="data" label="Input mgf file"/>
             </when>
             <when value="mzxml">
-                <param format="mzxml" name="input" type="data" label="Input mzXML"/>
+                <param format="mzxml" name="input" type="data" label="Input mzXML file"/>
             </when>
             <when value="ms2">
-                <param format="ms2" name="input" type="data" label="Input ms2"/>
+                <param format="ms2" name="input" type="data" label="Input ms2 file"/>
+            </when>
+            <when value="RAW">
+                <param format="raw" name="input" type="data" label="Input Raw file"/>
             </when>
         </conditional>
     </inputs>
