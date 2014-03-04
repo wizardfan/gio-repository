@@ -1,6 +1,0 @@
-
-    <label text="PSI Standards" id="standard"/>
-	<tool file="gio/PSI standards/proteowizard/proteowizard.xml" />
-	<tool file="gio/PSI standards/mzqlib/converter.xml" />
-	<tool file="gio/PSI standards/mzidlib/mzidlibPostProcessing.xml" />
-	<tool file="gio/PSI standards/mzidlib/mzidlibConverter.xml" />
