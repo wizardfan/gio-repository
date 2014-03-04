@@ -20,8 +20,8 @@ if($os eq "mswin32" || $os eq "cygwin" || $os eq "dos" || $os eq "os2"){
 	system("msconvert $tmpFolder\\tmp_$id.$type --outfile tmp_$id.mzML -o $tmpFolder");
 #	print ("move $tmpFolder\\tmp_$id.mzML $output\n");
 	system("move $tmpFolder\\tmp_$id.mzML $output");
-#	print ("delete $tmpFolder\\tmp_$id.$type\n");
-	system("delete $tmpFolder\\tmp_$id.$type");
+#	print ("del $tmpFolder\\tmp_$id.$type\n");
+	system("del $tmpFolder\\tmp_$id.$type");
 }else{
 	system("cp $input /$path/tmp_$id.$type");
 	system("/$path/../../../gio_applications/proteowizard/msconvert /$path/tmp_$id.$type --outfile tmp_$id.mzML -o $path");
