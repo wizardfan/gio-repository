@@ -5,7 +5,7 @@
   * [PIT_orfall PIT:ORFall]
   * [PIT_pit PIT:Integrate]
   * [PIT_proteinSummary PIT:Protein_Summary]
-  * [PIT_speciesFinding Species_Finding]
+  * [PIT_speciesFinding Protein_homology]
 ==Section Proteomics==
   * [Proteomics_msgfplus MSGF+_MSMS_Search]
   * [Proteomics_emPAI emPAI_analysis_in_X-Tracker]

@@ -1,6 +1,6 @@
-*Name:* Species Finding<br>
+*Name:* Protein homology<br>
 *Description:*<br>
-Use BLAST to determine which species protein sequences come from<br>
+Use BLAST to find protein homology and source species<br>
 *Input files:*
   * input   The protein sequence file 
 *Parameters:*<br>
