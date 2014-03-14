@@ -13,7 +13,7 @@
   * [PSIstandards_mzidlibConverter mzIdLib:Converter]
   * [PSIstandards_mzidlibPostProcessing mzIdLib:PostProcessing]
   * [PSIstandards_converter mzqLib:Converter]
-  * [PSIstandards_proteowizard Convert_spectral_file]
+  * [PSIstandards_proteowizard MSConvert]
 ==Section Targeted Proteomics==
   * [TargetedProteomics_digest Digest]
   * [TargetedProteomics_peptideMW Peptide_MW_and_hydrophobicity]

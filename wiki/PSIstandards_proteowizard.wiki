@@ -1,4 +1,4 @@
-*Name:* Convert spectral file<br>
+*Name:* MSConvert<br>
 *Description:*<br>
 Convert non PSI standard mass spectral file into the PSI standard format mzML<br>
 *Input files:*<br>
