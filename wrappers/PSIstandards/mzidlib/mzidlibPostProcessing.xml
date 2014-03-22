@@ -3,11 +3,11 @@
     <command>
         java -Xms1024m -jar $__root_dir__/../gio_applications/mzidlib/mzidlib-maven.jar
         #if $main.method=="fdr":
-FalseDiscoveryRate $input $output -decoyRegex $main.decoyRegex -decoyValue $main.decoyValue -cvTerm $main.cvTerm -betterScoresAreLower $main.betterScoresAreLower
+FalseDiscoveryRate $input $output_fdr -decoyRegex $main.decoyRegex -decoyValue $main.decoyValue -cvTerm $main.cvTerm -betterScoresAreLower $main.betterScoresAreLower
         #elif $main.method=="threshold":
-Threshold $input $output -isPSMThreshold $main.isPSMThreshold -cvAccessionForScoreThreshold $main.cvAccessionForScoreThreshold -threshValue $main.threshValue -betterScoresAreLower $main.betterScoresAreLower -deleteUnderThreshold $main.deleteUnderThreshold
+Threshold $input $output_threshold -isPSMThreshold $main.isPSMThreshold -cvAccessionForScoreThreshold $main.cvAccessionForScoreThreshold -threshValue $main.threshValue -betterScoresAreLower $main.betterScoresAreLower -deleteUnderThreshold $main.deleteUnderThreshold
         #else
-ProteoGrouper $input $output -cvAccForSIIScore $main.cvAccForSIIScore -logTransScore $main.logTransScore -requireSIIsToPassThreshold $main.requireSIIsToPassThreshold -verboseOutput false
+ProteoGrouper $input $output_grouper -cvAccForSIIScore $main.cvAccForSIIScore -logTransScore $main.logTransScore -requireSIIsToPassThreshold $main.requireSIIsToPassThreshold -verboseOutput false
         #end if
     </command>
     <macros>
@@ -100,7 +100,15 @@ ProteoGrouper $input $output -cvAccForSIIScore $main.cvAccForSIIScore -logTransS
     </inputs>
 
     <outputs>
-        <data format="mzid" name="output"/>
+        <data format="mzid" name="output_fdr" label="FDR on ${on_string}">
+	    <filter>(main['method']=='fdr')</filter>
+	</data>
+        <data format="mzid" name="output_threshold" label="Threshold at ${main.threshValue} on ${on_string}">
+	    <filter>(main['method']=='threshold')</filter>
+	</data>
+        <data format="mzid" name="output_grouper" label="ProteoGrouper on ${on_string}">
+	    <filter>(main['method']=='proteogroup')</filter>
+	</data>
     </outputs>
 
     <help>
