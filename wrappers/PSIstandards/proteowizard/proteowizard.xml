@@ -1,6 +1,8 @@
 <tool id="proteowizard" name="MSConvert" version="1.0.0">
     <description>Convert non PSI standard mass spectral file into the PSI standard format mzML</description>
-        <command interpreter="perl">proteowizard.pl $input $type.input_type $output $out_type $output.id $__new_file_path__</command>
+        <command interpreter="perl">proteowizard.pl #for $i, $s in enumerate($type.input)
+${s.file_name} #end for
+ $type.input_type $output $out_type $output.id $__new_file_path__</command>
     <inputs>
     	<conditional name="type">
       	    <param name="input_type" type="select" label="Input Type">
@@ -11,19 +13,19 @@
         	    <option value="mzML">mzML</option>
             </param>
             <when value="mgf">
-                <param format="mgf" name="input" type="data" label="Input mgf file"/>
+                <param format="mgf" name="input" type="data" multiple="true" label="Input mgf file"/>
             </when>
             <when value="mzxml">
-                <param format="mzxml" name="input" type="data" label="Input mzXML file"/>
+                <param format="mzxml" name="input" type="data" multiple="true" label="Input mzXML file"/>
             </when>
             <when value="ms2">
-                <param format="ms2" name="input" type="data" label="Input ms2 file"/>
+                <param format="ms2" name="input" type="data" multiple="true" label="Input ms2 file"/>
             </when>
             <when value="RAW">
-                <param format="raw" name="input" type="data" label="Input Raw file"/>
+                <param format="raw" name="input" type="data" multiple="true" label="Input Raw file"/>
             </when>
             <when value="mzML">
-                <param format="mzml" name="input" type="data" label="Input mzML file"/>
+                <param format="mzml" name="input" type="data" multiple="true" label="Input mzML file"/>
             </when>
         </conditional>
         <param name = "out_type" type="select" label="The output file format" multiple="False" help="The format to which the original file(s) will be converted">
