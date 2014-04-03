@@ -1,14 +1,6 @@
-<tool id="mzidlib_processing" name="mzIdLib:PostProcessing" version="1.0.0">
+<tool id="mzidlib_processing" name="mzIdLib:PostProcessing" version="1.1.0">
     <description>Using mzIdentML-Lib to do some post processing including FDR calculation etc.</description>
-    <command>
-        java -Xms1024m -jar $__root_dir__/../gio_applications/mzidlib/mzidlib-maven.jar
-        #if $main.method=="fdr":
-FalseDiscoveryRate $input $output_fdr -decoyRegex $main.decoyRegex -decoyValue $main.decoyValue -cvTerm $main.cvTerm -betterScoresAreLower $main.betterScoresAreLower
-        #elif $main.method=="threshold":
-Threshold $input $output_threshold -isPSMThreshold $main.isPSMThreshold -cvAccessionForScoreThreshold $main.cvAccessionForScoreThreshold -threshValue $main.threshValue -betterScoresAreLower $main.betterScoresAreLower -deleteUnderThreshold $main.deleteUnderThreshold
-        #else
-ProteoGrouper $input $output_grouper -cvAccForSIIScore $main.cvAccForSIIScore -logTransScore $main.logTransScore -requireSIIsToPassThreshold $main.requireSIIsToPassThreshold -verboseOutput false
-        #end if
+    <command interpreter="perl">$__root_dir__/../gio_applications/mzidlib/mzidlibPostProcessing.pl $input $output $output.id $__new_file_path__ FalseDiscoveryRate -decoyRegex $decoyRegex -decoyValue $decoyValue -cvTerm $cvTerm -betterScoresAreLower $betterScoresAreLower Threshold -isPSMThreshold $isPSMThreshold -cvAccessionForScoreThreshold $cvAccessionForScoreThreshold -threshValue $threshValue -betterScoresAreLower $thresholdBetterScoresAreLower -deleteUnderThreshold $deleteUnderThreshold ProteoGrouper -cvAccForSIIScore $cvAccForSIIScore -logTransScore $logTransScore -requireSIIsToPassThreshold $requireSIIsToPassThreshold
     </command>
     <macros>
         <macro name="macro_fdr">
@@ -48,7 +40,7 @@ ProteoGrouper $input $output_grouper -cvAccForSIIScore $main.cvAccForSIIScore -l
                 <label>Treshold value</label>
             </param>
 
-            <param name="betterScoresAreLower" type="select" format="text">
+            <param name="thresholdBetterScoresAreLower" type="select" format="text">
                 <label>Are better scores lower?</label>
                 <option value="true" selected = "true">Yes</option>
                 <option value="false">No</option>
@@ -81,34 +73,13 @@ ProteoGrouper $input $output_grouper -cvAccForSIIScore $main.cvAccForSIIScore -l
     </macros>
     <inputs>    
         <param  format="mzid" name="input" type="data" label="Input file"/>
-        <conditional name="main">
-            <param name="method" type="select" label="Method: ">
-                <option value="fdr">False Discovery Rate</option>
-                <option value="threshold">Threshold</option>
-                <option value="proteogroup">ProteoGrouper</option>
-            </param>
-            <when value="fdr">
-                <expand macro="macro_fdr"/>
-            </when>
-            <when value="threshold">
-                <expand macro="macro_threshold"/>
-            </when>
-            <when value="proteogroup">
-                <expand macro="macro_proteogroup"/>
-            </when>
-        </conditional>
+        <expand macro="macro_fdr"/>
+        <expand macro="macro_threshold"/>
+        <expand macro="macro_proteogroup"/>
     </inputs>
 
     <outputs>
-        <data format="mzid" name="output_fdr" label="FDR on ${on_string}">
-	    <filter>(main['method']=='fdr')</filter>
-	</data>
-        <data format="mzid" name="output_threshold" label="Threshold at ${main.threshValue} on ${on_string}">
-	    <filter>(main['method']=='threshold')</filter>
-	</data>
-        <data format="mzid" name="output_grouper" label="ProteoGrouper on ${on_string}">
-	    <filter>(main['method']=='proteogroup')</filter>
-	</data>
+        <data format="mzid" name="output" label="Post Processing on ${on_string}"/>
     </outputs>
 
     <help>
