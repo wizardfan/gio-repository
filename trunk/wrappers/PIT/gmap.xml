@@ -1,6 +1,6 @@
 <tool id="gio_gmap" name="GMAP" version="1.0.0">
     <description>align the DNA sequence to reference genome</description>
-    <command>$__root_dir__/../gio_applications/pit/gmap -D $__root_dir__/tool-data/data -d $species -f samse $input > $output 2> /dev/null</command>
+    <command interpreter="perl">$__root_dir__/../gio_applications/pit/gmap.pl $input $output $species $__root_dir__</command>
     <inputs>
 	    <param format="fasta" name="input" type="data" label="The DNA sequence"/>
 	    <param name="species" type="select" format="text" >

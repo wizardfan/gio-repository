@@ -5,6 +5,7 @@ use constant {BLASTDB => "BLASTDB", MIDDLE => "blastMiddleFiles", SPROT => "swis
 my $blastDBdir = "";
 my $deleteCmd = "";
 my $cmdLocation = "";
+my $coreSetting = "";
 
 my $argLen = scalar @ARGV;
 if($argLen < 3){
@@ -40,6 +41,8 @@ if($os eq "mswin32" || $os eq "cygwin" || $os eq "dos" || $os eq "os2"){
 	my @elmts = split("=",$line);
 	$blastDBdir = $elmts[1];
 	$deleteCmd = "rm";
+
+#	$cmdLocation = "$ENV{HOME}/gio_applications/pit/";
 	my @tmp = split("\/",$file);
 	my @kept;
 	for (my $i = 0;$i < ((scalar @tmp)-1);$i++){
@@ -49,9 +52,21 @@ if($os eq "mswin32" || $os eq "cygwin" || $os eq "dos" || $os eq "os2"){
 	pop @kept;
 	my $abc = join("\/",@kept);
 	$cmdLocation = "$abc/gio_applications/pit/";
+	close IN;
+	
+	open IN, "$abc/gio_applications/coreSetting.conf";
+	while ($line=<IN>){
+		next if($line=~/^#/);
+		chomp ($line);
+		my ($program,$number) = split("\t",$line);
+		if($program eq "blast") {
+			$coreSetting = "-num_threads $number";
+			last;	
+		}
+	}
+	
 	print "OS system detected as Unix-based\n";
 }
-
 if(length $blastDBdir == 0){
 	print "No environment variable found for BLASTDB which tells the program where the BLAST db is. Please ask the admin to set up properly\n";
 	exit 2;
@@ -62,7 +77,7 @@ my %availableDBs;
 
 my @dbs;
 #print "Fasta file: $file\n";
-print "Threshold: $threshold\n";
+#print "Threshold: $threshold\n";
 $"="\n";
 #check whether the selected BLAST database is available on the server to use
 foreach my $db(@dbsIn){
@@ -139,7 +154,7 @@ sub doBLAST(){
 #	a.	BLAST all one-sequence fasta files
 		my $blastFile = "seq_${proteinCount}_blast_result_$db.tsv";
 #		system ("blastp -db $db -query $fastaFile -outfmt \"6 sacc stitle qlen qstart qend slen sstart send evalue score pident\" -out $blastFile");
-		system ("${cmdLocation}blastp -db $db -query $fastaFile -outfmt \"6 sacc stitle pident\" -out $blastFile");
+		system ("${cmdLocation}blastp -db $db -query $fastaFile $coreSetting -outfmt \"6 sacc stitle pident\" -out $blastFile");
 #	b.	Get the top hit(s) and the highest identity percentage. 
 #		i.	If the score is no less than the threshold, 1) record the identity percentage and the hit protein 2) remove from the list for all-species BLAST. If more than one hit sharing the same highest identity percentage, keep all of them, separate by “;”
 #		ii.	If the score is below the threshold, record NA for both protein hit and identity percentage
@@ -187,7 +202,7 @@ sub doBLAST(){
 		print OUT "\t$allMaxHits\t$allMaxIdent\t$allMaxTitles\tNo\n";
 	}else{
 		my $blastFile = "seq_${proteinCount}_blast_result_swissprot.tsv";
-#		my $cmd = "blastp -db ".SPROT." -query $fastaFile -outfmt \"6 sacc qlen qstart qend slen sstart send evalue score pident\" -out $blastFile";
+#		my $cmd = "blastp -db ".SPROT." -query $fastaFile $coreSetting -outfmt \"6 sacc qlen qstart qend slen sstart send evalue score pident\" -out $blastFile";
 		my $cmd = "${cmdLocation}blastp -db ".SPROT." -query $fastaFile -outfmt \"6 sacc stitle pident\" -out $blastFile";
 		system ($cmd);
 		open RESULT, "$blastFile";
