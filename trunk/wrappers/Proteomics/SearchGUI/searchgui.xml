@@ -1,0 +1,135 @@
+<tool id="searchgui" name="SearchGUI" version="0.1.0">
+	<description>
+		Using SearchGUI to perform MS/MS search via X!Tandem and OMSSA
+	</description>
+	<command interpreter="perl">$__root_dir__/../gio_applications/searchgui/searchgui.pl $config $output $__new_file_path__ $output.id</command>
+<!--	<command interpreter="perl">show.pl $config $output</command>-->
+	<inputs>
+		<param format="mgf" name="spectra" type="data" multiple="true" label="Input Peak Lists (mgf)" help="Select appropriate MGF dataset(s) from history" />
+		<conditional name="database">
+			<param name="source_select" type="select" label="Database source">
+				<option value="built_in">Built-In Databases</option>
+				<option value="upload">Your Upload File</option>
+			</param>
+			<when value="built_in">
+				<param name="dbkey" type="select" format="text" >
+					<label>Database</label>
+					<options from_file="gio_proteomes.loc">
+						<column name="name" index="1" />
+						<column name="value" index="2" />
+					</options>
+				</param>
+			</when>
+			<when value="upload">
+				<param name="fasta_file" type="data" format="fasta" label="Uploaded FASTA file" help="The protein database to search the spectra against, which must NOT contain any decoy sequence"/>
+			</when>
+		</conditional>
+	
+		<param name="precursor_ion_tol" type="float" value="10" label="Percursor Ion Tolerance" help="Provide error value for precursor ion, based on instrument used. 10 ppm recommended for Orbitrap instrument"/>
+		<param name="precursor_ion_tol_units" type="select" label="Precursor Ion Tolerance Units" help="Select based on instrument used, as different machines provide different quality of spectra. ppm is a standard for most precursor ions">
+			<option value="1">Parts per million (ppm)</option>
+			<option value="2">Daltons</option>
+		</param>
+<!--		<param name="fragment_tol" type="float" value="0.5" label="Fragment Tolerance (Daltons)" help="Provide error value for fragment ions, based on instrument used"/>-->
+		<param name="enzyme" type="select" label="Enzyme" help="Which enzyme was used for protein digest in experiment? In most cases, trypsin is used">
+			<option value="Trypsin">Trypsin</option>
+			<option value="Chymotrypsin (FYWL)">Chymotrypsin (FYWL)</option>
+			<option value="Lys-C">Lys-C</option>
+			<option value="Lys-N (K)">Lys-N (K)</option>
+			<option value="Glu-C">Glu-C</option>
+			<option value="Arg-C">Arg-C</option>
+			<option value="Asp-N">Asp-N</option>
+			<option value="whole protein">whole protein</option>
+			<option value="No enzyme">No enzyme</option>
+<!--			<option value="CNBr">CNBr</option>
+			<option value="Formic Acid">Formic Acid</option>
+			<option value="Lys-C, no P rule">Lys-C, no P rule</option>
+			<option value="Pepsin A">Pepsin A</option>
+			<option value="Trypsin + CNBr">Trypsin + CNBr</option>
+			<option value="Trypsin + Chymotrypsin (FYWLKR)">Trypsin + Chymotrypsin (FYWLKR)</option>
+			<option value="Trypsin, no P rule">Trypsin, no P rule</option>
+			<option value="Asp-N + Glu-C">Asp-N + Glu-C</option>
+			<option value="Top-Down">Top-Down</option>
+			<option value="Semi-Tryptic">Semi-Tryptic</option>
+			<option value="Chymotrypsin, no P rule (FYWL)">Chymotrypsin, no P rule (FYWL)</option>
+			<option value="Asp-N (DE)">Asp-N (DE)</option>
+			<option value="Glu-C (DE)">Glu-C (DE)</option>
+			<option value="Thermolysin, no P rule">Thermolysin, no P rule</option>
+			<option value="Semi-Chymotrypsin (FYWL)">Semi-Chymotrypsin (FYWL)</option>
+			<option value="Semi-Glu-C">Semi-Glu-C</option>  -->   
+		</param>
+		<param name="missed_cleavages" type="integer" value="2" label="Maximum Missed Cleavages" help="Allow peptides to contain up to this many missed enzyme cleavage sites. 2 is the recommended value"/>
+		<param name="fixed_modifications" type="select" label="Fixed Modifications" multiple="true" help="Occurs in known places on peptide sequence. Hold the appropriate key while clicking to select multiple items">
+			<options from_file="searchgui_mods.loc">
+				<column name="name" index="0" />
+				<column name="value" index="0" />
+			</options>
+		</param>
+		<param name="variable_modifications" type="select" label="Variable Modifications" multiple="true" help="Can occur anywhere on the peptide sequence; adds additional error to search score. Hold the appropriate key while clicking to select multiple items">
+			<options from_file="searchgui_mods.loc">
+				<column name="name" index="0" />
+				<column name="value" index="0" />
+			</options>
+		</param>
+
+		<param name="min_charge" label="Minimum Charge" value="2" type="integer" help="Lowest searched charge value for fragment ions"/>
+		<param name="max_charge" label="Maximum Charge" value="4" type="integer" help="Highest searched charge value for fragment ions"/>
+
+<!--		<param name="omssa" label="Run OMSSA?" type="boolean" value="True"/>-->
+		<param name="omssa" label="Run OMSSA" type="select">
+			<option value="1" selected="true">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="tandem" label="Run X!Tandem" type="select">
+			<option value="1" selected="true">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="msgf" label="Run MS-GF+" type="select">
+			<option value="1" selected="true">Yes</option>
+			<option value="0">No</option>
+		</param>
+<!--		<param name="forward_ion" label="Forward Ion" type="select" help="Searched fragment ion type. Select a, b or c based on collisions induced in experiment">
+			<option value="a">a</option>
+			<option value="b" selected="true">b</option>
+			<option value="c">c</option>
+		</param>-->
+<!--		<param name="reverse_ion" label="Reverse Ion" type="select" help="Searched fragment ion type. Select x, y, or z based on collisions induced in experiment">
+			<option value="x">x</option>
+			<option value="y" selected="true">y</option>
+			<option value="z">z</option>
+		</param>-->
+	</inputs>
+	<configfiles>
+		<configfile name="config">spectra
+#for $i, $s in enumerate($spectra)
+${s.file_name} ${s.hid}
+#end for
+
+#if $database.source_select=="built_in":
+built-in
+$database.dbkey
+#else
+upload
+$database.fasta_file
+#end if
+
+Identification
+-prec_tol $precursor_ion_tol -prec_ppm $precursor_ion_tol_units -mc $missed_cleavages -enzyme $enzyme -min_charge $min_charge -max_charge $max_charge -fixed_mods $fixed_modifications -variable_mods $variable_modifications
+
+Search
+-xtandem $tandem -msgf $msgf -omssa $omssa
+		</configfile>
+	</configfiles>
+	<outputs>
+		<data format="html" name="output" label="SearchGUI parameter setting for ${on_string}"/>
+<!--		<data format="mzid" name="omssa_result" label="The OMSSA search result on${on_string}">
+			<filter> type_selection['type'] =="mzid"</filter>
+		</data>-->
+	</outputs>
+	<help>
+**What it does**
+
+Runs multiple search engines (X!Tandem, OMSSA and MS-GF+) on any number of MGF peak lists using the SearchGUI application. All result files are automatically converted to the PSI standard format mzIdentML
+
+	</help>
+</tool>

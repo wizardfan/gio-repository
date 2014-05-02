@@ -1,0 +1,11 @@
+#max number of modifications per peptide
+NumMods=2
+
+#fixed modifications
+57.021464,C,fix,any,Carbamidomethyl
+
+#variable modifications
+15.994915,M,opt,any,Oxidation
+79.966331,S,opt,any,Phospho
+79.966331,T,opt,any,Phospho
+79.966331,Y,opt,any,Phospho
