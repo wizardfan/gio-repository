@@ -1,4 +1,4 @@
-<tool id="mzidlib_processing" name="mzIdLib:PostProcessing" version="1.1.0">
+<tool id="mzidlib_processing" name="mzIdLib:PostProcessing" version="1.1.1">
     <description>Using mzIdentML-Lib to do some post processing including FDR calculation etc.</description>
     <command interpreter="perl">$__root_dir__/../gio_applications/mzidlib/mzidlibPostProcessing.pl $input $output $output.id $__new_file_path__ FalseDiscoveryRate -decoyRegex $decoyRegex -decoyValue $decoyValue -cvTerm $cvTerm -betterScoresAreLower $betterScoresAreLower Threshold -isPSMThreshold $isPSMThreshold -cvAccessionForScoreThreshold $cvAccessionForScoreThreshold -threshValue $threshValue -betterScoresAreLower $thresholdBetterScoresAreLower -deleteUnderThreshold $deleteUnderThreshold ProteoGrouper -cvAccForSIIScore $cvAccForSIIScore -logTransScore $logTransScore -requireSIIsToPassThreshold $requireSIIsToPassThreshold
     </command>
@@ -6,7 +6,8 @@
         <macro name="macro_fdr">
             <param name="decoyRegex" type="select" format="Text">
                 <label>Regular expression indicating decoy peptides</label>
-                <option value="XXX_" selected = "true">MS-GF+ ("XXX_")</option>
+                <option value="REVERSE" selected = "true">SearchGUI ("REVERSE")</option>
+                <option value="XXX_">MS-GF+ ("XXX_")</option>
             </param>
 
             <param name="decoyValue" type="integer" format="text" value="1">
@@ -15,6 +16,9 @@
 
             <param name="cvTerm" type="select" format="Text">
                 <label>CV term of score to use for FDR calculation</label>
+                <option value="MS:1001328">OMSSA:evalue (MS:1001328)</option>
+                <option value="MS:1001330">X!Tandem:expect (MS:1001330)</option>
+                <option value="MS:1002052">MS-GF+ SpecEValue (MS:1002052)</option>
                 <option value="MS:1002053" selected = "true">MS-GF+ E-Value (MS:1002053)</option>
             </param>
 
@@ -33,7 +37,11 @@
 
             <param name="cvAccessionForScoreThreshold" type="select" format="Text">
                 <label>Score to use for thresholding</label>
-                <option value="MS:1001874" selected = "true">FDRScore (MS:1001874)</option>
+                <option value="MS:1002355" selected = "true">PSM-level FDRScore (MS:1002355)</option>
+                <option value="MS:1002356">PSM-level combined FDRScore (MS:1002356)</option>
+<!--                <option value="MS:1002360">Distinct peptide-level FDRScore (MS:1002360)</option>
+                <option value="MS:1002365">Protein-level FDRScore (MS:1002365)</option>
+                <option value="MS:1002374">Protein group-level FDRScore (MS:1002374)</option>-->
             </param>
 
             <param name="threshValue" type="float" format="text" value="0.01">
@@ -55,7 +63,8 @@
         <macro name="macro_proteogroup">
             <param name="cvAccForSIIScore" type="select" format="Text">
                 <label>CV term of SII score</label>
-                <option value="MS:1001874" selected = "true">FDRScore (MS:1001874)</option>
+                <option value="MS:1002355" selected = "true">PSM-level FDRScore (MS:1002355)</option>
+                <option value="MS:1002356">PSM-level combined FDRScore (MS:1002356)</option>
             </param>
 
             <param name="logTransScore" type="select" format="text">
