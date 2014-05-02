@@ -108,7 +108,7 @@ for (my $i=0;$i<scalar @spectra;$i++){
 	push (@historyIDs, $hid);
 }
 my $spectraStr = join(",", @mgf);
-$searchCmd .= "$spectraStr -output_folder $tmpFolder/result$id -id_params $tmpFolder/search_$id.parameters $search 2> /dev/null";
+$searchCmd .= "$spectraStr -output_folder $tmpFolder/result$id -id_params $tmpFolder/search_$id.parameters -ms_amanda 0 $search 2> /dev/null";
 print OUT "search command: $searchCmd\n\n\n";
 #open CMD, "$searchCmd |";
 #while(<CMD>){
