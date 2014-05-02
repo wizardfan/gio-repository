@@ -2,3 +2,4 @@
     <label text="General Proteomics" id="proteomics"/>
 	<tool file="gio/Proteomics/msgfplus/msgfplus.xml" />
 	<tool file="gio/Proteomics/xtracker/emPAI.xml" />
+	<tool file="gio/Proteomics/SearchGUI/searchgui.xml" />

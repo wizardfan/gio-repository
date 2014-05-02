@@ -1,0 +1,8 @@
+Memory settings read from the user preferences: 4096
+args: 
+original java.home: /usr/lib/jvm/java-7-openjdk-amd64/jre/bin/
+new java.home: /usr/lib/jvm/java-7-openjdk-amd64/jre/bin/
+
+Command line: 
+/usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java -splash:resources/conf/searchgui-splash.png -Xms128M -Xmx4096M -cp /home/jun/Downloads/SearchGUI-1.18.2/SearchGUI-1.18.2.jar eu.isas.searchgui.gui.SearchGUI 
+Process exitValue: 0

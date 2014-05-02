@@ -137,6 +137,6 @@ Runs an MS/MS database search using the MSGFPlus search engine.
 
 **References**
 
-Please see http://proteomics.ucsd.edu/Software/MSGFPlus.html for details of the MSGFPlus search engine and references describing its algorithm
+Please see http://proteomics.ucsd.edu/Software/MSGFPlus/ for details of the MSGFPlus search engine and references describing its algorithm
     </help>
 </tool>
