@@ -1,6 +1,6 @@
-<tool id="searchgui" name="SearchGUI" version="0.1.0">
+<tool id="searchgui" name="SearchGUI" version="1.0.0">
 	<description>
-		Using SearchGUI to perform MS/MS search via X!Tandem and OMSSA
+		Using SearchGUI to perform MS/MS search via X!Tandem, OMSSA and MS-GF+
 	</description>
 	<command interpreter="perl">$__root_dir__/../gio_applications/searchgui/searchgui.pl $config $output $__new_file_path__ $output.id</command>
 <!--	<command interpreter="perl">show.pl $config $output</command>-->
