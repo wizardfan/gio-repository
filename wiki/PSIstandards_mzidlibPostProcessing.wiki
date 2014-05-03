@@ -4,11 +4,6 @@ Using mzIdentML-Lib to do some post processing including FDR calculation etc.<br
 *Input files:*
   * input   Input file 
 *Parameters:*<br>
-  * Conditional element: main
-    * fdr
-    * threshold
-    * proteogroup
-
 *Outputs:*<br>
   * output with Type mzid
 *Details:*<br>

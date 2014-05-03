@@ -62,7 +62,7 @@ unless (-e $decoy){
 	system("cp $database $original") if ($type eq "upload");
 	print OUT "java -cp $jarFile eu.isas.searchgui.cmd.FastaCLI -in $original -decoy\n";
 	system("java -cp $jarFile eu.isas.searchgui.cmd.FastaCLI -in $original -decoy");
-#	system("rm $original") if ($type eq "upload");	
+	system("rm $original") if ($type eq "upload");	
 }
 
 #generate parameter file
@@ -146,5 +146,12 @@ foreach my $file(@files){
 		system ("cp \"$tmpFolder/result$id/$file\" $output");
 		last;
 	}
+}
+
+#clear all temp files
+system("rm $tmpFolder/search_$id.parameters");
+system("rm -rf $tmpFolder/result$id");
+for (my $i=0;$i<scalar @spectra;$i++){
+	system ("rm $tmpFolder/spectra_${id}_$i.mgf*");
 }
 
