@@ -12,171 +12,6 @@ xs:schemaLocation="http://www.ncbi.nlm.nih.gov OMSSA.xsd"
 		<MSModSpec_type>
 			<MSModType value="modnp">5</MSModType>
 		</MSModSpec_type>
-		<MSModSpec_name>itraq 4-plex n-term</MSModSpec_name>
-		<MSModSpec_monomass>144.105918</MSModSpec_monomass>
-		<MSModSpec_averagemass>0</MSModSpec_averagemass>
-		<MSModSpec_n15mass>0</MSModSpec_n15mass>
-	</MSModSpec>
-	<MSModSpec>
-		<MSModSpec_mod>
-			<MSMod value="usermod2">120</MSMod>
-		</MSModSpec_mod>
-		<MSModSpec_type>
-			<MSModType value="modaa">0</MSModType>
-		</MSModSpec_type>
-		<MSModSpec_name>itraq 4-plex on k</MSModSpec_name>
-		<MSModSpec_monomass>144.105918</MSModSpec_monomass>
-		<MSModSpec_averagemass>0</MSModSpec_averagemass>
-		<MSModSpec_n15mass>0</MSModSpec_n15mass>
-		<MSModSpec_residues>
-			<MSModSpec_residues_E>K</MSModSpec_residues_E>
-		</MSModSpec_residues>
-	</MSModSpec>
-	<MSModSpec>
-		<MSModSpec_mod>
-			<MSMod value="usermod3">121</MSMod>
-		</MSModSpec_mod>
-		<MSModSpec_type>
-			<MSModType value="modaa">0</MSModType>
-		</MSModSpec_type>
-		<MSModSpec_name>itraq 4-plex on y</MSModSpec_name>
-		<MSModSpec_monomass>144.105918</MSModSpec_monomass>
-		<MSModSpec_averagemass>0</MSModSpec_averagemass>
-		<MSModSpec_n15mass>0</MSModSpec_n15mass>
-		<MSModSpec_residues>
-			<MSModSpec_residues_E>Y</MSModSpec_residues_E>
-		</MSModSpec_residues>
-	</MSModSpec>
-	<MSModSpec>
-		<MSModSpec_mod>
-			<MSMod value="usermod4">122</MSMod>
-		</MSModSpec_mod>
-		<MSModSpec_type>
-			<MSModType value="modnp">5</MSModType>
-		</MSModSpec_type>
-		<MSModSpec_name>itraq 8-plex n-term</MSModSpec_name>
-		<MSModSpec_monomass>304.20536</MSModSpec_monomass>
-		<MSModSpec_averagemass>0</MSModSpec_averagemass>
-		<MSModSpec_n15mass>0</MSModSpec_n15mass>
-	</MSModSpec>
-	<MSModSpec>
-		<MSModSpec_mod>
-			<MSMod value="usermod5">123</MSMod>
-		</MSModSpec_mod>
-		<MSModSpec_type>
-			<MSModType value="modaa">0</MSModType>
-		</MSModSpec_type>
-		<MSModSpec_name>itraq 8-plex on k</MSModSpec_name>
-		<MSModSpec_monomass>304.20536</MSModSpec_monomass>
-		<MSModSpec_averagemass>0</MSModSpec_averagemass>
-		<MSModSpec_n15mass>0</MSModSpec_n15mass>
-		<MSModSpec_residues>
-			<MSModSpec_residues_E>K</MSModSpec_residues_E>
-		</MSModSpec_residues>
-	</MSModSpec>
-	<MSModSpec>
-		<MSModSpec_mod>
-			<MSMod value="usermod6">124</MSMod>
-		</MSModSpec_mod>
-		<MSModSpec_type>
-			<MSModType value="modaa">0</MSModType>
-		</MSModSpec_type>
-		<MSModSpec_name>itraq 8-plex on y</MSModSpec_name>
-		<MSModSpec_monomass>304.20536</MSModSpec_monomass>
-		<MSModSpec_averagemass>0</MSModSpec_averagemass>
-		<MSModSpec_n15mass>0</MSModSpec_n15mass>
-		<MSModSpec_residues>
-			<MSModSpec_residues_E>Y</MSModSpec_residues_E>
-		</MSModSpec_residues>
-	</MSModSpec>
-	<MSModSpec>
-		<MSModSpec_mod>
-			<MSMod value="usermod7">125</MSMod>
-		</MSModSpec_mod>
-		<MSModSpec_type>
-			<MSModType value="modnp">5</MSModType>
-		</MSModSpec_type>
-		<MSModSpec_name>tmt 10-plex n-term</MSModSpec_name>
-		<MSModSpec_monomass>229.162932</MSModSpec_monomass>
-		<MSModSpec_averagemass>0</MSModSpec_averagemass>
-		<MSModSpec_n15mass>0</MSModSpec_n15mass>
-	</MSModSpec>
-	<MSModSpec>
-		<MSModSpec_mod>
-			<MSMod value="usermod8">126</MSMod>
-		</MSModSpec_mod>
-		<MSModSpec_type>
-			<MSModType value="modaa">0</MSModType>
-		</MSModSpec_type>
-		<MSModSpec_name>tmt 10-plex on k</MSModSpec_name>
-		<MSModSpec_monomass>229.162932</MSModSpec_monomass>
-		<MSModSpec_averagemass>0</MSModSpec_averagemass>
-		<MSModSpec_n15mass>0</MSModSpec_n15mass>
-		<MSModSpec_residues>
-			<MSModSpec_residues_E>K</MSModSpec_residues_E>
-		</MSModSpec_residues>
-	</MSModSpec>
-	<MSModSpec>
-		<MSModSpec_mod>
-			<MSMod value="usermod9">127</MSMod>
-		</MSModSpec_mod>
-		<MSModSpec_type>
-			<MSModType value="modnp">5</MSModType>
-		</MSModSpec_type>
-		<MSModSpec_name>tmt 2-plex n-term</MSModSpec_name>
-		<MSModSpec_monomass>229.162932</MSModSpec_monomass>
-		<MSModSpec_averagemass>0</MSModSpec_averagemass>
-		<MSModSpec_n15mass>0</MSModSpec_n15mass>
-	</MSModSpec>
-	<MSModSpec>
-		<MSModSpec_mod>
-			<MSMod value="usermod10">128</MSMod>
-		</MSModSpec_mod>
-		<MSModSpec_type>
-			<MSModType value="modaa">0</MSModType>
-		</MSModSpec_type>
-		<MSModSpec_name>tmt 2-plex on k</MSModSpec_name>
-		<MSModSpec_monomass>229.162932</MSModSpec_monomass>
-		<MSModSpec_averagemass>0</MSModSpec_averagemass>
-		<MSModSpec_n15mass>0</MSModSpec_n15mass>
-		<MSModSpec_residues>
-			<MSModSpec_residues_E>K</MSModSpec_residues_E>
-		</MSModSpec_residues>
-	</MSModSpec>
-	<MSModSpec>
-		<MSModSpec_mod>
-			<MSMod value="usermod11">142</MSMod>
-		</MSModSpec_mod>
-		<MSModSpec_type>
-			<MSModType value="modnp">5</MSModType>
-		</MSModSpec_type>
-		<MSModSpec_name>tmt 6-plex n-term</MSModSpec_name>
-		<MSModSpec_monomass>229.162932</MSModSpec_monomass>
-		<MSModSpec_averagemass>0</MSModSpec_averagemass>
-		<MSModSpec_n15mass>0</MSModSpec_n15mass>
-	</MSModSpec>
-	<MSModSpec>
-		<MSModSpec_mod>
-			<MSMod value="usermod12">143</MSMod>
-		</MSModSpec_mod>
-		<MSModSpec_type>
-			<MSModType value="modaa">0</MSModType>
-		</MSModSpec_type>
-		<MSModSpec_name>tmt 6-plex on k</MSModSpec_name>
-		<MSModSpec_monomass>229.162932</MSModSpec_monomass>
-		<MSModSpec_averagemass>0</MSModSpec_averagemass>
-		<MSModSpec_n15mass>0</MSModSpec_n15mass>
-		<MSModSpec_residues>
-			<MSModSpec_residues_E>K</MSModSpec_residues_E>
-		</MSModSpec_residues>
-	</MSModSpec>
-	<MSModSpec>
-		<MSModSpec_mod>
-			<MSMod value="usermod13">144</MSMod>
-		</MSModSpec_mod>
-		<MSModSpec_type>
-			<MSModType value="modnp">5</MSModType>
-		</MSModSpec_type>
 		<MSModSpec_name>dimethyl 2d n-terminus</MSModSpec_name>
 		<MSModSpec_monomass>32.0564</MSModSpec_monomass>
 		<MSModSpec_averagemass>0</MSModSpec_averagemass>
@@ -184,7 +19,7 @@ xs:schemaLocation="http://www.ncbi.nlm.nih.gov OMSSA.xsd"
 	</MSModSpec>
 	<MSModSpec>
 		<MSModSpec_mod>
-			<MSMod value="usermod14">145</MSMod>
+			<MSMod value="usermod2">120</MSMod>
 		</MSModSpec_mod>
 		<MSModSpec_type>
 			<MSModType value="modaa">0</MSModType>
@@ -199,7 +34,7 @@ xs:schemaLocation="http://www.ncbi.nlm.nih.gov OMSSA.xsd"
 	</MSModSpec>
 	<MSModSpec>
 		<MSModSpec_mod>
-			<MSMod value="usermod15">146</MSMod>
+			<MSMod value="usermod3">121</MSMod>
 		</MSModSpec_mod>
 		<MSModSpec_type>
 			<MSModType value="modaa">0</MSModType>
@@ -214,13 +49,178 @@ xs:schemaLocation="http://www.ncbi.nlm.nih.gov OMSSA.xsd"
 	</MSModSpec>
 	<MSModSpec>
 		<MSModSpec_mod>
-			<MSMod value="usermod16">147</MSMod>
+			<MSMod value="usermod4">122</MSMod>
 		</MSModSpec_mod>
 		<MSModSpec_type>
 			<MSModType value="modaa">0</MSModType>
 		</MSModSpec_type>
 		<MSModSpec_name>gtp desthiobiotinc13</MSModSpec_name>
 		<MSModSpec_monomass>202.141307</MSModSpec_monomass>
+		<MSModSpec_averagemass>0</MSModSpec_averagemass>
+		<MSModSpec_n15mass>0</MSModSpec_n15mass>
+		<MSModSpec_residues>
+			<MSModSpec_residues_E>K</MSModSpec_residues_E>
+		</MSModSpec_residues>
+	</MSModSpec>
+	<MSModSpec>
+		<MSModSpec_mod>
+			<MSMod value="usermod5">123</MSMod>
+		</MSModSpec_mod>
+		<MSModSpec_type>
+			<MSModType value="modnp">5</MSModType>
+		</MSModSpec_type>
+		<MSModSpec_name>itraq 4-plex n-term</MSModSpec_name>
+		<MSModSpec_monomass>144.105918</MSModSpec_monomass>
+		<MSModSpec_averagemass>0</MSModSpec_averagemass>
+		<MSModSpec_n15mass>0</MSModSpec_n15mass>
+	</MSModSpec>
+	<MSModSpec>
+		<MSModSpec_mod>
+			<MSMod value="usermod6">124</MSMod>
+		</MSModSpec_mod>
+		<MSModSpec_type>
+			<MSModType value="modaa">0</MSModType>
+		</MSModSpec_type>
+		<MSModSpec_name>itraq 4-plex on k</MSModSpec_name>
+		<MSModSpec_monomass>144.105918</MSModSpec_monomass>
+		<MSModSpec_averagemass>0</MSModSpec_averagemass>
+		<MSModSpec_n15mass>0</MSModSpec_n15mass>
+		<MSModSpec_residues>
+			<MSModSpec_residues_E>K</MSModSpec_residues_E>
+		</MSModSpec_residues>
+	</MSModSpec>
+	<MSModSpec>
+		<MSModSpec_mod>
+			<MSMod value="usermod7">125</MSMod>
+		</MSModSpec_mod>
+		<MSModSpec_type>
+			<MSModType value="modaa">0</MSModType>
+		</MSModSpec_type>
+		<MSModSpec_name>itraq 4-plex on y</MSModSpec_name>
+		<MSModSpec_monomass>144.105918</MSModSpec_monomass>
+		<MSModSpec_averagemass>0</MSModSpec_averagemass>
+		<MSModSpec_n15mass>0</MSModSpec_n15mass>
+		<MSModSpec_residues>
+			<MSModSpec_residues_E>Y</MSModSpec_residues_E>
+		</MSModSpec_residues>
+	</MSModSpec>
+	<MSModSpec>
+		<MSModSpec_mod>
+			<MSMod value="usermod8">126</MSMod>
+		</MSModSpec_mod>
+		<MSModSpec_type>
+			<MSModType value="modnp">5</MSModType>
+		</MSModSpec_type>
+		<MSModSpec_name>itraq 8-plex n-term</MSModSpec_name>
+		<MSModSpec_monomass>304.20536</MSModSpec_monomass>
+		<MSModSpec_averagemass>0</MSModSpec_averagemass>
+		<MSModSpec_n15mass>0</MSModSpec_n15mass>
+	</MSModSpec>
+	<MSModSpec>
+		<MSModSpec_mod>
+			<MSMod value="usermod9">127</MSMod>
+		</MSModSpec_mod>
+		<MSModSpec_type>
+			<MSModType value="modaa">0</MSModType>
+		</MSModSpec_type>
+		<MSModSpec_name>itraq 8-plex on k</MSModSpec_name>
+		<MSModSpec_monomass>304.20536</MSModSpec_monomass>
+		<MSModSpec_averagemass>0</MSModSpec_averagemass>
+		<MSModSpec_n15mass>0</MSModSpec_n15mass>
+		<MSModSpec_residues>
+			<MSModSpec_residues_E>K</MSModSpec_residues_E>
+		</MSModSpec_residues>
+	</MSModSpec>
+	<MSModSpec>
+		<MSModSpec_mod>
+			<MSMod value="usermod10">128</MSMod>
+		</MSModSpec_mod>
+		<MSModSpec_type>
+			<MSModType value="modaa">0</MSModType>
+		</MSModSpec_type>
+		<MSModSpec_name>itraq 8-plex on y</MSModSpec_name>
+		<MSModSpec_monomass>304.20536</MSModSpec_monomass>
+		<MSModSpec_averagemass>0</MSModSpec_averagemass>
+		<MSModSpec_n15mass>0</MSModSpec_n15mass>
+		<MSModSpec_residues>
+			<MSModSpec_residues_E>Y</MSModSpec_residues_E>
+		</MSModSpec_residues>
+	</MSModSpec>
+	<MSModSpec>
+		<MSModSpec_mod>
+			<MSMod value="usermod11">142</MSMod>
+		</MSModSpec_mod>
+		<MSModSpec_type>
+			<MSModType value="modnp">5</MSModType>
+		</MSModSpec_type>
+		<MSModSpec_name>tmt 2-plex n-term</MSModSpec_name>
+		<MSModSpec_monomass>229.162932</MSModSpec_monomass>
+		<MSModSpec_averagemass>0</MSModSpec_averagemass>
+		<MSModSpec_n15mass>0</MSModSpec_n15mass>
+	</MSModSpec>
+	<MSModSpec>
+		<MSModSpec_mod>
+			<MSMod value="usermod12">143</MSMod>
+		</MSModSpec_mod>
+		<MSModSpec_type>
+			<MSModType value="modaa">0</MSModType>
+		</MSModSpec_type>
+		<MSModSpec_name>tmt 2-plex on k</MSModSpec_name>
+		<MSModSpec_monomass>229.162932</MSModSpec_monomass>
+		<MSModSpec_averagemass>0</MSModSpec_averagemass>
+		<MSModSpec_n15mass>0</MSModSpec_n15mass>
+		<MSModSpec_residues>
+			<MSModSpec_residues_E>K</MSModSpec_residues_E>
+		</MSModSpec_residues>
+	</MSModSpec>
+	<MSModSpec>
+		<MSModSpec_mod>
+			<MSMod value="usermod13">144</MSMod>
+		</MSModSpec_mod>
+		<MSModSpec_type>
+			<MSModType value="modnp">5</MSModType>
+		</MSModSpec_type>
+		<MSModSpec_name>tmt 6-plex n-term</MSModSpec_name>
+		<MSModSpec_monomass>229.162932</MSModSpec_monomass>
+		<MSModSpec_averagemass>0</MSModSpec_averagemass>
+		<MSModSpec_n15mass>0</MSModSpec_n15mass>
+	</MSModSpec>
+	<MSModSpec>
+		<MSModSpec_mod>
+			<MSMod value="usermod14">145</MSMod>
+		</MSModSpec_mod>
+		<MSModSpec_type>
+			<MSModType value="modaa">0</MSModType>
+		</MSModSpec_type>
+		<MSModSpec_name>tmt 6-plex on k</MSModSpec_name>
+		<MSModSpec_monomass>229.162932</MSModSpec_monomass>
+		<MSModSpec_averagemass>0</MSModSpec_averagemass>
+		<MSModSpec_n15mass>0</MSModSpec_n15mass>
+		<MSModSpec_residues>
+			<MSModSpec_residues_E>K</MSModSpec_residues_E>
+		</MSModSpec_residues>
+	</MSModSpec>
+	<MSModSpec>
+		<MSModSpec_mod>
+			<MSMod value="usermod15">146</MSMod>
+		</MSModSpec_mod>
+		<MSModSpec_type>
+			<MSModType value="modnp">5</MSModType>
+		</MSModSpec_type>
+		<MSModSpec_name>tmt 10-plex n-term</MSModSpec_name>
+		<MSModSpec_monomass>229.162932</MSModSpec_monomass>
+		<MSModSpec_averagemass>0</MSModSpec_averagemass>
+		<MSModSpec_n15mass>0</MSModSpec_n15mass>
+	</MSModSpec>
+	<MSModSpec>
+		<MSModSpec_mod>
+			<MSMod value="usermod16">147</MSMod>
+		</MSModSpec_mod>
+		<MSModSpec_type>
+			<MSModType value="modaa">0</MSModType>
+		</MSModSpec_type>
+		<MSModSpec_name>tmt 10-plex on k</MSModSpec_name>
+		<MSModSpec_monomass>229.162932</MSModSpec_monomass>
 		<MSModSpec_averagemass>0</MSModSpec_averagemass>
 		<MSModSpec_n15mass>0</MSModSpec_n15mass>
 		<MSModSpec_residues>

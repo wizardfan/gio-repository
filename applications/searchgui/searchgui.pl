@@ -9,7 +9,7 @@ my $output = $ARGV[1];#the output file, should be temporary
 my $path = $ARGV[2];#galaxy temp folder, used to locate executables
 my $id = $ARGV[3];#new job id to be distinguished from other SearchGUI search
 
-my $version="1.18.2";
+my $version="1.18.3";
 my $applicationPath = "$path/../../../gio_applications";
 my $jarFile = "$applicationPath/searchgui/SearchGUI/SearchGUI-${version}.jar";
 unless (-e $jarFile){
