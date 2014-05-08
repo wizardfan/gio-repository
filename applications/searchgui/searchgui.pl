@@ -11,7 +11,7 @@ my $id = $ARGV[3];#new job id to be distinguished from other SearchGUI search
 
 my $version="1.18.3";
 my $applicationPath = "$path/../../../gio_applications";
-my $jarFile = "$applicationPath/searchgui/SearchGUI/SearchGUI-${version}.jar";
+my $jarFile = "$applicationPath/searchgui/SearchGUI/SearchGUI-${version}-javaLib.jar";
 unless (-e $jarFile){
 	print OUT "Error: Cannot locate the jar file at $jarFile\n";
 	exit 1;
@@ -128,11 +128,11 @@ for (my $i=0;$i < scalar @spectra;$i++){
 		system("cp ${prefix}.mzid $path/primary_${id}_MSGF+ResultOn$historyIDs[$i]_visible_mzid");
 	}
 	if($omssa == 1){
-		system ("java -jar $applicationPath/mzidlib/mzidlib-1.6-javaLib.jar Omssa2mzid ${prefix}.omx ${prefix}-omssa.mzid -outputFragmentation false -decoyRegex REVERSED -omssaModsFile $tmpFolder/result$id/mods.xml -userModsFile $tmpFolder/result$id/usermods.xml -compress false");
+		system ("java -jar $applicationPath/mzidlib/mzidlib-1.6.8-javaLib.jar Omssa2mzid ${prefix}.omx ${prefix}-omssa.mzid -outputFragmentation false -decoyRegex REVERSED -omssaModsFile $tmpFolder/result$id/mods.xml -userModsFile $tmpFolder/result$id/usermods.xml -compress false");
 		system("cp ${prefix}-omssa.mzid $path/primary_${id}_OMSSAresultOn$historyIDs[$i]_visible_mzid");
 	}
 	if($xtandem == 1){
-		system ("java -jar $applicationPath/mzidlib/mzidlib-1.6-javaLib.jar Tandem2mzid ${prefix}.t.xml ${prefix}-tandem.mzid -outputFragmentation false -decoyRegex REVERSED -databaseFileFormatID MS:1001348 -massSpecFileFormatID MS:1001062 -idsStartAtZero false -proteinCodeRegex \\S+ -compress false");
+		system ("java -jar $applicationPath/mzidlib/mzidlib-1.6.8-javaLib.jar Tandem2mzid ${prefix}.t.xml ${prefix}-tandem.mzid -outputFragmentation false -decoyRegex REVERSED -databaseFileFormatID MS:1001348 -massSpecFileFormatID MS:1001062 -idsStartAtZero false -proteinCodeRegex \\S+ -compress false");
 		system("cp ${prefix}-tandem.mzid $path/primary_${id}_XTandemResultOn$historyIDs[$i]_visible_mzid");
 	}
 }
