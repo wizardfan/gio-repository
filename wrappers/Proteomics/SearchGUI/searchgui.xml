@@ -121,7 +121,7 @@ Search
 		</configfile>
 	</configfiles>
 	<outputs>
-		<data format="html" name="output" label="SearchGUI on ${on_string}"/>
+		<data format="html" name="output" label="MS/MS Search on ${on_string}"/>
 <!--		<data format="mzid" name="omssa_result" label="The OMSSA search result on${on_string}">
 			<filter> type_selection['type'] =="mzid"</filter>
 		</data>-->
