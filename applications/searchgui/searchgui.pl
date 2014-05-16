@@ -9,7 +9,7 @@ my $output = $ARGV[1];#the output file, should be temporary
 my $path = $ARGV[2];#galaxy temp folder, used to locate executables
 my $id = $ARGV[3];#new job id to be distinguished from other SearchGUI search
 
-my $version="1.18.3";
+my $version="1.18.5";
 my $applicationPath = "$path/../../../gio_applications";
 my $jarFile = "$applicationPath/searchgui/SearchGUI/SearchGUI-${version}-javaLib.jar";
 unless (-e $jarFile){
@@ -108,18 +108,13 @@ for (my $i=0;$i<scalar @spectra;$i++){
 	push (@historyIDs, $hid);
 }
 my $spectraStr = join(",", @mgf);
-$searchCmd .= "$spectraStr -output_folder $tmpFolder/result$id -id_params $tmpFolder/search_$id.parameters -ms_amanda 0 $search 2> /dev/null";
+$searchCmd .= "$spectraStr -output_folder $tmpFolder/result$id -id_params $tmpFolder/search_$id.parameters -ms_amanda 0 -mgf_splitting 8000 $search 2> /dev/null";
 print OUT "search command: $searchCmd\n\n\n";
 #open CMD, "$searchCmd |";
 #while(<CMD>){
 #	print OUT "$_";
 #}
 system ($searchCmd);
-
-#open CMD, "pwd |";
-#while(<CMD>){
-#	print OUT "current path: $_";
-#}
 
 #deal with the result files
 for (my $i=0;$i < scalar @spectra;$i++){
