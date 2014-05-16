@@ -8,7 +8,7 @@
   * [PIT_speciesFinding Protein_homology]
 ==Section Proteomics==
   * [Proteomics_msgfplus MSGF+_MSMS_Search]
-  * [Proteomics_searchgui SearchGUI]
+  * [Proteomics_searchgui MS/MS_Search]
   * [Proteomics_emPAI emPAI_analysis_in_X-Tracker]
 ==Section PSI standards==
   * [PSIstandards_mzidlibConverter mzIdLib:Converter]

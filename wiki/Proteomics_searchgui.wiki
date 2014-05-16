@@ -1,4 +1,4 @@
-*Name:* SearchGUI<br>
+*Name:* MS/MS Search<br>
 *Description:*<br>
 
 		Using SearchGUI to perform MS/MS search via X!Tandem, OMSSA and MS-GF+

@@ -1,4 +1,4 @@
-<tool id="searchgui" name="SearchGUI" version="1.0.0">
+<tool id="searchgui" name="MS/MS Search" version="1.0.0">
 	<description>
 		Using SearchGUI to perform MS/MS search via X!Tandem, OMSSA and MS-GF+
 	</description>
