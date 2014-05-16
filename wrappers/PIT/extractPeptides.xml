@@ -4,7 +4,7 @@
 	#if $type_selection.type=="maxquant":
 java -jar $__root_dir__/../gio_applications/pit/extractPeptide-javaLib.jar $type_selection.input $output $type_selection.type $type_selection.peptide $type_selection.protein $type_selection.reverse $type_selection.contaminant $type_selection.score $type_selection.quant	$type_selection.option
 	#else
-java -jar $__root_dir__/../gio_applications/pit/extractPeptide-javaLib.jar $type_selection.input $output $type_selection.type $fasta
+java -jar $__root_dir__/../gio_applications/pit/extractPeptide-javaLib.jar $type_selection.input $output $type_selection.type fasta
 	#end if
     </command>
     <inputs>
