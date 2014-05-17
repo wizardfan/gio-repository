@@ -4,7 +4,7 @@
 	2. set the file type properly after installing the data types
     -->
     <description>Execute emPAI quantitation method within X-Tracker</description>
-        <command >java -jar $__root_dir__/../gio_applications/xtracker/xTrackerGalaxy.jar $mzq $__root_dir__/../gio_applications/xtracker/ $output</command>
+        <command >java -jar $__root_dir__/../gio_applications/xtracker/xTracker-javaLib.jar $mzq $__root_dir__/../gio_applications/xtracker/ $output</command>
     <inputs>
     	<conditional name="spectra">
       	    <param name="spectra_type" type="select" label="Spectral File Type">
