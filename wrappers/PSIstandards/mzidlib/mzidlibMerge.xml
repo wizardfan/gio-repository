@@ -1,0 +1,57 @@
+<tool id="mzidlib_merge" name="mzIdLib:Merge" version="1.0.0">
+	<description>Using mzIdentML-Lib to do some post processing including FDR calculation etc.</description>
+	<command interpreter="perl">$__root_dir__/../gio_applications/mzidlib/mzidlibMerge.pl $output $output.id $__new_file_path__ $decoyRegex $decoyValue $input1 $cv1 $input2 $cv2
+	#if $third.needed=="1":
+$third.input3 $third.cv3
+#end if
+	</command>
+	<macros>
+		<macro name="cvterm_list">
+			<options from_file="gio_mzidlib_cvterms.loc">
+				<column name="name" index="1" />
+				<column name="value" index="0" />
+			</options>
+		</macro>
+	</macros>
+	<inputs>    
+		<param format="mzid" name="input1" type="data" label="First Input mzIdentML file"/>
+		<param name="cv1" type="select" label="CV term for FDR calculation in the first mzIdentML file">
+			<expand macro="cvterm_list" />
+	    	</param>
+		<param format="mzid" name="input2" type="data" label="Second Input mzIdentML file"/>
+		<param name="cv2" type="select" label="CV term for FDR calculation in the second mzIdentML file">
+			<expand macro="cvterm_list" />
+	    	</param>
+		<conditional name="third">
+			<param name="needed" type="select" label="Need to combine third mzIdentML?">
+				<option value="1" selected="true">Yes</option>
+				<option value="0">No</option>
+		    	</param>
+			<when value="1">
+				<param format="mzid" name="input3" type="data" label="Third Input mzIdentML file"/>
+				<param name="cv3" type="select" label="CV term for FDR calculation in the third mzIdentML file">
+					<expand macro="cvterm_list" />
+				</param>
+	    		</when>
+			<when value="0"></when>
+		</conditional>
+		<param name="decoyRegex" type="select" format="Text">
+			<label>Regular expression indicating decoy peptides</label>
+			<option value="REVERSE" selected = "true">SearchGUI ("REVERSE")</option>
+			<option value="XXX_">MS-GF+ ("XXX_")</option>
+		</param>
+
+		<param name="decoyValue" type="integer" format="text" value="1">
+			<label>Decoy ratio value</label>
+		</param>
+	</inputs>
+
+	<outputs>
+		<data format="mzid" name="output" label="Merged mzIdentML file on ${on_string}"/>
+	</outputs>
+
+	<help>
+	Using mzidLib (https://code.google.com/p/mzidentml-lib/) to combine mzIdentML files from no more than three search engines from the same spectral file into single mzIdentmL file for further processing. 
+    NOTE: This tool internally calls FalseDiscoveryRate in the first (individual search engines) and second pass analysis (combinations of search engines identifying the same PSM). The algorithm REQUIRES a concatenated target:decoy search and will fail if it doesn’t detect a suitable amount of decoys. This also means that the search with individual each search engine needs to export sufficiently weak IDs that there are lots of decoys. 	
+	</help>
+</tool>
