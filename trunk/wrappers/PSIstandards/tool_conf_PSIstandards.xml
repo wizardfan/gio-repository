@@ -4,3 +4,4 @@
 	<tool file="gio/PSIstandards/mzqlib/converter.xml" />
 	<tool file="gio/PSIstandards/mzidlib/mzidlibPostProcessing.xml" />
 	<tool file="gio/PSIstandards/mzidlib/mzidlibConverter.xml" />
+	<tool file="gio/PSIstandards/mzidlib/mzidlibMerge.xml" />

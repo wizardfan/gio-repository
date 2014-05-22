@@ -8,5 +8,5 @@ Using mzIdentML-Lib to do some post processing including FDR calculation etc.<br
   * output with Type mzid
 *Details:*<br>
 	Using mzidLib (https://code.google.com/p/mzidentml-lib/) to do the post processing including calculating false discovery rate (FDR), protein inference etc.. This wrapper is highly recommended for MS/MS search engines which only produce peptide identification, e.g. MSGF+.
-    <br>
+	<br>
 

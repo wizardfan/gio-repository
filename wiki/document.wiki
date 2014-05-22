@@ -12,6 +12,7 @@
   * [Proteomics_emPAI emPAI_analysis_in_X-Tracker]
 ==Section PSI standards==
   * [PSIstandards_mzidlibConverter mzIdLib:Converter]
+  * [PSIstandards_mzidlibMerge mzIdLib:Merge]
   * [PSIstandards_mzidlibPostProcessing mzIdLib:PostProcessing]
   * [PSIstandards_converter mzqLib:Converter]
   * [PSIstandards_proteowizard MSConvert]
