@@ -6,7 +6,7 @@
 		<macro name="macro_fdr">
 			<param name="decoyRegex" type="select" format="Text">
 				<label>Regular expression indicating decoy peptides</label>
-				<option value="REVERSE" selected = "true">SearchGUI ("REVERSE")</option>
+				<option value="REVERSED" selected = "true">SearchGUI ("REVERSED")</option>
 				<option value="XXX_">MS-GF+ ("XXX_")</option>
 			</param>
 
