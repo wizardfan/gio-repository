@@ -16,7 +16,7 @@
 
 			<param name="cvTerm" type="select" format="Text">
 				<label>CV term of score to use for FDR calculation</label>
-				<options from_file="gio_mzidlib_cvterms.loc">
+				<options from_file="gio_searchengine_cvterms.loc">
 					<column name="name" index="1" />
 					<column name="value" index="0" />
 				</options>

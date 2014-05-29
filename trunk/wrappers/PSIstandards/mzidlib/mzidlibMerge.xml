@@ -1,5 +1,5 @@
 <tool id="mzidlib_merge" name="mzIdLib:Merge" version="1.0.0">
-	<description>Using mzIdentML-Lib to do some post processing including FDR calculation etc.</description>
+	<description>Using mzIdentML-Lib to combine mzIdentML result files from different search engines</description>
 	<command interpreter="perl">$__root_dir__/../gio_applications/mzidlib/mzidlibMerge.pl $output $output.id $__new_file_path__ $decoyRegex $decoyValue $input1 $cv1 $input2 $cv2
 	#if $third.needed=="1":
 $third.input3 $third.cv3
@@ -7,7 +7,7 @@ $third.input3 $third.cv3
 	</command>
 	<macros>
 		<macro name="cvterm_list">
-			<options from_file="gio_mzidlib_cvterms.loc">
+			<options from_file="gio_searchengine_cvterms.loc">
 				<column name="name" index="1" />
 				<column name="value" index="0" />
 			</options>

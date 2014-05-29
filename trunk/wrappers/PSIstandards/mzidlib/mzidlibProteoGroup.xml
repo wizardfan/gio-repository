@@ -1,0 +1,34 @@
+<tool id="mzidlib_proteogrouper" name="mzIdLib:ProteoGrouper" version="1.0.0">
+	<description>Using mzIdentML-Lib to perform sequence-based protein inference</description>
+	<command>java -Xms1024m -jar $__root_dir__/../gio_applications/mzidlib/mzidlib-1.6.8-javaLib.jar ProteoGrouper $input $output -cvAccForSIIScore $cvAccForSIIScore -logTransScore $logTransScore -requireSIIsToPassThreshold true -verboseOutput false
+	</command>
+	<inputs>    
+		<param  format="mzid" name="input" type="data" label="Input file"/>
+			<param name="cvAccForSIIScore" type="select" format="Text">
+				<label>CV term for the PSM score to create a protein score</label>
+				<options from_file="gio_postprocessing_cvterms.loc">
+					<column name="name" index="1" />
+					<column name="value" index="0" />
+				</options>
+			</param>
+			<param name="logTransScore" type="select" format="text">
+				<label>Log tranform scores</label>
+				<option value="true" selected = "true">Yes (e.g. for e/p-values)</option>
+				<option value="false">No</option>
+			</param>
+
+<!--			<param name="requireSIIsToPassThreshold" type="select" format="text">
+				<label>Require SIIs to pass threshold</label>
+				<option value="true" selected = "true">Yes</option>
+				<option value="false">No</option>
+			</param>-->
+	</inputs>
+
+	<outputs>
+		<data format="mzid" name="output" label="ProteoGrouper on ${on_string}"/>
+	</outputs>
+
+	<help>
+	ProteoGrouper performs sequence-based protein inference, based on a set of PSMs. It should be parameterized with the CV accession for the PSM score used to create a protein score. The tool also needs to know whether the score should be log transformed (true for e/p-values etc.) to create a positive protein score.
+	</help>
+</tool>

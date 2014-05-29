@@ -5,3 +5,6 @@
 	<tool file="gio/PSIstandards/mzidlib/mzidlibPostProcessing.xml" />
 	<tool file="gio/PSIstandards/mzidlib/mzidlibConverter.xml" />
 	<tool file="gio/PSIstandards/mzidlib/mzidlibMerge.xml" />
+	<tool file="gio/PSIstandards/mzidlib/mzidlibFDR.xml" />
+	<tool file="gio/PSIstandards/mzidlib/mzidlibThreshold.xml" />
+	<tool file="gio/PSIstandards/mzidlib/mzidlibProteoGroup.xml" />
