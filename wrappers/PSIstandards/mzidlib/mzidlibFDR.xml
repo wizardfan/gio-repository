@@ -1,0 +1,61 @@
+<tool id="mzidlib_fdr" name="mzIdLib:FDR" version="1.0.0">
+	<description>Using mzIdentML-Lib to calculate False Discovery Rate</description>
+	<command>java -Xms1024m -jar $__root_dir__/../gio_applications/mzidlib/mzidlib-1.6.8-javaLib.jar FalseDiscoveryRateGlobal $input $output -decoyRegex $decoyRegex -decoyValue $decoyValue -cvTerm $cvTerm -betterScoresAreLower $betterScoresAreLower -fdrLevel $fdrType.level 
+#if $fdrType.level=="ProteinGroup":
+-proteinLevel $fdrType.proteinLevel
+#else
+-proteinLevel PAG
+#end if</command>
+	<inputs>    
+		<param  format="mzid" name="input" type="data" label="Input file"/>
+		<conditional name="fdrType">
+			<param name="level" type="select" label="FDR level">
+				<option value="PSM">Peptide Spectrum Match(PSM)</option>
+				<option value="Peptide">Peptide</option>
+				<option value="ProteinGroup">Protein Group</option>
+			</param>
+			<when value="PSM"/>
+			<when value="Peptide"/>
+			<when value="ProteinGroup">
+				<param name="proteinLevel" type="select" format="Text">
+					<label>Select the protein level to do FDR calculation</label>
+					<help>The difference between these two levels is whether the score is assigned to the protein group already(cvParam on PAG) or it comes from the archor protein of the protein group (if no anchor protein, the first PDH will be used as group representative). This means that the user needs to know what types of scores are annotated in the file, at the group level or PDH level</help>
+					<option value="PAG" selected = "true">Protein Ambiguity Group</option>
+					<option value="PDH">Protein Detection Hypothesis</option>
+				</param>
+			</when>
+		</conditional>
+
+		<param name="decoyRegex" type="select" format="Text">
+			<label>Regular expression indicating decoy peptides</label>
+			<option value="REVERSE" selected = "true">SearchGUI ("REVERSED")</option>
+			<option value="XXX_">MS-GF+ ("XXX_")</option>
+		</param>
+
+		<param name="decoyValue" type="integer" format="text" value="1">
+			<label>Decoy ratio value</label>
+		</param>
+
+		<param name="cvTerm" type="select" format="Text">
+			<label>CV term of score to use for FDR calculation</label>
+			<options from_file="gio_searchengine_cvterms.loc">
+				<column name="name" index="1" />
+				<column name="value" index="0" />
+			</options>
+		</param>
+
+		<param name="betterScoresAreLower" type="select" format="text">
+			<label>Are better scores lower?</label>
+			<option value="true" selected = "true">Yes</option>
+			<option value="false">No</option>
+		</param>
+	</inputs>
+
+	<outputs>
+		<data format="mzid" name="output" label="FDR on ${on_string}"/>
+	</outputs>
+
+	<help>
+	Using mzidLib (https://code.google.com/p/mzidentml-lib/) to calculate false discovery rate (FDR). This tool is highly likely to be used with others from mzidLib.
+	</help>
+</tool>

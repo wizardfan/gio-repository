@@ -1,0 +1,56 @@
+<tool id="mzidlib_threshold" name="mzIdLib:Threshold" version="1.0.0">
+	<description>Using mzIdentML-Lib to remove identification under given threshold</description>
+	<command>java -Xms1024m -jar $__root_dir__/../gio_applications/mzidlib/mzidlib-1.6.8-javaLib.jar Threshold $input $output -isPSMThreshold $isPSMThreshold -cvAccessionForScoreThreshold $score.cvTerm -threshValue $threshValue -betterScoresAreLower $thresholdBetterScoresAreLower -deleteUnderThreshold true
+	</command>
+	<inputs>    
+		<param  format="mzid" name="input" type="data" label="Input file"/>
+		<param name="isPSMThreshold" type="select" format="text">
+			<label>Thresholding Level</label>
+			<option value="true" selected = "true">PSM</option>
+			<option value="false">Protein</option>
+		</param>
+
+		<conditional name="score">
+			<param name="source" type="select" label="Score Type">
+				<option value="post">Post processing score</option>
+				<option value="engine">Search engine score</option>
+			</param>
+			<when value="post">
+				<param name="cvTerm" type="select" format="Text">
+					<label>Post processing score to use for thresholding</label>
+					<options from_file="gio_postprocessing_cvterms.loc">
+						<column name="name" index="1" />
+						<column name="value" index="0" />
+					</options>
+				</param>
+			</when>
+			<when value="engine">
+				<param name="cvTerm" type="select" format="Text">
+					<label>Search engine score to use for thresholding</label>
+					<options from_file="gio_searchengine_cvterms.loc">
+						<column name="name" index="1" />
+						<column name="value" index="0" />
+					</options>
+				</param>
+			</when>
+		</conditional>
+
+		<param name="threshValue" type="float" format="text" value="0.01">
+			<label>Treshold value</label>
+		</param>
+
+		<param name="thresholdBetterScoresAreLower" type="select" format="text">
+			<label>Are better scores lower?</label>
+			<option value="true" selected = "true">Yes</option>
+			<option value="false">No</option>
+		</param>
+	</inputs>
+
+	<outputs>
+		<data format="mzid" name="output" label="Threshold on ${on_string}"/>
+	</outputs>
+
+	<help>
+	Threshold can be used with any search engine or post-processing score that a user may with to apply the threshold over. Usually this tool is used after FDR calculation and can be a precursor to ProteoGrouper.
+	</help>
+</tool>
