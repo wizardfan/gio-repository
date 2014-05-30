@@ -38,7 +38,11 @@ public class GenerateDocument {
             String[] sections = dir.list();
             for(String section:sections){
                 File sectionFolder = new File(folder+"/"+section);
-                out.append("==Section "+section+"==\n");
+                if(section.equals("PSIstandards")) {
+                    out.append("==Section PSI standards==\n");
+                }else{
+                    out.append("==Section "+section+"==\n");
+                }
                 String[] files = sectionFolder.list();
                 for(String file:files){
                     if(file.endsWith(".xml")){

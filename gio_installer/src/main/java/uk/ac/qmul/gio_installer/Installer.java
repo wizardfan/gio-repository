@@ -45,7 +45,6 @@ public class Installer {
         getRepository();
         modifyToolConfByFileOperation();
         moveFolders();
-        System.out.println("Installation finished.");
         clear();
     }
 
@@ -186,26 +185,23 @@ public class Installer {
 //        File delme = new File(CURRENT_PATH);
         try {
             Process proc;
-            System.out.println("Deleting the old version of gio");
+            System.out.println("Deleting the old version of GIO");
             //delete all old installation
             proc = Runtime.getRuntime().exec("rm -r "+GALAXY_PATH+"/tools/gio");
             proc.waitFor();
             proc = Runtime.getRuntime().exec("rm -r "+GALAXY_PATH+"/../gio_applications");
             proc.waitFor();
-            final String cmd = "rm "+GALAXY_PATH+"tool-data/gio_*.loc";
-            System.out.println("Check out: "+cmd);
-            proc = Runtime.getRuntime().exec(cmd);
+            proc = Runtime.getRuntime().exec("rm "+GALAXY_PATH+"tool-data/gio_*.loc");
             proc.waitFor();
-            System.out.println("Permission changed");
+
+            System.out.println("Changing permission for applications");
             //change permission to 775
             proc = Runtime.getRuntime().exec("chmod -R 775 "+CURRENT_PATH+"/gio-repository/applications/");
             proc.waitFor();
+            System.out.println("Installing new version of GIO");
             //put the new version in
-            final String cmd1 = "cp -r "+CURRENT_PATH+"/gio-repository/wrappers/ "+GALAXY_PATH+"/tools/gio";
-//            System.out.println(cmd);
-            proc = Runtime.getRuntime().exec(cmd1);
-            int value = proc.waitFor();
-//            System.out.println(value);
+            proc = Runtime.getRuntime().exec("cp -r "+CURRENT_PATH+"/gio-repository/wrappers/ "+GALAXY_PATH+"/tools/gio");
+            proc.waitFor();
             proc = Runtime.getRuntime().exec("cp -r "+CURRENT_PATH+"/gio-repository/applications/ "+GALAXY_PATH+"/../gio_applications");
             proc.waitFor();
         } catch (IOException ex) {
