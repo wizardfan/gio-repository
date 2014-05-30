@@ -1,0 +1,19 @@
+*Name:* mzIdLib:Threshold<br>
+*Description:*<br>
+Using mzIdentML-Lib to remove identification under given threshold<br>
+*Input files:*
+  * input   Input file 
+*Parameters:*<br>
+  * isPSMThreshold    
+  * Conditional element: score
+    * post
+    * engine
+
+  * threshValue    
+  * thresholdBetterScoresAreLower    
+*Outputs:*<br>
+  * output with Type mzid
+*Details:*<br>
+	Threshold can be used with any search engine or post-processing score that a user may with to apply the threshold over. Usually this tool is used after FDR calculation and can be a precursor to ProteoGrouper.
+	<br>
+

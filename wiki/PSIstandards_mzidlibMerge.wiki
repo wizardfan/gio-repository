@@ -1,6 +1,6 @@
 *Name:* mzIdLib:Merge<br>
 *Description:*<br>
-Using mzIdentML-Lib to do some post processing including FDR calculation etc.<br>
+Using mzIdentML-Lib to combine mzIdentML result files from different search engines<br>
 *Input files:*
   * input1   First Input mzIdentML file 
   * input2   Second Input mzIdentML file 

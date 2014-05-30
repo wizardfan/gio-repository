@@ -1,4 +1,4 @@
-*Name:* mzIdLib:PostProcessing<br>
+*Name:* mzIdLib:PSM PostProcessing<br>
 *Description:*<br>
 Using mzIdentML-Lib to do some post processing including FDR calculation etc.<br>
 *Input files:*
