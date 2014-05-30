@@ -35,14 +35,19 @@ while (my $line = <IN>){
 }
 
 my %result;
+my $printed = 1;
 foreach my $protein (keys %proteins){
-#	my $seq;
-#	if(exists $seqs{$protein}){
-#		$seq = $seqs{$protein};
-#	}else{
-#		next;
-#	}
-	my $seq = $seqs{$protein};
+	my $seq;
+	if(exists $seqs{$protein}){
+		$seq = $seqs{$protein};
+	}else{
+		if($printed == 1){
+			$printed = 0;
+			print "The known reasons for the unfound protein include: it could be decoy sequence, the original header has been altered due to its length or characters\n";
+		}
+		print "Protein $protein not in the sequences\n";
+		next;
+	}
 	if(exists $result{$seq}){
 		$result{$seq} .= ",$protein";
 	}else{
