@@ -1,5 +1,4 @@
-
-    <label text="PIT" id="pit"/>
+    <section name="GIO:PIT" id="gio_pit">
 	<tool file="gio/PIT/orfall.xml" />
 	<tool file="gio/PIT/proteinSummary.xml" />
 	<tool file="gio/PIT/extractPeptides.xml" />
@@ -7,3 +6,4 @@
 	<tool file="gio/PIT/gmap.xml" />
 	<tool file="gio/PIT/pit.xml" />
 	<tool file="gio/PIT/speciesFinding.xml" />
+    </section>

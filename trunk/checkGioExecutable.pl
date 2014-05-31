@@ -1,4 +1,6 @@
 use strict;
+use IPC::Open2;
+
 my $appFolder = "$ENV{HOME}/gio_applications";
 if (scalar @ARGV > 0){
 	my $tmpFolder = $ARGV[0];
@@ -77,16 +79,28 @@ if ($flagMakeblastdb == 1){
 #tandem		searchgui/SearchGUI/resources/XTandem/linux_32bit
 #tandem		searchgui/SearchGUI/resources/XTandem/linux_64bit
 print "\nXTandem 64bit: $appFolder/searchgui/SearchGUI/resources/XTandem/linux_64bit/tandem\n";
-print "Press enter to continue please due to tandem requirement\n";
-$result = `$appFolder/searchgui/SearchGUI/resources/XTandem/linux_64bit/tandem 2>&1`;
+
+my $in;
+my $out;
+open2 $out, $in, "$appFolder/searchgui/SearchGUI/resources/XTandem/linux_64bit/tandem 2>&1";
+print $in "\n";
+$result = "";
+while (<$out>){
+	$result .= $_;
+}
 my $flagTandem = 0;
 $flagTandem = 1 if($result=~/USAGE: tandem/);
 if ($flagTandem == 1){
 	print "64bit tandem: ok\n";
 }else{
 	print "\nXTandem 32bit: $appFolder/searchgui/SearchGUI/resources/XTandem/linux_32bit/tandem\n";
-	print "Press enter to continue please due to tandem requirement\n";
-	$result = `$appFolder/searchgui/SearchGUI/resources/XTandem/linux_32bit/tandem 2>&1`;
+	open2 $out, $in, "$appFolder/searchgui/SearchGUI/resources/XTandem/linux_32bit/tandem 2>&1";
+	print $in "\n";
+	$result = "";
+	while (<$out>){
+		$result .= $_;
+	}
+	#$result = `$appFolder/searchgui/SearchGUI/resources/XTandem/linux_32bit/tandem 2>&1`;
 	$flagTandem = 1 if($result=~/USAGE: tandem/);
 	if ($flagTandem == 1){
 		print "32bit tandem: ok\n";
