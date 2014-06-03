@@ -1,9 +1,9 @@
     <section name="GIO:PIT" id="gio_pit">
-	<tool file="gio/PIT/orfall.xml" />
-	<tool file="gio/PIT/proteinSummary.xml" />
-	<tool file="gio/PIT/mzidlibPostProcessing.xml" />
-	<tool file="gio/PIT/extractPeptides.xml" />
-	<tool file="gio/PIT/integrateNoRefGenome.xml" />
-	<tool file="gio/PIT/pit.xml" />
-	<tool file="gio/PIT/speciesFinding.xml" />
+	<tool file="gio/XPIT/orfall.xml" />
+	<tool file="gio/XPIT/proteinSummary.xml" />
+	<tool file="gio/XPIT/mzidlibPostProcessing.xml" />
+	<tool file="gio/XPIT/extractPeptides.xml" />
+	<tool file="gio/XPIT/integrateNoRefGenome.xml" />
+	<tool file="gio/XPIT/pit.xml" />
+	<tool file="gio/XPIT/speciesFinding.xml" />
     </section>
