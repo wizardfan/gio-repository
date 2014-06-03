@@ -1,4 +1,4 @@
-<tool id="getFasta" name="Get sequences for identified proteins" version="1.0.0">
+<tool id="getFasta" name="PIT:Get sequences for identified proteins" version="1.0.0">
     <description>Get identified protein sequences</description>
     <command interpreter="perl">
 	#if $database.source_select=="built_in":

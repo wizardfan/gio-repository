@@ -1,4 +1,4 @@
-<tool id="gio_protein_homology" name="Protein homology" version="1.0.0">
+<tool id="gio_protein_homology" name="PIT:Protein homology" version="1.0.0">
     <description>Use BLAST to find protein homology and source species</description>
         <command interpreter="perl">$__root_dir__/../gio_applications/pit/speciesFinding.pl $input $threshold $output	#for $i, $s in enumerate($dbs)
 		 ${s.species}

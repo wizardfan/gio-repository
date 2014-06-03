@@ -1,0 +1,3 @@
+    <section name="GIO:Transcriptomics" id="gio_transcriptomics">
+	<tool file="gio/Transcriptomics/gmap.xml" />
+    </section>

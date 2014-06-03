@@ -1,4 +1,4 @@
-<tool id="mzidlib_merge" name="mzIdLib:Merge" version="1.0.0">
+<tool id="mzidlib_merge" name="mzIdLib:combineSearchEngines" version="1.0.0">
 	<description>Using mzIdentML-Lib to combine mzIdentML result files from different search engines</description>
 	<command interpreter="perl">$__root_dir__/../gio_applications/mzidlib/mzidlibMerge.pl $output $output.id $__new_file_path__ $decoyRegex $decoyValue $input1 $cv1 $input2 $cv2
 	#if $third.needed=="1":
