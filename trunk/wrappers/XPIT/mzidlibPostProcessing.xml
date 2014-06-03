@@ -1,4 +1,4 @@
-<tool id="mzidlib_processing" name="mzIdLib:PSM PostProcessing" version="1.1.2">
+<tool id="mzidlib_processing" name="PSM PostProcessing" version="1.1.2">
 	<description>Using mzIdentML-Lib to do some post processing including FDR calculation etc.</description>
 	<command interpreter="perl">$__root_dir__/../gio_applications/mzidlib/mzidlibPostProcessing.pl $input $output $output.id $__new_file_path__ FalseDiscoveryRate -decoyRegex $decoyRegex -decoyValue $decoyValue -cvTerm $cvTerm -betterScoresAreLower $betterScoresAreLower Threshold -isPSMThreshold $isPSMThreshold -cvAccessionForScoreThreshold $cvAccessionForScoreThreshold -threshValue $threshValue -betterScoresAreLower $thresholdBetterScoresAreLower -deleteUnderThreshold $deleteUnderThreshold ProteoGrouper -cvAccForSIIScore $cvAccForSIIScore -logTransScore $logTransScore -requireSIIsToPassThreshold $requireSIIsToPassThreshold
 	</command>

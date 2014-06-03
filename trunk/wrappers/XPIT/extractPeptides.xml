@@ -1,4 +1,4 @@
-<tool id="extract_peptide" name="Extract hits" version="0.2.0">
+<tool id="extract_peptide" name="PIT:Extract hits" version="0.2.0">
     <description>Extract peptide information from various file formats for PIT analysis</description>
     <command> 
 	#if $type_selection.type=="maxquant":
