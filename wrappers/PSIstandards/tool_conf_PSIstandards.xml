@@ -1,8 +1,12 @@
     <section name="GIO:PSI Standards" id="gio_standard">
-	<tool file="gio/PSIstandards/mzqlib/converter.xml" />
-	<tool file="gio/PSIstandards/mzidlib/mzidlibConverter.xml" />
-	<tool file="gio/PSIstandards/mzidlib/mzidlibMerge.xml" />
-	<tool file="gio/PSIstandards/mzidlib/mzidlibFDR.xml" />
-	<tool file="gio/PSIstandards/mzidlib/mzidlibThreshold.xml" />
-	<tool file="gio/PSIstandards/mzidlib/mzidlibProteoGroup.xml" />
+
+    <label text="mzIdentML" id="gio_standard_mzid"/>
+		<tool file="gio/PSIstandards/mzidlib/mzidlibConverter.xml" />
+		<tool file="gio/PSIstandards/mzidlib/mzidlibMerge.xml" />
+		<tool file="gio/PSIstandards/mzidlib/mzidlibFDR.xml" />
+		<tool file="gio/PSIstandards/mzidlib/mzidlibThreshold.xml" />
+		<tool file="gio/PSIstandards/mzidlib/mzidlibProteoGroup.xml" />
+
+    <label text="mzQuantML" id="gio_standard_mzq"/>
+		<tool file="gio/PSIstandards/mzqlib/converter.xml" />
     </section>
