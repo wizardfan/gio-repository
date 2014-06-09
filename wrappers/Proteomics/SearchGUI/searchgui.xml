@@ -2,10 +2,10 @@
 	<description>
 		Using SearchGUI to perform MS/MS search via X!Tandem, OMSSA and MS-GF+
 	</description>
-	<command interpreter="perl">$__root_dir__/../gio_applications/searchgui/searchgui.pl $config $output $__new_file_path__ $output.id</command>
-<!--	<command interpreter="perl">show.pl $config $output</command>-->
+	<command interpreter="perl">$__root_dir__/../gio_applications/searchgui/searchgui.pl $config $output $__new_file_path__ $output.id $omssa_result $msgf_result $tandem_result</command>
+<!--	<command interpreter="perl">show.pl $config $output $omssa_result $msgf_result $tandem_result</command>-->
 	<inputs>
-		<param format="mgf" name="spectra" type="data" multiple="true" label="Input Peak Lists (mgf)" help="Select appropriate MGF dataset(s) from history" />
+		<param format="mgf" name="spectra" type="data" label="Input Peak Lists (mgf)" help="Select appropriate MGF dataset from history" />
 		<conditional name="database">
 			<param name="source_select" type="select" label="Database source">
 				<option value="built_in">Built-In Databases</option>
@@ -75,7 +75,6 @@
 		<param name="min_charge" label="Minimum Charge" value="2" type="integer" help="Lowest searched charge value for fragment ions"/>
 		<param name="max_charge" label="Maximum Charge" value="4" type="integer" help="Highest searched charge value for fragment ions"/>
 
-<!--		<param name="omssa" label="Run OMSSA?" type="boolean" value="True"/>-->
 		<param name="omssa" label="Run OMSSA" type="select">
 			<option value="1" selected="true">Yes</option>
 			<option value="0">No</option>
@@ -101,9 +100,7 @@
 	</inputs>
 	<configfiles>
 		<configfile name="config">spectra
-#for $i, $s in enumerate($spectra)
-${s.file_name} ${s.hid}
-#end for
+$spectra
 
 #if $database.source_select=="built_in":
 built-in
@@ -121,10 +118,16 @@ Search
 		</configfile>
 	</configfiles>
 	<outputs>
-		<data format="html" name="output" label="MS/MS Search on ${on_string}"/>
-<!--		<data format="mzid" name="omssa_result" label="The OMSSA search result on${on_string}">
-			<filter> type_selection['type'] =="mzid"</filter>
-		</data>-->
+		<data format="html" name="output" label="PSM search parameters on ${on_string}"/>
+		<data format="mzid" name="omssa_result" label="The OMSSA search result on ${on_string}">
+			<filter> omssa == "1"</filter>
+		</data>
+		<data format="mzid" name="tandem_result" label="The X!Tandem search result on ${on_string}">
+			<filter> tandem == "1"</filter>
+		</data>
+		<data format="mzid" name="msgf_result" label="The MS-GF+ search result on ${on_string}">
+			<filter> msgf == "1"</filter>
+		</data>
 	</outputs>
 	<help>
 **What it does**
