@@ -8,6 +8,9 @@ my $config = $ARGV[0];#the config file contains all settings
 my $output = $ARGV[1];#the output file, should be temporary
 my $path = $ARGV[2];#galaxy temp folder, used to locate executables
 my $id = $ARGV[3];#new job id to be distinguished from other SearchGUI search
+my $omssa_result = $ARGV[4];
+my $msgf_result = $ARGV[5];
+my $tandem_result = $ARGV[6];
 
 my $version="1.19.1";
 my $applicationPath = "$path/../../../gio_applications";
@@ -120,19 +123,19 @@ system ($searchCmd);
 for (my $i=0;$i < scalar @spectra;$i++){
 	my $prefix = "$tmpFolder/result$id/spectra_${id}_$i";
 	if($msgf == 1){
-		system("cp ${prefix}.mzid $path/primary_${id}_MSGF+ResultOn$historyIDs[$i]_visible_mzid");
+		system("cp ${prefix}.mzid $msgf_result");
 	}
 	if($omssa == 1){
 		$cmd = "java -jar $applicationPath/mzidlib/mzidlib-1.6.8-javaLib.jar Omssa2mzid ${prefix}.omx ${prefix}-omssa.mzid -outputFragmentation false -decoyRegex REVERSED -omssaModsFile $tmpFolder/result$id/mods.xml -userModsFile $tmpFolder/result$id/usermods.xml -compress false";
 		print OUT "OMSSA conversion: $cmd\n";
 		system ($cmd);
-		system("cp ${prefix}-omssa.mzid $path/primary_${id}_OMSSAresultOn$historyIDs[$i]_visible_mzid");
+		system("cp ${prefix}-omssa.mzid $omssa_result");
 	}
 	if($xtandem == 1){
 		$cmd = "java -jar $applicationPath/mzidlib/mzidlib-1.6.8-javaLib.jar Tandem2mzid ${prefix}.t.xml ${prefix}-tandem.mzid -outputFragmentation false -decoyRegex REVERSED -databaseFileFormatID MS:1001348 -massSpecFileFormatID MS:1001062 -idsStartAtZero false -proteinCodeRegex \\\\S+ -compress false";
 		print OUT "Tandem conversion: $cmd\n";
 		system ($cmd);
-		system("cp ${prefix}-tandem.mzid $path/primary_${id}_XTandemResultOn$historyIDs[$i]_visible_mzid");
+		system("cp ${prefix}-tandem.mzid $tandem_result");
 	}
 }
 
