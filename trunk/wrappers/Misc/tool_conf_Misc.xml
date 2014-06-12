@@ -1,0 +1,3 @@
+    <section name="GIO:Miscellaneous" id="gio_misc">
+	<tool file="gio/Misc/fasta_header.xml" />
+    </section>
