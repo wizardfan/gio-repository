@@ -1,0 +1,92 @@
+<tool id="fasta_header" name="Fasta Header Manipulation" version="1.0.0" force_history_refresh="True">
+	<description>
+		Extracts part of the original header or converts to a shorter header
+	</description>
+	<command interpreter="perl">$__root_dir__/../gio_applications/misc/fastaHeaderManipulation.pl $input
+#if $type.index == "0"
+ 0 $type.re $mapping
+#elif $type.index == "-1"
+ -1 $type.prefix $mapping 
+#else
+ $type.index $mapping
+#end if
+>$output</command>
+	<inputs>
+		<param format="fasta" name="input" type="data" label="The Input Fasta File" help="The fasta file needs to change the header" />
+		<conditional name="type">
+			<param name="index" type="select" label="Database source">
+				<option value="1">Keeps everything</option>
+				<option value="2" selected="true">Up to first space or tab</option>
+				<option value="3">NCBI gi accession</option>
+				<option value="4">Uniprot accession</option>
+				<option value="5">Up to first |</option>
+				<option value="6">IPI accession</option>
+				<option value="0">User-defined</option>
+				<option value="-1">Replace with serial number</option>
+			</param>
+			<when value="0">
+				<param name="re" type="text" label="User defined regular expression" value="" size="200">
+					<sanitizer>
+						<valid initial="string.printable">
+							<remove value="\"/>
+							<remove value="("/>
+							<remove value=")"/>
+						</valid>
+						<mapping initial="none">
+							<add source="\" target="\\"/>
+							<add source="(" target="\("/>
+							<add source=")" target="\)"/>
+						</mapping>
+					</sanitizer>	
+				</param>
+			</when>
+			<when value="-1">
+				<param name="prefix" type="text" label="The prefix used before the serial number" value="gio" size="100">
+					<sanitizer>
+						<valid>
+							<remove value=" "/>
+						</valid>
+						<mapping>
+							<add source=" " target="_"/>
+						</mapping>
+					</sanitizer>	
+				</param>
+			</when>
+			<when value="1"/>
+			<when value="2"/>
+			<when value="3"/>
+			<when value="4"/>
+			<when value="5"/>
+			<when value="6"/>
+		</conditional>
+	</inputs>
+	<outputs>
+		<data format="fasta" name="output" label="Header manipulation on ${on_string}"/>
+		<data format="tabular" name="mapping" label="The header mapping file on ${on_string}">
+			<filter> type['index'] == "-1"</filter>
+		</data>
+	</outputs>
+	<help>
+
+The tool is designed to solve long header in the fasta files by either extracting substring using regular expression or replacing with serial number. All parts matching the chosen regular expression will be joined by ";" to form the new header. If no match found, the new header will be empty. Therefore when it is hard to find one regular expression for all sequences, the replacing option is recommended which will generate new header in the format of user_defined_prefix_serial number.
+
+**Up to first space or tab**
+>sp|P04058-2|ACES_TORCA Isoform T of Acetylcholinesterase OS=Torpedo californica GN=ache ==> >sp|P04058-2|ACES_TORCA
+
+**NCBI gi accession**
+>gi|178344|gb|AAA98797.1| albumin [Homo sapiens] ==> >gi|178344
+
+**Uniprot accession**
+>sp|P12821|ACE_HUMAN ==> >P12821
+
+**Up to first |**
+>P12821|ACE_HUMAN ==> >P12821
+
+**IPI accession**
+>IPI:IPI00000005.1|SWISS-PROT:P01111 ==> >IPI:IPI00000005
+
+**Replace with serial number**			
+By using the default prefix value gio, the new header will be gio_1, gio_2 ,...
+
+	</help>
+</tool>
