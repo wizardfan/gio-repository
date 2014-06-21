@@ -1,6 +1,6 @@
 <tool id="mzidlib_fdr" name="mzIdLib:FDR" version="1.0.0">
 	<description>Using mzIdentML-Lib to calculate False Discovery Rate</description>
-	<command>java -Xms1024m -jar $__root_dir__/../gio_applications/mzidlib/mzidlib-1.6.8-javaLib.jar FalseDiscoveryRateGlobal $input $output -decoyRegex $decoyRegex -decoyValue $decoyValue -cvTerm $cvTerm -betterScoresAreLower $betterScoresAreLower -fdrLevel $fdrType.level 
+	<command>java -Xms1024m -jar $__root_dir__/../gio_applications/mzidlib/mzidlib-1.6.8-javaLib.jar FalseDiscoveryRateGlobal $input $output -decoyRegex $decoyRegex -decoyValue $decoyValue -cvTerm $score.cvTerm -betterScoresAreLower $betterScoresAreLower -fdrLevel $fdrType.level 
 #if $fdrType.level=="ProteinGroup":
 -proteinLevel $fdrType.proteinLevel
 #else
@@ -36,13 +36,29 @@
 			<label>Decoy ratio value</label>
 		</param>
 
-		<param name="cvTerm" type="select" format="Text">
-			<label>CV term of score to use for FDR calculation</label>
-			<options from_file="gio_searchengine_cvterms.loc">
-				<column name="name" index="1" />
-				<column name="value" index="0" />
-			</options>
-		</param>
+		<conditional name="score">
+			<param name="source" type="select" label="CV term of score to use for FDR calculation">
+				<option value="combined">Combined search engine score</option>
+				<option value="original">Original search engine score</option>
+			</param>
+			<when value="combined">
+				<param name="cvTerm" type="select" format="Text">
+					<option value="MS:1002125" selected="true">combined FDRScore (MS:1002125)</option> 
+					<option value="MS:1002356">PSM-level combined FDRScore (MS:1002356)</option> 
+					<option value="MS:1002361">Distinct peptide-level combined FDRScore (MS:1002361)</option> 
+					<option value="MS:1002366">Combined FDRScore for proteins (MS:1002366)</option> 
+					<option value="MS:1002375">Protein group-level combined FDRScore (MS:1002375)</option> 
+				</param>
+			</when>
+			<when value="original">
+				<param name="cvTerm" type="select" format="Text">
+					<options from_file="gio_searchengine_cvterms.loc">
+						<column name="name" index="1" />
+						<column name="value" index="0" />
+					</options>
+				</param>
+			</when>
+		</conditional>
 
 		<param name="betterScoresAreLower" type="select" format="text">
 			<label>Are better scores lower?</label>
@@ -56,6 +72,6 @@
 	</outputs>
 
 	<help>
-	Using mzidLib (https://code.google.com/p/mzidentml-lib/) to calculate false discovery rate (FDR). This tool is highly likely to be used with others from mzidLib.
+	Using mzidLib (https://code.google.com/p/mzidentml-lib/) to calculate false discovery rate (FDR). This tool is highly likely to be used with others from mzidLib. E.g. prior to ProteoGrouper, it is recommended to do peptide-level FDR – which selects only the best PSM per peptide (removing redundancy) for ordering. 
 	</help>
 </tool>

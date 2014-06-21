@@ -1,31 +1,47 @@
 <tool id="PIT:pit" name="PIT:Integrate" force_history_refresh="True" version="1.0.0">
     <description>The tool links sam file from GMAP to the peptide identification file with the defined regular expression</description>
-    <command interpreter="perl">$__root_dir__/../gio_applications/pit/pitGalaxy.pl $sam $peptide $pattern $maxFold $outputGff $outputSam $outputFasta
+    <command interpreter="perl">$__root_dir__/../gio_applications/pit/pitGalaxy.pl $sam $peptide
+#if $type.pattern == "0"
+ $type.re
+#else
+ $type.pattern
+#end if
+ $maxFold $outputGff $outputSam $outputFasta
     </command>
     <inputs>
 	<param  format="sam" name="sam" type="data" label="Input sam file"/>
 	<param  format="tabular" name="peptide" type="data" label="Input peptide file"/>
-	<param name="pattern" type="select" label="Regular expression ">
-            <option value="comp\d+_c\d+_seq\d+">For Trinity</option>
-	    <sanitizer>
-		<valid initial="string.printable">
-		    <remove value="\"/>
-		    <remove value="("/>
-		    <remove value=")"/>
-		</valid>
-		<mapping initial="none">
-		    <add source="\" target="\\"/>
-		    <add source="(" target="\("/>
-		    <add source=")" target="\)"/>
-		</mapping>
-	    </sanitizer>	
-	</param>
+	<conditional name="type">
+		<param name="pattern" type="select" label="Regular expression">
+			<help>The regular expression should be able to match the first column in the sam file</help>
+            		<option value="comp\\d+_c\\d+_seq\\d+">For Trinity</option>
+			<option value="0">User defined</option>
+		</param>
+		<when value="0">
+			<param name="re" type="text" label="User defined regular expression" value="" size="200">
+				<sanitizer>
+					<valid initial="string.printable">
+						<remove value="\"/>
+						<remove value="("/>
+						<remove value=")"/>
+					</valid>
+					<mapping initial="none">
+						<add source="\" target="\\"/>
+						<add source="(" target="\("/>
+						<add source=")" target="\)"/>
+					</mapping>
+				</sanitizer>	
+			</param>
+		</when>
+		<when value="comp\\d+_c\\d+_seq\\d+"/>
+	</conditional>
+
         <param name = "maxFold" size="3" value="2" type="integer" label="The maximum fold change to be capped"/>
     </inputs>
     <outputs>
-        <data format="gff3" name="outputGff"/>
-        <data format="fasta" name="outputFasta"/>
-        <data format="sam" name="outputSam"/>
+        <data format="gff3" name="outputGff" label="PIT GFF3 result on ${on_string}"/>
+        <data format="fasta" name="outputFasta" label="Longest ORF from PIT on ${on_string}"/>
+        <data format="sam" name="outputSam" label="Annotated by PIT on data ${sam.hid}"/>
     </outputs>
 	<help>
 This tool is the core part of PIT technology. It combines the reference genome mapping information from the SAM file and the identified peptides and quantitation values from the TSV file by parsing the CIGAR value in the SAM file to locate the exact coordinates of coding DNA for the identified peptides. The tool generates three output files: 1) the gff3 file each row of which represents one identified peptide and related genome coordinates, quantitation, coding DNA sequence etc, 2) the SAM file which is the input SAM file plus the annotation of proteomics data in the optional column with tag pt:Z, and 3) the fasta file containing the longest ORFs associated with the identified peptide.
