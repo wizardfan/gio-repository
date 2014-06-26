@@ -24,11 +24,13 @@
 						<remove value="\"/>
 						<remove value="("/>
 						<remove value=")"/>
+						<remove value=" "/>
 					</valid>
 					<mapping initial="none">
 						<add source="\" target="\\"/>
 						<add source="(" target="\("/>
 						<add source=")" target="\)"/>
+						<add source=" " target="_"/>
 					</mapping>
 				</sanitizer>	
 			</param>
