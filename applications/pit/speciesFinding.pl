@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
 use POSIX;
-use constant {BLASTDB => "BLASTDB", MIDDLE => "blastMiddleFiles", SPROT => "swissprot"};
+use constant {BLASTDB => "BLASTDB", MIDDLE => "blastMiddleFiles", FINAL => "nr"};
 my $blastDBdir = "";
 my $deleteCmd = "";
 my $cmdLocation = "";
@@ -86,9 +86,9 @@ foreach my $db(@dbsIn){
 		&printAvailableBLASTdbs();
 		exit 4;
 	}
-	push (@dbs, $db) unless ($db eq SPROT);
+	push (@dbs, $db) unless ($db eq FINAL);
 }
-#push (@dbs, SPROT);
+#push (@dbs, FINAL);
 print "BLAST databases:\n@dbs\n";
 
 #start real business here
@@ -202,8 +202,8 @@ sub doBLAST(){
 		print OUT "\t$allMaxHits\t$allMaxIdent\t$allMaxTitles\tNo\n";
 	}else{
 		my $blastFile = "seq_${proteinCount}_blast_result_swissprot.tsv";
-#		my $cmd = "blastp -db ".SPROT." -query $fastaFile $coreSetting -outfmt \"6 sacc qlen qstart qend slen sstart send evalue score pident\" -out $blastFile";
-		my $cmd = "${cmdLocation}blastp -db ".SPROT." -query $fastaFile -outfmt \"6 sacc stitle pident\" -out $blastFile";
+#		my $cmd = "blastp -db ".FINAL." -query $fastaFile $coreSetting -outfmt \"6 sacc qlen qstart qend slen sstart send evalue score pident\" -out $blastFile";
+		my $cmd = "${cmdLocation}blastp -db ".FINAL." -query $fastaFile -outfmt \"6 sacc stitle pident\" -out $blastFile";
 		system ($cmd);
 		open RESULT, "$blastFile";
 		my $maxIdent = -1; 
@@ -267,9 +267,9 @@ sub getAvailableBLASTdbs(){
 #		my @arr = @{$multiple{$db}};
 #		print "Series: @arr\n\n";
 	}
-	my $tmp = SPROT;
+	my $tmp = FINAL;
 	unless (exists $availableDBs{$tmp}){
-		die "Please make sure that there exists a BLAST db called ".SPROT." \n";
+		die "Please make sure that there exists a BLAST db called ".FINAL." \n";
 	}
 }
 
