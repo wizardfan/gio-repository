@@ -1,3 +1,4 @@
     <section name="GIO:Transcriptomics" id="gio_transcriptomics">
 	<tool file="gio/Transcriptomics/gmap.xml" />
+	<tool file="gio/Transcriptomics/gffread.xml" />
     </section>
