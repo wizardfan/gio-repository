@@ -1,0 +1,22 @@
+<tool id="gio_gffread" name="Extract DNA sequence from GTF files" version="1.0.0">
+    <description>Write a fasta file with spliced exons for each GFF transcript</description>
+    <command>$__root_dir__/../gio_applications/cufflinks/gffread -w $output -g $species $input</command>
+    <inputs>
+	    <param format="gtf,gff3" name="input" type="data" label="The GTF file"/>
+	    <param name="species" type="select" format="text" >
+	        <label>Genomic sequence</label>
+	        <options from_file="gio_gffread.loc">
+		        <column name="name" index="0" />
+		        <column name="value" index="1" />
+	        </options>
+	    </param>
+    </inputs>
+    <outputs>
+		<data name="output" format="fasta" label="The spliced exons sequence file on ${on_string}"/>
+    </outputs>
+	<help>
+This tool, gffread, is part of Cufflinks_ package, which converts GFT2 records into transcript sequences.
+
+.. _Cufflinks: http://cufflinks.cbcb.umd.edu/
+    </help>
+</tool>
