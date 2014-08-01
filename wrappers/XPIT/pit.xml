@@ -14,7 +14,8 @@
 	<conditional name="type">
 		<param name="pattern" type="select" label="Regular expression">
 			<help>The regular expression should be able to match the first column in the sam file</help>
-            		<option value="comp\\d+_c\\d+_seq\\d+">For Trinity</option>
+            <option value="comp\\d+_c\\d+_seq\\d+">For Trinity</option>
+            <option value="CUFF\\.\\d+\\.\\d+">For Gffread/Cufflinks</option>
 			<option value="0">User defined</option>
 		</param>
 		<when value="0">
@@ -36,6 +37,7 @@
 			</param>
 		</when>
 		<when value="comp\\d+_c\\d+_seq\\d+"/>
+		<when value="CUFF\\.\\d+\\.\\d+"/>
 	</conditional>
 
         <param name = "maxFold" size="3" value="2" type="integer" label="The maximum fold change to be capped"/>
