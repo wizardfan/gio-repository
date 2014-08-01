@@ -39,13 +39,13 @@ sub num2letter(){
 	my $remainder = $num % $lenAlpha;
 	my $left = ($num - $remainder)/$lenAlpha;
 	$left -= 1 if ($remainder == 0);
-	print "remainder $remainder\tleft $left\tletter ".substr($alphabet, $remainder-1, 1)."\n";
+	#print "remainder $remainder\tleft $left\tletter ".substr($alphabet, $remainder-1, 1)."\n";
 	unshift (@letters, substr($alphabet, $remainder-1, 1));
 	while ($left > 0){
 		$remainder = $left % $lenAlpha;
 		$left = ($left - $remainder)/$lenAlpha;
 		$left -= 1 if ($remainder == 0);
-		print "remainder $remainder\tleft $left\tletter ".substr($alphabet, $remainder-1, 1)."\n";
+		#print "remainder $remainder\tleft $left\tletter ".substr($alphabet, $remainder-1, 1)."\n";
 		unshift (@letters, substr($alphabet, $remainder-1, 1));
 	}
 	my $result = join ("",@letters);
