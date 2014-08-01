@@ -1,0 +1,25 @@
+<tool id="gio_combine_fasta" name="Combine Fasta files" version="1.0.0">
+	<description>Combine multiple fasta files into one file</description>
+		<command interpreter="perl">$__root_dir__/../gio_applications/misc/combineFastaFiles.pl $type #for $i, $s in enumerate($fastas)
+		 ${s.file.file_name}
+	#end for
+> $output</command>
+	<inputs>
+<!--		<param format="fasta" name="input" type="data" multiple="true" label="Input fasta file(s)"/>  this param does not maintain the order of selection which is crucial-->
+		<repeat name="fastas" title="Fasta files" min="1">
+	    	<param name="file" type="data" multiple="false" format="fasta">
+			</param>
+		</repeat>
+		<param name = "type" type="select" label="The prefix type" multiple="False" help="Add prefix in the format of Dataset_number/alphabet_ or no prefix according to the type">
+			<option value="0">No prefix</option>
+			<option value="1">Numberic prefix</option>
+			<option value="2">Alphabetic prefix</option>
+		</param>
+	</inputs>
+	<outputs>
+		<data name="output" format="fasta"></data>
+	</outputs>
+	<help>
+	This tool is designed to combine fasta files which is particularly useful in comparing different gene models in proteogenomics.
+	</help>
+</tool>

@@ -13,7 +13,6 @@ my $samFile = $ARGV[0];
 my $peptidesFile = $ARGV[1];
 #quotemeta function maybe useful here http://perldoc.perl.org/functions/quotemeta.html
 # my $argv = "^(comp\\d+_c\\d+_seq\\d+)";
- my $argv = "(comp\\d+_c\\d+_seq\\d+)";
 #$argv="^(\\d+)_(\\d+)\\s";
 my $pattern= $ARGV[2];
 #the quantitation can be of any value
@@ -29,17 +28,6 @@ my $max_fold_change = $ARGV[3];
 my $gffFile = $ARGV[4];
 my $samOutFile = $ARGV[5];
 my $fastaFile = $ARGV[6];
-sub test(){
-	open OUT, ">$gffFile";
-	print OUT "sam file: $samFile\n";
-	print OUT "peptide file:$peptidesFile\n";
-	print OUT "pattern: $pattern length ".(length $pattern)."\n";
-	print OUT "in code $argv length ".(length $argv)."\n";
-	print OUT "equal\n" if ($pattern eq $argv);
-	print OUT "sam out file: $samOutFile\n";
-	print OUT "fasta file: $fastaFile\n";
-	exit();
-}
 
 #add sam definition comment here
 #sam specification http://samtools.sourceforge.net/SAMv1.pdf
@@ -154,7 +142,7 @@ sub cigar_analysis(){
 	my @sam = split("\t",$sam);
 	my $id = $sam[0];
 	my $chr = $sam[2];
-	my $transcript_start = $sam[3];
+	my $transcript_start = uc($sam[3]);
 	my $cigar = $sam[5];
 	my $transcript_seq = $sam[9];
 	#print "$id\n$chr\n$transcript_start\n$cigar\n$transcript_seq\n";
