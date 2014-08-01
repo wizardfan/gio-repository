@@ -142,9 +142,9 @@ sub cigar_analysis(){
 	my @sam = split("\t",$sam);
 	my $id = $sam[0];
 	my $chr = $sam[2];
-	my $transcript_start = uc($sam[3]);
+	my $transcript_start = $sam[3];
 	my $cigar = $sam[5];
-	my $transcript_seq = $sam[9];
+	my $transcript_seq = uc($sam[9]);
 	#print "$id\n$chr\n$transcript_start\n$cigar\n$transcript_seq\n";
 
 	#retrieve the identified peptides
@@ -182,7 +182,11 @@ sub cigar_analysis(){
 		my $translation = "";
 		for (my $i=-1+$offset;$i<$len-2;$i+=3){
 			my $codon = substr($transcript_seq,$i,3);
-			$translation.= $translation{$codon};
+			if(exists $translation{$codon}){
+				$translation.= $translation{$codon};
+			}else{
+				print "Error: codon $codon not found, in sam line $sam\n";
+			}
 		}
 		$frames{$offset} = $translation;
 		# print "Frame $offset:\n$translation\n";
@@ -194,7 +198,11 @@ sub cigar_analysis(){
 		my $translation = "";
 		for (my $i=-1+$offset;$i<$len-2;$i+=3){
 			my $codon = substr($reversecomp,$i,3);
-			$translation.= $translation{$codon};
+			if(exists $translation{$codon}){
+				$translation.= $translation{$codon};
+			}else{
+				print "Error: codon $codon not found, in sam line $sam\n";
+			}
 		}
 		$frames{-$offset} = $translation;
 		# print "Frame -$offset:\n$translation\n";
