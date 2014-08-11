@@ -1,21 +1,29 @@
 #!/usr/bin/perl -w
 use strict;
 use POSIX;
-
+#pitGalaxy is the galaxy version of pit, which specifies all output files in the command line
 #my $argLen = scalar @ARGV;
 #&usage() unless($argLen==4);
+#result file: the longest ORF fasta file
+#suffix "_nm": not mapping result in SAM file (GMAP), could indicate that the transcript is from another species rather than the one trying to be mapped in GMAP
+#suffix "_np": the ORF is found in the transcript, but no identified peptide to support
+#suffix "_wp": the ORF with identified peptide support
 
 # the sam file
 #my $samFile = "human.sam";
 my $samFile = $ARGV[0];
+
 # the result file from extractPeptides.txt which has the fixed header order, 1 peptide 2 protein 3 reverse 4 contaminant 5 score 6 m/l 7 h/l 8 h/m
 #my $peptidesFile = "peptidesNew-extract.txt";
 my $peptidesFile = $ARGV[1];
+
 #quotemeta function maybe useful here http://perldoc.perl.org/functions/quotemeta.html
-# my $argv = "^(comp\\d+_c\\d+_seq\\d+)";
+#my $pattern = "^(comp\\d+_c\\d+_seq\\d+)";
 #$argv="^(\\d+)_(\\d+)\\s";
 my $pattern= $ARGV[2];
+
 #the quantitation can be of any value
+#my $max_fold_change = 2;
 my $max_fold_change = $ARGV[3];
 &usage() unless ($max_fold_change=~/^\d+$/);
 #my $suffixLocation = rindex ($samFile,".");
@@ -28,7 +36,13 @@ my $max_fold_change = $ARGV[3];
 my $gffFile = $ARGV[4];
 my $samOutFile = $ARGV[5];
 my $fastaFile = $ARGV[6];
-
+my $tsvFile = $ARGV[7];
+#my $gffFile = "result.gff3";
+#my $samOutFile = "result.sam";
+#my $fastaFile = "resultORFs.fasta";
+#my $tsvFile = "resultTable.txt";
+open TSV, ">$tsvFile";
+print TSV "ORF id\tType\tORF seq\tTranscript seq\tIdentified peptide number\tIdentified peptide list\n";
 #add sam definition comment here
 #sam specification http://samtools.sourceforge.net/SAMv1.pdf
 #tab-delimited text
@@ -154,9 +168,7 @@ sub cigar_analysis(){
 	$hitString = substr($hitString,length($optional_tag));#remove the optional tag
 	my @tmp = split("<br>",$hitString); # the last element contains the identified peptides separated by <br> tag
 	my %uniquePeptideHit; #one protein can have multiple ORFs containing the same peptide, so there may be multiple entries in the protein list for the same protein
-	my %orfSeqs;#it is very likely that all peptides are from the same ORF and it only needs to be outputed once
-	my %orfFrames;
-	
+	#convert plain hit information into data structure %peptideInfo hash of hash first key is the peptide sequence, the second keys are pre-defined score, quant and rest
 	foreach my $tmp(@tmp){
 		next if (exists $uniquePeptideHit{$tmp});
 		$uniquePeptideHit{$tmp}++;
@@ -174,8 +186,9 @@ sub cigar_analysis(){
 	# }
 	# print "Peptides: @peptides\n";
 	# exit;
+	
 	#six frames translation
-	my %frames; # this variable is introduced only because to reuse the codes of deciphering CIGAR for both + and - strands
+	my %frames; # this variable is introduced only for the purpose of reusing the codes of deciphering CIGAR for both + and - strands
 	my $len = length $transcript_seq;
 	#5'->3' + strand
 	for(my $offset = 1;$offset<4;$offset++){
@@ -208,8 +221,13 @@ sub cigar_analysis(){
 		# print "Frame -$offset:\n$translation\n";
 	}
 	# print "peptides: @peptides\n";
+	
 	#find the peptide-corresponding transcript location in the mapped genome sequence and output the ORFs
+	#link ORF translated from the transcript with identified peptides
 	my %peptideStart;#keys are peptide sequence, values are arrays of value in the form of strand_start position
+	#it is very likely that all peptides are from the same ORF and it only needs to be outputted once
+	my %orfPeptides; # keys are orfs and values are hashes with keys as peptides and values as count of peptides.
+	my %orfFrames; # keys are orf seqs and values are frames
 	foreach my $frame(keys %frames){
 		my $translation = $frames{$frame};
 		my @segments = split($STOP,$translation);#for orf determination as orf must have a stop codon or at the end of translation
@@ -271,7 +289,7 @@ sub cigar_analysis(){
 					$orf = $segment;
 				}
 				# print "first $frame\t$peptide\n$orf\n\n";
-				$orfSeqs{$orf}{$peptide}++;
+				$orfPeptides{$orf}{$peptide}++;
 				$orfFrames{$orf}=$frame;
 			}
 			for (my $i = 1;$i<scalar @segments;$i++){
@@ -286,13 +304,12 @@ sub cigar_analysis(){
 						$orf = $segment;
 					}
 					# print "others $frame\t$peptide\n$orf\n\n";
-					$orfSeqs{$orf}{$peptide}++;
+					$orfPeptides{$orf}{$peptide}++;
 					$orfFrames{$orf}=$frame;
 				}
 			}
 		}
 	}#end of %frame
-	#exit;
 	
 	#the CIGAR string is for the transcript, not only for the identified peptide, so only needs to be parsed once
 	#if cigar string is "18M13852N132M1063N110M4003N103M", then @cigar is 18,M,13852,N,...,103,M
@@ -302,7 +319,7 @@ sub cigar_analysis(){
 	#validate the cigar string, not empty, not *
 	#if this is the case, means not mapping to the genome, could be from another species etc., output ORFs only
 	if($cigarLen==0 || $remain == 1){
-		my @orfs = sort {$a cmp $b} keys %orfSeqs;
+		my @orfs = sort {$a cmp $b} keys %orfPeptides;
 		my $orfIndex = 0;
 		for (my $i=0;$i<scalar @orfs;$i++){
 			my $orf= $orfs[$i];
@@ -313,6 +330,10 @@ sub cigar_analysis(){
 			}else{
 				$totalORFs{$orf} = ">$orfId";
 			}
+			my @peps = keys %{$orfPeptides{$orf}};
+			my $numPeps = scalar @peps;
+			my $peps = join (",",@peps);
+			print TSV "$orfId\tNot mapped to genome\t$orf\t$transcript_seq\t$numPeps\t$peps\n";
 		}
 		return; 
 	}
@@ -447,45 +468,56 @@ sub cigar_analysis(){
 	}#end of foreach @peptides genome location calculation
 	#put the detected orf into the total ORFs
 	#only when it can be mapped onto the genome i.e. having valid cigar string
-	my @orfs = sort {$a cmp $b} keys %orfSeqs;
-	my @candidates;
+	my @orfs = sort {$a cmp $b} keys %orfPeptides;#keys are orfs, values are peptides with corresponding count
+	my %candidates;
 	my @noSupport;
 	for(my $i=0;$i<scalar @orfs;$i++){
 		my $orf = $orfs[$i];
-		my %fromPeptides = %{$orfSeqs{$orf}};
-		my $flag = 0;
+		my %fromPeptides = %{$orfPeptides{$orf}};#keys are peptides from the ORF, values are the counts
+		my $identifiedPeptideCount = 0;
+		my @peps;
 		foreach my $pep(keys %fromPeptides){
 			if (exists $peptideInGff{$pep}){
-				$flag = 1;#having identified peptide support
-				last;
+				$identifiedPeptideCount++ ;#having identified peptide support
+				push (@peps,$pep);
 			}
-		}
-		if($flag==1){
-			for (my $j=0;$j<scalar @orfs;$j++){
-				next if ($i == $j); #the same orf
-				my $another = $orfs[$j];
-				if ($orfFrames{$orf} == $orfFrames{$another}){ # the same frame, then judge whether the substring of the other one, if so, discard the current orf
-					if (index($another,$orf)>-1){#is substring
-						$flag = 2;
-						last;
-					}
+		} 
+		my $notSubstrFlag = 1;
+		for (my $j=0;$j<scalar @orfs;$j++){
+			next if ($i == $j); #the same orf
+			my $another = $orfs[$j];
+			if ($orfFrames{$orf} == $orfFrames{$another}){ # the same frame, then judge whether the substring of the other one, if so, discard the current orf
+				if (index($another,$orf)>-1){#is substring
+					$notSubstrFlag = 0;
+					last;
 				}
 			}
 		}
-		push (@candidates,$orf) if ($flag == 1);
-		push (@noSupport,$orf) if ($flag == 0);
+
+		if ($notSubstrFlag == 1 && $identifiedPeptideCount > 0){
+			$candidates{$orf}{'count'} = $identifiedPeptideCount ;
+			@{$candidates{$orf}{'peptides'}} = @peps;
+		}
+		push (@noSupport,$orf) if ($identifiedPeptideCount == 0);
 	}
 	my $orfIndex = 0;
-	for (my $i=0;$i<scalar @candidates;$i++){
-		my $orf= $candidates[$i];
+	#for (my $i=0;$i<scalar @candidates;$i++){
+	foreach my $orf (sort {$a cmp $b} keys %candidates){
+		#my $orf= $candidates[$i];
 		$orfIndex++;
+		my $count = $candidates{$orf}{'count'};
+		my @peps = @{$candidates{$orf}{'peptides'}};
+		@peptides = sort {$a cmp $b} @peps;
+		my $peptides = join(",",@peps);
 		my $orfId = "${id}_orf${orfIndex}_wp";
 		if (exists $totalORFs{$orf}){
 			$totalORFs{$orf}.=";$orfId";
 		}else{
 			$totalORFs{$orf} = ">$orfId";
 		}
+		print TSV "$orfId\tIdentified peptides in transcript\t$orf\t$transcript_seq\t$count\t$peptides\n";
 	}
+	
 	for (my $i=0;$i<scalar @noSupport;$i++){
 		my $orf = $noSupport[$i];
 		$orfIndex++;
@@ -496,6 +528,7 @@ sub cigar_analysis(){
 		}else{
 			$totalORFs{$orf} = ">$orfId";
 		}
+		print TSV "$orfId\tNo identified peptides\t$orf\t$transcript_seq\t0\t\n";
 	}
 }
 
