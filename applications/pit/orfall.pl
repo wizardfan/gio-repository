@@ -160,7 +160,7 @@ sub translate(){
 sub doORF(){
 	my $header = $_[0];
 	$header =~ s/\s.*//;#only keeps the part before the first white space
-	my $seq = $_[1];
+	my $seq = uc($_[1]);
 	$seq=~s/\s+//g;
 	my $len = length $seq;
 	my %frame;
