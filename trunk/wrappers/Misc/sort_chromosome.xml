@@ -1,0 +1,35 @@
+<tool id="sort_chromosome" name="Sort by chromosome" version="1.0.0" force_history_refresh="True">
+	<description>
+		Sort various tabular files according to the chromosome and start coordinate
+	</description>
+	<command interpreter="perl">$__root_dir__/../gio_applications/misc/sortChromosome.pl $input $type.format $duplicate > $output
+	</command>
+	<inputs>
+		<conditional name="type">
+			<param name="format" type="select" label="The input file type">
+				<option value="\# 0 3" selected="true">GFF3/GTF</option>
+				<option value="\@ 2 3">SAM</option>
+				<option value="\# 0 1">VCF</option>
+			</param>
+			<when value="\# 0 3">
+				<param format="gff,gff3,gtf" name="input" type="data" label="The Input GFF3/GFF/GTF File" help="The GFF3/GTF file needs to be sorted" />
+			</when>
+			<when value="\@ 2 3">
+				<param format="sam" name="input" type="data" label="The Input SAM File" help="The SAM file needs to be sorted" />
+			</when>
+			<when value="\# 0 1">
+				<param format="vcf" name="input" type="data" label="The Input VCF File" help="The VCF file needs to be sorted" />
+			</when>
+		</conditional>
+		<param name="duplicate" type="select" label="Delete duplicate entries?">
+			<option value="0" selected="true">True</option>
+			<option value="1">False</option>
+		</param>
+	</inputs>
+	<outputs>
+		<data format_source="input" name="output" label="Sort chromosome on ${on_string}"/>
+	</outputs>
+	<help>
+This tool is designed to sort the entries in the tabular genomic file, e.g. SAM file, GFF3 file, according to the chromosome then start position. The difficulty of this is that there is no certain pattern for chromosome, which can be just numbers and letters (e.g. 12, X) or with prefix(e.g. chr1, contig_2341.1).Please bear in mind that the script is not supposed to sort the mixed type, i.e. chromosomes represented in both numbers and letters and with prefix types.
+	</help>
+</tool>
