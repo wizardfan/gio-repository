@@ -100,7 +100,8 @@ while (my $line = <IN>){
 	
 	my $protein_name = $elmts[1];#Protein, e.g. >96407_5 [2245 - 587] (REVERSE SENSE);>96409_5 [2116 - 566] (REVERSE SENSE);>96408_5 [2043 - 613] (REVERSE SENSE),96410_5 [2172 - 742] (REVERSE SENSE)
 	$protein_name =~ s/,/>/g; #replace , with > 
-	$protein_name =~ s/;/>/g; #replace , with > 
+	$protein_name =~ s/;/>/g; #replace ; with > 
+	$protein_name =~ s/"//g; #remove " 
 #	print "proteins: $protein_name\npeptide info $peptide_info";
 	#The , and ; can be caused by two situations: from ORF tool (e.g. ORFall, same ORF predicted from multiple transcripts) or from identification (identified peptide exists in more than one protein, then multiple transcript involved)
 	#sam file is transcript based, so needs to be split 
@@ -123,6 +124,13 @@ while (my $line = <IN>){
 		$maxConfidence = $score if ($score>$maxConfidence);
 	}
 }
+#foreach my $aaa(keys %hits){
+#	my %tmp = %{$hits{$aaa}};
+#	my @tmp = keys %tmp;
+#	my $tmp = join (" ! ",@tmp);
+#	print "$aaa\t$tmp\n";
+#}
+#exit;
 #print "max confidence value $maxConfidence\n";
 
 #output the new sam which combines the identification/quantitation from the search result with the original sam file
@@ -177,6 +185,8 @@ sub cigar_analysis(){
 
 	#one sam record from the newly generated sam file
 	my $sam=$_[0];
+#	print "$sam\n";
+#	exit;
 	my @sam = split("\t",$sam);
 	my $id = $sam[0];
 	my $chr = $sam[2];
@@ -195,18 +205,19 @@ sub cigar_analysis(){
 	my %uniquePeptideHit; #one protein can have multiple ORFs containing the same peptide, so there may be multiple entries in the protein list for the same protein
 	#convert plain hit information into data structure %peptideInfo hash of hash first key is the peptide sequence, the second keys are pre-defined score, quant and rest
 	foreach my $tmp(@tmp){
+#		print "hit: <$tmp>\n";
 		next if (exists $uniquePeptideHit{$tmp});
 		$uniquePeptideHit{$tmp}++;
 		#the output format used in the output "$elmts[0] confidence $elmts[4] quantitation $elmts[5]";
 		#peptide only \w, confidence could be double or scientific expression, quant could be double or special string, eg NA, NaN etc
-		if($tmp=~/(\w+) confidence ([\w\.-]+) quantitation ([\w\.]+) /){
+		if($tmp=~/(\w+) confidence ([\w\.-]+) quantitation ([\w\.]+)\s?/){#the end \s? is due to optional columns: if exists, there is " "; if not, no space
 			my $peptide = $1;
 			push(@peptides,$peptide);
 			$peptideInfo{$peptide}{'score'} = $2;
 			$peptideInfo{$peptide}{'quant'} = $3;
 			my $rest = $';
 			$peptideInfo{$peptide}{'rest'} = $rest;
-			#print "Rest: $rest\n";
+#			print "Rest: $rest\n";
 			if ($rest=~/;ORF=(.+)$/){
 				$peptideInfo{$peptide}{'orf'} = $1;
 				unless (exists $orfSeqs{$1}){ 
@@ -219,10 +230,10 @@ sub cigar_analysis(){
 			}
 		}
 	}
-	# foreach (keys %uniquePeptideHit){
-		# print "$_: $uniquePeptideHit{$_}\n";
-	# }
-	# print "Peptides: @peptides\n";
+#	foreach (keys %uniquePeptideHit){
+#		print "$_: $uniquePeptideHit{$_}\n";
+#	}
+#	print "Peptides: @peptides\n";
 #	foreach my $peptide(@peptides){
 #		print "$peptide:\nscore $peptideInfo{$peptide}{'score'}\nquant $peptideInfo{$peptide}{'quant'}\n";
 #		print "ORF $peptideInfo{$peptide}{'orf'}\nother $peptideInfo{$peptide}{'rest'}\n\n";
@@ -230,7 +241,7 @@ sub cigar_analysis(){
 #	foreach my $orf(keys %orfSeqs){
 #		print "ORF $orf\n$orfSeqs{$orf}\n";
 #	}
-
+#	exit;
 	#six frames translation
 	my %frames; # this variable is introduced only for the purpose of reusing the codes of deciphering CIGAR for both + and - strands
 	my @foundFrames;
@@ -603,7 +614,8 @@ sub cigar_analysis(){
 # 	ii.	if H’ is great than 2, assign H = 2
 # 		if H’ is less than 0, assign H=0
 # 		else assign H = H’
-						my $quantValue = log($peptideInfo{$peptide}{'quant'})/log($max_fold_change)+1;
+						my $quantValue = 0;
+						$quantValue = log($peptideInfo{$peptide}{'quant'})/log($max_fold_change)+1 unless ($peptideInfo{$peptide}{'quant'} == 0);
 						my $h;
 						if($quantValue>2){
 							$h = 2;
@@ -754,9 +766,10 @@ sub readFasta(){
 sub process(){
 	my ($header, $seq) = @_;
 	$header =~s/,/;/g;
-	#$header = substr($header,1) if ($header=~/^>/);
+	$header = substr($header,1) if ($header=~/^>/);
 	my @header = split(";", $header);
 	foreach my $header(@header){
+#		print "header:<$header>\n";
 		$seqs{$header} = $seq;
 	}
 }
