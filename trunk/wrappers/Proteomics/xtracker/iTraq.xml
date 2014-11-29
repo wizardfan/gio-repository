@@ -1,0 +1,293 @@
+<tool id="xtracker_itraq" name="iTraq4plex analysis via X-Tracker" version="0.1.0">
+    <!--updates from 0.1.0:
+    -->
+	<description>Execute iTraq4plex quantitation method via X-Tracker</description>
+        <command >java -jar $__root_dir__/../gio_applications/xtracker/xTracker-javaLib.jar $mzq $__root_dir__/../gio_applications/xtracker/ $output</command>
+    <inputs>
+    	<conditional name="spectra">
+      	    <param name="spectra_type" type="select" label="Spectral File Type">
+		<option value="mzml">mzml</option>        	
+		<option value="mgf">mgf</option>
+            </param>
+            <when value="mzml">
+		<param format="mzml" name="file" type="data" label="Input mzML"/>
+            </when>
+            <when value="mgf">
+		<param format="mgf" name="file" type="data" label="Input mgf"/>
+            </when>
+	</conditional>
+    	<conditional name="identification">
+      	    <param name="identification_type" type="select" label="Identification File Type">
+		<option value="mzid">MzIdentML</option>
+		<option value="mascot">Mascot XML</option>        	
+            </param>
+            <when value="mzid">
+		<param format="mzid" name="file" type="data" label="Identification in MzIdentML format"/>
+            </when>
+            <when value="mascot">
+		<param format="xml" name="file" type="data" label="Mascot identification file"/>
+            </when>
+	</conditional>
+	</inputs>
+	<outputs>
+		<data name="output" format="mzq"/>
+	</outputs>
+	<help>
+	X-Tracker is a PSI-standards-compliant software framework for supporting mass spectrometry-based protein quantitation. Through an abstraction of the main steps involved in quantitation, X-Tracker should technically be able to support quantitation by means of all the current protocols, both at MS1 and/or MS2 level, and provide a flexible, platform-independent quantitation environment. More details can be found at http://www.x-tracker.info/.
+	This tool demonstrates the ability of X-Tracker to do an iTraq-4plex analyses.
+	</help>
+    <configfiles>
+                <configfile name="mzid">
+<![CDATA[
+<SpectralIdentificationList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Plugins/loadMzIdentML.xsd">
+	<SpectralIdentificationPair spectra="$spectra.file" identification="$identification.file"/>
+</SpectralIdentificationList>
+]]>
+                </configfile>
+		<configfile name="mascot">
+<![CDATA[
+<param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Plugins/loadMascotIdent.xsd">
+	<!--
+	Specifies the rawdata file names and the corresponding identification names. Note that paths are relative to the xTracker folder.
+	-->
+<inputFiles>
+        <datafile identification_file="$identification.file">$spectra.file</datafile>
+</inputFiles>
+<modificationData>
+	 <modification delta="42.010559">Acetyl (K)</modification>
+	 <modification delta="42.010559">Acetyl (N-term)</modification>
+	 <modification delta="-0.984024">Amidated (C-term)</modification>
+	 <modification delta="226.077591">Biotin (K)</modification>
+	 <modification delta="226.077591">Biotin (N-term)</modification>
+	 <modification delta="57.021469">Carbamidomethyl (C)</modification>
+	 <modification delta="43.005814">Carbamyl (K)</modification>
+	 <modification delta="43.005814">Carbamyl (N-term)</modification>
+	 <modification delta="58.005478">Carboxymethyl (C)</modification>
+	 <modification delta="21.981934">Cation:Na (C-term)</modification>
+	 <modification delta="21.981949">Cation:Na (DE)</modification>
+	 <modification delta="-18.010559">Deamidated (NQ)</modification>
+	 <modification delta="-1.007812">Dehydro (C)</modification>
+	 <modification delta="31.989822">Dioxidation (M)</modification>
+	 <modification delta="44.026215">Ethanolyl (C)</modification>
+	 <modification delta="1030.352936">ExacTagAmine (K)</modification>
+	 <modification delta="972.365219">ExacTagThiol (C)</modification>
+	 <modification delta="27.994919">Formyl (N-term)</modification>
+	 <modification delta="42.021805">Guanidinyl (K)</modification>
+	 <modification delta="14.01564">Methyl (C-term)</modification>
+	 <modification delta="14.015656">Methyl (DE)</modification>
+	 <modification delta="45.987717">Methylthio (C)</modification>
+	 <modification delta="99.06842">NIPCAM (C)</modification>
+	 <modification delta="15.994919">Oxidation (HW)</modification>
+	 <modification delta="15.994919">Oxidation (M)</modification>
+	 <modification delta="79.966324">Phospho (ST)</modification>
+	 <modification delta="79.966324">Phospho (Y)</modification>
+	 <modification delta="71.037109">Propionamide (C)</modification>
+	 <modification delta="105.057846">Pyridylethyl (C)</modification>
+	 <modification delta="79.956818">Sulfo (S)</modification>
+	 <modification delta="79.956818">Sulfo (T)</modification>
+	 <modification delta="79.956818">Sulfo (Y)</modification>
+	 <modification delta="224.152481">TMT (K)</modification>
+	 <modification delta="224.152481">TMT (N-term)</modification>
+	 <modification delta="225.155838">TMT2plex (K)</modification>
+	 <modification delta="225.155823">TMT2plex (N-term)</modification>
+	 <modification delta="229.162933">TMT6plex (K)</modification>
+	 <modification delta="229.162933">TMT6plex (N-term)</modification>
+         <modification delta="144.1020633">iTRAQ4plex (K)</modification>
+         <modification delta="144.102063">iTRAQ4plex (N-term)</modification>
+</modificationData>
+<pep_score_threshold>50</pep_score_threshold>
+</param>
+]]>
+		</configfile>
+		<configfile name="quant">
+<![CDATA[
+<iTraqQuantitation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Plugins/iTraqQuantitation.xsd">
+	<AssayParamList>
+		<AssayParam>
+			<AssayName>iTRAQ4plex-114 reporter fragment</AssayName><!-- this should be equal to the name in cvParam/Modification/Label/Assay-->
+			<mzValue>114.11123</mzValue><!--this value should be got from the kit-->
+			<CorrectionFactors>
+				<factor deltaMass="-2">0</factor>
+				<factor deltaMass="-1">1.0</factor>
+				<factor deltaMass="+1">5.9</factor>
+				<factor deltaMass="+2">0.2</factor>
+			</CorrectionFactors>
+		</AssayParam>
+		<AssayParam>
+			<AssayName>iTRAQ4plex-115 reporter fragment</AssayName>
+			<mzValue>115.10826</mzValue>
+			<CorrectionFactors>
+				<factor deltaMass="-2">0</factor>
+				<factor deltaMass="-1">2</factor>
+				<factor deltaMass="+1">5.6</factor>
+				<factor deltaMass="+2">0.1</factor>
+			</CorrectionFactors>
+		</AssayParam>
+		<AssayParam>
+			<AssayName>iTRAQ4plex-116 reporter fragment</AssayName>
+			<mzValue>116.11162</mzValue>
+			<CorrectionFactors>
+				<factor deltaMass="-2">0</factor>
+				<factor deltaMass="-1">3</factor>
+				<factor deltaMass="+1">4.5</factor>
+				<factor deltaMass="+2">0.1</factor>
+			</CorrectionFactors>
+		</AssayParam>
+		<AssayParam>
+			<AssayName>iTRAQ4plex-117, mTRAQ heavy, reporter fragment</AssayName>
+			<mzValue>117.11497</mzValue>
+			<CorrectionFactors>
+				<factor deltaMass="-2">0.1</factor>
+				<factor deltaMass="-1">4</factor>
+				<factor deltaMass="+1">3.5</factor>
+				<factor deltaMass="+2">0</factor>
+			</CorrectionFactors>
+		</AssayParam>
+	</AssayParamList>
+	<Setting>
+		<mzRange>
+			<minus>0.05</minus>
+			<plus>0.05</plus>
+		</mzRange>
+		<IntegrationMethod>SumIntensities</IntegrationMethod><!--the method used to calculate the area of the peak-->
+	</Setting>
+</iTraqQuantitation>]]>
+		</configfile>
+                <configfile name="out">
+<![CDATA[
+<output xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Plugins/outputGeneral.xsd">
+	<outputFilename>$output</outputFilename>
+</output>
+]]>
+                </configfile>
+		<configfile name="mzq">
+<![CDATA[
+<MzQuantML id="itraq_mzQuantML_example" creationDate="2014-04-30T16:00:00" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://psidev.info/psi/pi/mzQuantML/1.0.0 ../../../schema/mzQuantML_1_0_0.xsd"
+ xmlns="http://psidev.info/psi/pi/mzQuantML/1.0.0"
+ version="1.0.0">
+	<!--1:1-->
+	<CvList>
+		<Cv id="PSI-MS" fullName="Proteomics Standards Initiative Mass Spectrometry Vocabularies"
+			uri="http://psidev.cvs.sourceforge.net/viewvc/*checkout*/psidev/psi/psi-ms/mzML/controlledVocabulary/psi-ms.obo"
+			version="3.39.0"/>
+		<Cv id="UO" fullName="Unit Ontology"
+			uri="http://obo.cvs.sourceforge.net/*checkout*/obo/obo/ontology/phenotype/unit.obo"/>
+		<Cv id="PSI-MOD" fullName="Proteomics Standards Initiative Protein Modifications Vocabularies" uri="http://psidev.cvs.sourceforge.net/psidev/psi/mod/data/PSI-MOD.obo" version="1.2"/>
+	        <Cv id="UNIMOD" uri="http://www.unimod.org/obo/unimod.obo" fullName="UNIMOD"/>
+	</CvList>
+
+	<!--1:1-->
+	<AnalysisSummary>
+	        <cvParam accession="MS:1002023" cvRef="PSI-MS" name="MS2 tag-based analysis"/>
+		<!--optional, if missed, xtracker will use the default value false, true, false, false for feature, peptide, protein, protein group quantitation-->
+		<cvParam accession="MS:1002024" cvRef="PSI-MS" value="true" name="MS2 tag-based feature level quantitation"/>
+		<cvParam accession="MS:1002025" cvRef="PSI-MS" value="true" name="MS2 tag-based peptide level quantitation"/>
+		<cvParam accession="MS:1002026" cvRef="PSI-MS" value="true" name="MS2 tag-based protein level quantitation"/>
+		<cvParam accession="MS:1002027" cvRef="PSI-MS" value="false" name="MS2 tag-based proteingroup level quantitation"/>
+	</AnalysisSummary>
+
+	<!--1:1-->
+	<InputFiles>
+		<RawFilesGroup id="raw1">
+			<RawFile location="$spectra.file" id="r1"/>
+		</RawFilesGroup>
+		<IdentificationFiles>
+			<IdentificationFile location="$identification.file" id="id_file1"/>
+		</IdentificationFiles>
+	</InputFiles>
+		
+	<!--1:1-->
+	<SoftwareList>
+		<Software id="x-Tracker" version="2.0-ALPHA">
+	        	<cvParam accession="MS:1002123" cvRef="PSI-MS" name="x-Tracker"/>
+		</Software>
+	</SoftwareList>
+	
+	<!--1:1-->
+	<DataProcessingList>
+		<DataProcessing id="DP1"  software_ref="x-Tracker" order="1">
+		<!--used as xtracker configuration file-->
+			<ProcessingMethod order="1">
+				<userParam name="Plugin type" value="load identification"/>
+#if $identification.identification_type == "mzid"
+				<userParam name="Plugin name" value="loadMzIdentML"/>
+				<userParam name="Plugin configuration file" value="$mzid"/>
+#else
+				<userParam name="Plugin name" value="loadMascotIdent"/>
+				<userParam name="Plugin configuration file" value="$mascot"/>
+#end if
+			</ProcessingMethod>
+
+			<ProcessingMethod order="2">
+				<userParam name="Plugin type" value="load raw spectra"/>
+#if $spectra.spectra_type == "mzml"
+				<userParam name="Plugin name" value="loadRawMzML111"/>
+#else
+				<userParam name="Plugin name" value="loadRawMGF"/>
+#end if
+			</ProcessingMethod>
+
+
+			<ProcessingMethod order="3">
+				<userParam name="Plugin type" value="feature detection and quantitation"/>
+				<userParam name="Plugin name" value="iTraqQuantitation"/>
+				<userParam name="Plugin configuration file" value="$quant"/>
+				<!--define the inference methods, which must be the value in the set "mean","median","sum","weightedAverage"-->
+				<userParam name="Feature to peptide inference method" value="mean"/>
+				<userParam name="Peptide to protein inference method" value="weightedAverage"/>
+				<!--<userParam name="Protein to protein group inference method" value="sum"/>-->
+				<userParam name="Assay to Study Variables inference method" value="sum"/>
+				<userParam name="Protein ratio calculation infer from peptide ratio" value="true"/>
+			</ProcessingMethod>
+			<ProcessingMethod order="4">
+				<userParam name="Plugin type" value="Output"/>
+				<userParam name="Plugin name" value="outputMZQ"/>
+				<userParam name="Plugin configuration file" value="$out"/>
+			</ProcessingMethod>
+
+		</DataProcessing>
+	</DataProcessingList>
+	
+	<!--1:1-->
+	<AssayList id="AssayList1">
+		<Assay rawFilesGroup_ref="raw1" name="114" id="itraq_114">
+			<Label>
+				<Modification massDelta="145">
+					<cvParam cvRef="PSI-MOD" accession="MOD:01522" name="iTRAQ4plex-114 reporter fragment" value="114"/>
+				</Modification>
+			</Label>
+		</Assay>
+		<Assay rawFilesGroup_ref="raw1" name="115" id="itraq_115">
+			<Label>
+				<Modification massDelta="145">
+					<cvParam cvRef="PSI-MOD" accession="MOD:01523" name="iTRAQ4plex-115 reporter fragment" value="115"/>
+				</Modification>
+			</Label>
+		</Assay>
+		<Assay rawFilesGroup_ref="raw1" name="116" id="itraq_116">
+			<Label>
+				<Modification massDelta="145">
+					<cvParam cvRef="PSI-MOD" accession="MOD:01524" name="iTRAQ4plex-116 reporter fragment" value="116"/>
+				</Modification>
+			</Label>
+		</Assay>
+		<Assay rawFilesGroup_ref="raw1" name="117" id="itraq_117">
+			<Label>
+				<Modification massDelta="145">
+					<cvParam cvRef="PSI-MOD" accession="MOD:01525" name="iTRAQ4plex-117, mTRAQ heavy, reporter fragment" value="117"/>
+				</Modification>
+			</Label>
+		</Assay>
+	</AssayList>
+	<StudyVariableList>
+		<StudyVariable id="SV_group_A" name="GroupA">
+			<Assay_refs>itraq_114 itraq_115 itraq_116 itraq_117</Assay_refs>
+		</StudyVariable>
+	</StudyVariableList>
+</MzQuantML>
+
+]]>
+		</configfile>
+     </configfiles>
+</tool>
