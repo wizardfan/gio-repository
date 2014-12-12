@@ -1,33 +1,42 @@
-<tool id="xtracker_itraq" name="iTraq4plex analysis via X-Tracker" version="0.1.0">
+<tool id="xtracker_itraq" name="iTraq4plex analysis via X-Tracker" version="0.2.0">
     <!--updates from 0.1.0:
+	add more parameters for iTraq4plex
     -->
 	<description>Execute iTraq4plex quantitation method via X-Tracker</description>
         <command >java -jar $__root_dir__/../gio_applications/xtracker/xTracker-javaLib.jar $mzq $__root_dir__/../gio_applications/xtracker/ $output</command>
-    <inputs>
-    	<conditional name="spectra">
-      	    <param name="spectra_type" type="select" label="Spectral File Type">
-		<option value="mzml">mzml</option>        	
-		<option value="mgf">mgf</option>
-            </param>
-            <when value="mzml">
-		<param format="mzml" name="file" type="data" label="Input mzML"/>
-            </when>
-            <when value="mgf">
-		<param format="mgf" name="file" type="data" label="Input mgf"/>
-            </when>
-	</conditional>
-    	<conditional name="identification">
-      	    <param name="identification_type" type="select" label="Identification File Type">
-		<option value="mzid">MzIdentML</option>
-		<option value="mascot">Mascot XML</option>        	
-            </param>
-            <when value="mzid">
-		<param format="mzid" name="file" type="data" label="Identification in MzIdentML format"/>
-            </when>
-            <when value="mascot">
-		<param format="xml" name="file" type="data" label="Mascot identification file"/>
-            </when>
-	</conditional>
+	<inputs>
+		<conditional name="spectra">
+			<param name="spectra_type" type="select" label="Spectral File Type">
+				<option value="mzml">mzml</option>        	
+				<option value="mgf">mgf</option>
+			</param>
+			<when value="mzml">
+				<param format="mzml" name="file" type="data" label="Input mzML"/>
+			</when>
+			<when value="mgf">
+				<param format="mgf" name="file" type="data" label="Input mgf"/>
+			</when>
+		</conditional>
+    		<conditional name="identification">
+			<param name="identification_type" type="select" label="Identification File Type">
+				<option value="mzid">MzIdentML</option>
+				<option value="mascot">Mascot XML</option>        	
+			</param>
+			<when value="mzid">
+				<param format="mzid" name="file" type="data" label="Identification in MzIdentML format"/>
+			</when>
+			<when value="mascot">
+				<param format="xml" name="file" type="data" label="Mascot identification file"/>
+			</when>
+		</conditional>
+		<param name="mz_range" type="float" value="0.05" min="0" label="m/z range" help="The m/z range defining the area to calculate quantity for reported ion intensity" />
+		<param name="integration" type="select" format="text">
+			<label>Integration method</label>
+			<help>The method to calculate the intensity of reported ions</help>
+			<option value="SumIntensities" selected="true">Sum of peaks</option>
+			<option value="Area">Area of trapezoid</option>
+			<option value="Highest">Highest intensity</option>
+		</param>
 	</inputs>
 	<outputs>
 		<data name="output" format="mzq"/>
@@ -146,10 +155,10 @@
 	</AssayParamList>
 	<Setting>
 		<mzRange>
-			<minus>0.05</minus>
-			<plus>0.05</plus>
+			<minus>$mz_range</minus>
+			<plus>$mz_range</plus>
 		</mzRange>
-		<IntegrationMethod>SumIntensities</IntegrationMethod><!--the method used to calculate the area of the peak-->
+		<IntegrationMethod>$integration</IntegrationMethod><!--the method used to calculate the area of the peak-->
 	</Setting>
 </iTraqQuantitation>]]>
 		</configfile>
