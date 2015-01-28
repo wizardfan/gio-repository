@@ -1,6 +1,6 @@
 <tool id="mzidlib_fdr" name="mzIdLib:FDR" version="1.0.0">
 	<description>Using mzIdentML-Lib to calculate False Discovery Rate</description>
-	<command>java -Xms1024m -jar $__root_dir__/../gio_applications/mzidlib/mzidlib-1.6.8-javaLib.jar FalseDiscoveryRateGlobal $input $output -decoyRegex $decoyRegex -decoyValue $decoyValue -cvTerm $score.cvTerm -betterScoresAreLower $betterScoresAreLower -fdrLevel $fdrType.level 
+	<command>java -Xms1024m -jar $__root_dir__/../gio_applications/mzidlib/mzidlib-1.6.11-javaLib.jar FalseDiscoveryRateGlobal $input $output -decoyRegex $decoyRegex -decoyValue $decoyValue -cvTerm $score.cvTerm -betterScoresAreLower $betterScoresAreLower -fdrLevel $fdrType.level 
 #if $fdrType.level=="ProteinGroup":
 -proteinLevel $fdrType.proteinLevel
 #else

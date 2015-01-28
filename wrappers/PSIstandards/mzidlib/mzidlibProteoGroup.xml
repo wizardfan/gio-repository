@@ -1,6 +1,6 @@
 <tool id="mzidlib_proteogrouper" name="mzIdLib:ProteoGrouper" version="1.0.0">
 	<description>Using mzIdentML-Lib to perform sequence-based protein inference</description>
-	<command>java -Xms1024m -jar $__root_dir__/../gio_applications/mzidlib/mzidlib-1.6.8-javaLib.jar ProteoGrouper $input $output -cvAccForSIIScore $cvAccForSIIScore -logTransScore $logTransScore -requireSIIsToPassThreshold true -verboseOutput false
+	<command>java -Xms1024m -jar $__root_dir__/../gio_applications/mzidlib/mzidlib-1.6.11-javaLib.jar ProteoGrouper $input $output -cvAccForSIIScore $cvAccForSIIScore -logTransScore $logTransScore -requireSIIsToPassThreshold true -verboseOutput false
 	</command>
 	<inputs>    
 		<param  format="mzid" name="input" type="data" label="Input file"/>
