@@ -1,6 +1,6 @@
 <tool id="mzidlib_threshold" name="mzIdLib:Threshold" version="1.0.0">
 	<description>Using mzIdentML-Lib to remove identification under given threshold</description>
-	<command>java -Xms1024m -jar $__root_dir__/../gio_applications/mzidlib/mzidlib-1.6.8-javaLib.jar Threshold $input $output -isPSMThreshold $isPSMThreshold -cvAccessionForScoreThreshold $score.cvTerm -threshValue $threshValue -betterScoresAreLower $thresholdBetterScoresAreLower -deleteUnderThreshold true
+	<command>java -Xms1024m -jar $__root_dir__/../gio_applications/mzidlib/mzidlib-1.6.11-javaLib.jar Threshold $input $output -isPSMThreshold $isPSMThreshold -cvAccessionForScoreThreshold $score.cvTerm -threshValue $threshValue -betterScoresAreLower $thresholdBetterScoresAreLower -deleteUnderThreshold true
 	</command>
 	<inputs>    
 		<param  format="mzid" name="input" type="data" label="Input file"/>
