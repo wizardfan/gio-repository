@@ -1,0 +1,27 @@
+<tool id="intercalc" name="Calculate interference" force_history_refresh="True">
+	<description>Tool for calculating possible background interference for a set of target peptides</description>
+	<command interpreter="python">$__root_dir__/../gio_applications/inclusion/intercalc.py $target $background $output $massaccuracy $peakwidth -v</command>
+	<inputs>
+		<param name="target" type="data" format="tabular" label="Input file containing target peptides"/>
+		<param name="background" type="data" format="tabular" label="Input file containing background peptides"/>
+		<param name="massaccuracy" type="float" size="5" value="0.1" min="0" label="mass accuracy in Daltons"/>
+		<param name="peakwidth" type="float" size="5" value="1" min="0" label="width of eluction peaks in hydrophobicity units"/>
+	</inputs>
+	<outputs>
+		<data name="output" format="tabular"  label="#echo os.path.splitext (str ($target.name))[0]#-interference.tsv"/>
+	</outputs>
+	<help>
+
+**What it does**
+
+This tool calculates the interference between target and background peptides. All files are TSV format, where each row is a target&#47;background peptide and columns are:
+
+1. Peptide sequence
+2. Name of protein to which sequence belongs
+3. Molecular weight
+4. Hydrophobicity
+5. Interferent score (present in ouput file only)
+
+The input files are expected to be the output files of Peptide MW and hydrophobicity tool which generates the exact order of the required columns.
+	</help>
+</tool>
