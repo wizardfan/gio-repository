@@ -64,7 +64,7 @@ my $optional_tag = "pt:Z:The peptides are "; #the optional tag
 #my @samHeader; #store the headers in the sam file which starts with @
 #my @samorder; #the arrays keeping the original order of records in the original sam file which normally is ordered
 my %seqs; #stores the sequences from the ORF file
-my %totalORFs;
+my %totalORFs;#keys are the orf sequence and values are orf id(s)
 
 &readFasta($fastaIn);
 #&cigar_analysis("CUFF.20243.1	0	2	108487161	40	3245H2218M	*	0	0	GGTTCTTCTAATACAGAATTTAAGTCAACCAAAGAAGGATTTTCCATCCCTGTGTCTGCTGATGGATTTAAATTTGGCATTTCGGAACCAGGAAATCAAGAAAAGAAAAGTGAAAAGCCTCTTGAAAATGGTACTGGCTTCCAGGCTCAGGATATTAGTGGCCAGAAGAATGGCCGTGGTGTGATTTTTGGCCAAACAAGTAGCACTTTTACATTTGCAGATCTTGCAAAATCAACTTCAGGAGAAGGATTTCAGTTTGGCAAAAAAGACCCCAATTTCAAGGGATTTTCAGGTGCTGGAGAAAAATTATTCTCATCACAATACGGTAAAATGGCCAATAAAGCAAACACTTCCGGTGACTTTGAGAAAGATGATGATGCCTATAAGACTGAGGACAGCGATGACATCCATTTTGAACCAGTAGTTCAAATGCCCGAAAAAGTAGAACTTGTAACAGGAGAAGAAGATGAAAAAGTTCTGTATTCACAGCGGGTAAAACTATTTAGATTTGATGCTGAGGTAAGTCAGTGGAAAGAAAGGGGCTTGGGGAACTTAAAAATTCTCAAAAACGAGGTCAATGGCAAACTAAGAATGCTGATGCGAAGAGAACAAGTACTAAAAGTGTGTGCTAATCATTGGATAACGACTACGATGAACCTGAAGCCTCTCTCTGGATCAGATAGAGCATGGATGTGGTTAGCCAGTGATTTCTCTGATGGTGATGCCAAACTAGAGCAGTTGGCAGCAAAATTTAAAACACCAGAGCTGGCTGAAGAATTCAAGCAGAAATTTGAGGAATGCCAGCGGCTTCTGTTAGACATACCACTTCAAACTCCCCATAAACTTGTAGATACTGGCAGAGCTGCCAAGTTAATACAGAGAGCTGAAGAAATGAAGAGTGGACTGAAAGATTTCAAAACATTTTTGACAAATGATCAAACAAAAGTCACTGAGGAAGAAAATAAGGGTTCAGGTACAGGTGCGGCCGGTGCCTCAGACACAACAATAAAACCCAATCCTGAAAACACTGGGCCCACATTAGAATGGGATAACTATGATTTAAGGGAAGATGCTTTGGATGATAGTGTCAGTAGTAGCTCAGTACATGCTTCTCCATTGGCAAGTAGCCCTGTGAGAAAAAATCTTTTCCGTTTTGGTGAGTCAACAACAGGATTTAACTTCAGTTTTAAATCTGCTTTGAGTCCATCTAAGTCTCCTGCCAAGTTGAATCAGAGTGGGACTTCAGTTGGCACTGATGAAGAATCTGATGTTACTCAAGAAGAAGAGAGAGATGGACAGTACTTTGAACCTGTTGTTCCTTTACCTGATCTAGTTGAAGTATCCAGTGGTGAGGAAAATGAACAAGTTGTTTTTAGTCACAGGGCAAAACTCTACAGATATGATAAAGATGTTGGTCAATGGAAAGAAAGGGGCATTGGTGATATAAAGATTTTACAGAATTATGATAATAAGCAAGTTCGTATAGTGATGAGAAGGGACCAAGTATTAAAACTTTGTGCCAATCACAGAATAACTCCAGACATGACTTTGCAAAATATGAAAGGGACAGAAAGAGTATGGTTGTGGACTGCATGTGATTTTGCAGATGGAGAAAGAAAAGTAGAGCATTTAGCTGTTCGTTTTAAACTACAGGATGTTGCAGACTCGTTTAAGAAAATTTTTGATGAAGCAAAAACAGCCCAGGAAAAAGATTCTTTGATAACACCTCATGTTTCTCGGTCAAGCACTCCCAGAGAGTCACCATGTGGCAAAATTGCTGTAGCTGTATTAGAAGAAACCACAAGAGAGAGGACAGATGTTATTCAGGGTGATGATGTAGCAGATGCAACTTCAGAAGTTGAAGTGTCTAGCACATCTGAAACAACACCAAAAGCAGTGGTTTCTCCTCCAAAGTTTGTATTTGGTTCAGAGTCTGTTAAAAGCATTTTTAGTAGTGAAAAATCAAAACCATTTGCATTCGGCAACAGTTCAGCCACTGGGTCTTTGTTTGGATTTAGTTTTAATGCACCTTTGAAAAGTAACAATAGTGAAACTAGTTCAGTAGCCCAGAGTGGATCTGAAAGCAAAGTGGAACCTAAAAAATGTGAACTGTCAAAGAACTCTGATATCGAACAGTCTTCAGATAGCAAAGTCAAAAATCTCTTTGCTTCCTTTCCAACGGAAGAATCTTCAATCAACTACACATTTAAAACACCAG	*	MD:Z:105G24A91G99G111T19T11G22G34G61C63A14C2G28C38G3A64A248G95A23C187A23G141C17G34G266G38A55A35T11T36T16C118C14T38	NH:i:19	HI:i:1	NM:i:34	SM:i:40	XQ:i:40	X2:i:0	XO:Z:UT	XT:Z:GG-AG,0.00,1.00,3245..3245	PG:Z:M	pt:Z:The peptides are  ITPDMTLQNMK confidence 4.1206065E-4 quantitation 1 ms-gf:specevalue=2.0675467E-11 ORF CUFF.20243.1_ORF8_Frame_3_57-5462<br> SNNSETSSVAQSGSESK confidence 3.1412476E-8 quantitation 1 ms-gf:specevalue=1.5590609E-15 ORF CUFF.20243.1_ORF8_Frame_3_57-5462<br> ILQNYDNKQVR confidence 4.197988E-5 quantitation 1 ms-gf:specevalue=2.1063735E-12 ORF CUFF.20243.1_ORF8_Frame_3_57-5462<br> ELVGPPLAETVFTPK confidence 1.1228497E-7 quantitation 1 ms-gf:specevalue=5.589079E-15 ORF CUFF.20243.1_ORF8_Frame_3_57-5462<br> FGTSETSKAPK confidence 0.0026715533 quantitation 1 ms-gf:specevalue=1.3404729E-10 ORF CUFF.20243.1_ORF8_Frame_3_57-5462<br> QNQTTSAVSTPASSETSK confidence 4.0880364E-5 quantitation 1 ms-gf:specevalue=2.0263674E-12 ORF CUFF.20243.1_ORF8_Frame_3_57-5462<br> LHDSSGSQVGTGFK confidence 2.7241316E-5 quantitation 1 ms-gf:specevalue=1.3582062E-12;ORF=CUFF.20243.1_ORF8_Frame_3_57-5462<br> SNNSETSSVAQSGSESKVEPK confidence 3.9055948E-7 quantitation 1 ms-gf:specevalue=1.929342E-14 ORF CUFF.20243.1_ORF8_Frame_3_57-5462<br> SGSSFVHQASFK confidence 1.9898128E-7 quantitation 1 ms-gf:specevalue=9.960201E-15 ORF CUFF.20243.1_ORF8_Frame_3_57-5462<br> APGTNVAMASNQAVR confidence 3.3309543E-6 quantitation 1 ms-gf:specevalue=1.6580106E-13 ORF CUFF.20243.1_ORF8_Frame_3_57-5462<br>");
@@ -85,8 +85,8 @@ chomp $headerLine;
 #save the optional header into the array
 my (undef,undef,undef,undef,undef,undef,@optionalHeader) = split(/\t/, $headerLine);
 my $optionalHeaderLen = scalar @ optionalHeader;
-my %hits;#keys are the id (protein matching the pattern) used in sam, values are arrays of $peptide_info
-while (my $line = <IN>){
+my %hits;#keys are the id (protein matching the pattern) used in sam, values are hashes of $peptide_info with the count
+while (my $line = <IN>){#peptide file
 	chomp $line;
 	my @elmts = split(/\t/, $line);
 	#next if ($elmts[2] eq '+' || $elmts[3] eq '+');#2 Reverse 3 contaminant, if true that record should not be used
@@ -95,7 +95,7 @@ while (my $line = <IN>){
 	for (my $i = 0;$i< $optionalHeaderLen;$i++){
 		$peptide_info .= lc($optionalHeader[$i])."=$elmts[$i+6];";
 	}
-	#now the last char of peptide_info is ";", which is removed in the next line
+	#now the last char of peptide_info is ";" or " " (no optional header), which is removed in the next line
 	$peptide_info = substr($peptide_info, 0, (length $peptide_info) - 1);
 	
 	my $protein_name = $elmts[1];#Protein, e.g. >96407_5 [2245 - 587] (REVERSE SENSE);>96409_5 [2116 - 566] (REVERSE SENSE);>96408_5 [2043 - 613] (REVERSE SENSE),96410_5 [2172 - 742] (REVERSE SENSE)
@@ -103,7 +103,7 @@ while (my $line = <IN>){
 	$protein_name =~ s/;/>/g; #replace ; with > 
 	$protein_name =~ s/"//g; #remove " 
 #	print "proteins: $protein_name\npeptide info $peptide_info";
-	#The , and ; can be caused by two situations: from ORF tool (e.g. ORFall, same ORF predicted from multiple transcripts) or from identification (identified peptide exists in more than one protein, then multiple transcript involved)
+	#The , and ; can be caused by two situations: from ORF tool (e.g. ORFall, same ORF predicted from multiple transcripts) or from identification (identified peptide exists in more than one protein, then multiple transcripts involved)
 	#sam file is transcript based, so needs to be split 
 	my @protein_entries = split(/>/, $protein_name); 
 	for (my $i=0;$i<scalar @protein_entries;$i++){
@@ -124,17 +124,8 @@ while (my $line = <IN>){
 		$maxConfidence = $score if ($score>$maxConfidence);
 	}
 }
-#foreach my $aaa(keys %hits){
-#	my %tmp = %{$hits{$aaa}};
-#	my @tmp = keys %tmp;
-#	my $tmp = join (" ! ",@tmp);
-#	print "$aaa\t$tmp\n";
-#}
-#exit;
-#print "max confidence value $maxConfidence\n";
 
 #output the new sam which combines the identification/quantitation from the search result with the original sam file
-#open OUT, ">new_$samFile";
 open OUT, ">$samOutFile";
 open GFF, ">$gffFile";
 print GFF "##gff-version 3\n";
@@ -200,8 +191,8 @@ sub cigar_analysis(){
 	my %peptideInfo;
 	my %orfSeqs; #keys are orf names, i.e. the protein name in the identification file and fasta header e.g. CUFF.38.1_ORF1_***, values are the sequences retrieved from the fasta file
 	my $hitString = $sam[-1];
-	$hitString = substr($hitString,length($optional_tag));#remove the optional tag
-	my @tmp = split("<br>",$hitString); # the last element contains the identified peptides separated by <br> tag
+	$hitString = substr($hitString,length($optional_tag));#remove the optional tag from the beginning
+	my @tmp = split("<br>",$hitString); # $hitString is the last element contains the identified peptides separated by <br> tag
 	my %uniquePeptideHit; #one protein can have multiple ORFs containing the same peptide, so there may be multiple entries in the protein list for the same protein
 	#convert plain hit information into data structure %peptideInfo hash of hash first key is the peptide sequence, the second keys are pre-defined score, quant and rest
 	foreach my $tmp(@tmp){
@@ -224,7 +215,7 @@ sub cigar_analysis(){
 					if (exists $seqs{$1}){
 						$orfSeqs{$1} = $seqs{$1};
 					}else{
-						print "Error: protein $1 cannot be found in the fasta file $fastaIn\n";
+						print "Error: protein $1 cannot be found in the fasta file $fastaIn\n"; #could be caused by decoy protein
 					}
 				}
 			}
