@@ -1,8 +1,0 @@
-MS:1002355	PSM-level FDRScore (MS:1002355)
-MS:1002356	PSM-level combined FDRScore (MS:1002356)
-MS:1002360	Distinct peptide-level FDRScore (MS:1002360)
-MS:1002361	Distinct peptide-level combined FDRScore (MS:1002361)
-MS:1002365	FDRScore for proteins (MS:1002365)
-MS:1002366	Combined FDRScore for proteins (MS:1002366)
-MS:1002374	Protein group-level FDRScore (MS:1002374)
-MS:1002375	Protein group-level combined FDRScore (MS:1002375)

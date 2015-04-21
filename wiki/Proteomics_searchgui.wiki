@@ -1,0 +1,32 @@
+*Name:* Peptide spectrum matching<br>
+*Description:*<br>
+
+		Using SearchGUI to perform MS/MS search via X!Tandem, OMSSA and MS-GF+
+	<br>
+*Input files:*
+  * spectra   Input Peak Lists (mgf) Select appropriate MGF dataset(s) from history
+*Parameters:*<br>
+  * Conditional element: database
+    * built_in
+    * upload
+
+  * precursor_ion_tol   Percursor Ion Tolerance Provide error value for precursor ion, based on instrument used. 10 ppm recommended for Orbitrap instrument
+  * precursor_ion_tol_units   Precursor Ion Tolerance Units Select based on instrument used, as different machines provide different quality of spectra. ppm is a standard for most precursor ions
+  * enzyme   Enzyme Which enzyme was used for protein digest in experiment? In most cases, trypsin is used
+  * missed_cleavages   Maximum Missed Cleavages Allow peptides to contain up to this many missed enzyme cleavage sites. 2 is the recommended value
+  * fixed_modifications   Fixed Modifications Occurs in known places on peptide sequence. Hold the appropriate key while clicking to select multiple items
+  * variable_modifications   Variable Modifications Can occur anywhere on the peptide sequence; adds additional error to search score. Hold the appropriate key while clicking to select multiple items
+  * min_charge   Minimum Charge Lowest searched charge value for fragment ions
+  * max_charge   Maximum Charge Highest searched charge value for fragment ions
+  * omssa   Run OMSSA 
+  * tandem   Run X!Tandem 
+  * msgf   Run MS-GF+ 
+*Outputs:*<br>
+  * output with Type html
+*Details:*<br>
+**What it does**
+
+Runs multiple search engines (X!Tandem, OMSSA and MS-GF+) on any number of MGF peak lists using the SearchGUI application. All result files are automatically converted to the PSI standard format mzIdentML
+
+	<br>
+

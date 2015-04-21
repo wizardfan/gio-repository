@@ -1,0 +1,37 @@
+*Name:* MSGF+ MSMS Search<br>
+*Description:*<br>
+Run an MSGF+ Search<br>
+*Input files:*<br>
+*Parameters:*<br>
+  * Conditional element: type
+    * mzml
+    * mgf
+    * mzxml
+    * ms2
+
+  * Conditional element: database
+    * built_in
+    * upload
+
+  * fixed_mods   Fixed Modifications 
+  * variable_mods   Variable Modifications 
+  * decoy    
+  * enzyme    
+  * protocol    
+  * instrument    
+  * precursor_ion_tol   Precursor ion tolerance Precursor Ion Tolerance (Da or ppm)
+  * precursor_tolu    
+*Outputs:*<br>
+  * output with Type mzid
+*Details:*<br>
+**What it does**
+
+Runs an MS/MS database search using the MSGFPlus search engine.
+
+----
+
+**References**
+
+Please see http://proteomics.ucsd.edu/Software/MSGFPlus/ for details of the MSGFPlus search engine and references describing its algorithm
+    <br>
+

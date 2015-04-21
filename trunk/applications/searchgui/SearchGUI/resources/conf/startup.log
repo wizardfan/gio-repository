@@ -1,0 +1,9 @@
+Memory settings read from the user preferences: 6000
+args: 
+original java.home: C:\Program Files\Java\jdk1.7.0_21\jre\bin\
+new java.home: C:\Program Files\Java\jdk1.7.0_21\jre\bin\
+
+Command line: 
+"C:\Program Files\Java\jdk1.7.0_21\jre\bin\java" -splash:resources\conf\searchgui-splash.png -Xms128M -Xmx6000M -cp "C:\Users\hba041\My_Applications\searchgui\.\SearchGUI-1.18.4.jar" eu.isas.searchgui.gui.SearchGUI 
+Process exitValue: 1
+error: could not find or load main class eu.isas.searchgui.gui.searchgui

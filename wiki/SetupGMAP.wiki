@@ -1,0 +1,2 @@
+[http://research-pub.gene.com/gmap/ GMAP] stands for Genome Mapping and Alignment Program which aligns NGS data to the reference genome. The reference genomes are required to be set up in advance,
+which is well explained in the section 3 and 4 in the [http://research-pub.gene.com/gmap/src/README readme] file. In gio, the data folder is determined to be at _galaxy-dist/tool-data/data_.
