@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="emPaiQuantitation">
+  		<xs:complexType>
+    			<xs:sequence>
+	      			<xs:element name="peptideMwRange">
+					<xs:complexType>
+    						<xs:sequence>
+      							<xs:element name="minimum" type="xs:decimal" />
+      							<xs:element name="maximum" type="xs:decimal" />
+    						</xs:sequence>
+  					</xs:complexType>
+  				</xs:element>
+      				<xs:element name="fastaFiles" type="fastaFilesType"/>
+			      	<xs:element name="enzyme">
+      					<xs:simpleType>
+      						<xs:restriction base="xs:string">
+      							<xs:enumeration value="Trypsin"/>
+      						</xs:restriction>
+      					</xs:simpleType>
+      				</xs:element>
+    			</xs:sequence>
+  		</xs:complexType>
+	</xs:element>
+  
+	<xs:complexType name="fastaFilesType">
+    		<xs:sequence>
+      			<xs:element name="fastaFile" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+    		</xs:sequence>
+    	</xs:complexType>
+</xs:schema>
+
