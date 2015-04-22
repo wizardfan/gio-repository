@@ -1,0 +1,24 @@
+<tool id="consequence" name="Use Consequence 2 to calculate detectability" force_history_refresh="True">
+	<description>Tool for calculating detectability in LCMS in a set of peptides</description>
+	<command>Rscript $__root_dir__/../gio_applications/consequence/code/consequence.r $input $output $__root_dir__/../gio_applications/consequence $model 2> /dev/null</command>
+	<inputs>
+		<param name="input" type="data" format="tabular" label="Input file containing peptides"/>
+		<param name="model" type="select" label="The predictor model">
+			<option value="nn rf ada">All models</option>
+			<option value="nn">Neural Network</option>
+			<option value="rf">Random Forest</option>
+			<option value="ada">Adaptive booster</option>
+		</param>
+	</inputs>
+	<outputs>
+		<data name="output" format="tabular" label="#echo os.path.splitext (str ($input.name))[0]#-detectability-#echo str($model)#.tsv"/>
+	</outputs>
+	<help>
+
+**What it does**
+
+This tool calculates the detectability of peptides via CONSeQuence.
+
+The input files are expected to be the output file of other tools under Targeted Proteomics section, which has the first column as Peptide.
+	</help>
+</tool>

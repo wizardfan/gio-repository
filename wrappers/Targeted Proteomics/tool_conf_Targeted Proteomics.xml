@@ -2,4 +2,5 @@
 	<tool file="gio/Targeted Proteomics/digest.xml" />
 	<tool file="gio/Targeted Proteomics/peptideMW.xml" />
 	<tool file="gio/Targeted Proteomics/intercalc.xml" />
+	<tool file="gio/Targeted Proteomics/consequence.xml" />
     </section>
