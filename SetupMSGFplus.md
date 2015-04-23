@@ -1,5 +1,0 @@
-MS-GF+ is a MS/MS database search tool. There are two ways to provide the protein sequence database to search against: the file uploaded by the user or the built-in database. The latter option avoids uploading widely-used databases (e.g. Swissprot) to save server resource. The databases are provided in the form of fasta files, which can be put anywhere on the server. To make the tool aware of the provided databases, they need to be recorded in the **gio\_proteomes.loc.sample** [Example](https://code.google.com/p/gio-repository/source/browse/trunk/wrappers/Proteomics/gio_proteomes.loc.sample) in the _galaxy-dist/tool-data_ folder. It is a tab-delimited file:
-  * the first column is the unique id, e.g. proteomes\_all\_species
-  * the second column is the name displayed in the interface, e.g. All species May 2013
-  * the third column is the location of the fasta file, e.g. /home/jun/galaxy-dist/test-data/proteomes/uniprot\_sprot.fasta
-It is strongly recommended to index the built-in database prior to the database search by running BuildSA. The details are available at [here](https://bix-lab.ucsd.edu/pages/viewpage.action?pageId=13533355#MS-GF+-BuildSA).
