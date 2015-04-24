@@ -8,6 +8,7 @@ Convert the mzQuantML file into more widely-used formats, e.g. CSV
 
 **Parameters:**
 * the output file format: The format to which the mzQuantML will be converted
+
 **Outputs:**
 * output in the one of the listed formats: csv, html, xls, mztab
 

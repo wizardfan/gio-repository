@@ -10,6 +10,7 @@ Theoretically digest all protein sequences from a FASTA file by trypsin
 * the minimum length for the digested peptides to be included in the result file
 * the maximum length for the digested peptides to be included in the result file
 * Only keeps proteotypic peptides?
+
 **Outputs:**
 * output in fasta format
 

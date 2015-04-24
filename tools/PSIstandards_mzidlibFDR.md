@@ -19,6 +19,7 @@ Using mzIdentML-Lib to calculate False Discovery Rate
   * original
 
 * Input name: betterScoresAreLower
+
 **Outputs:**
 * output in mzid format
 

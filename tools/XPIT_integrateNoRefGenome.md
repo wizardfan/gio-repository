@@ -11,6 +11,7 @@ Get identified protein sequences
   * built_in
   * upload
 
+
 **Outputs:**
 * output in fasta format
 

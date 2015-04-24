@@ -11,6 +11,7 @@ Extract peptide information from various file formats for PIT analysis
   * mzq
   * maxquant
 
+
 **Outputs:**
 * output in tabular format
 

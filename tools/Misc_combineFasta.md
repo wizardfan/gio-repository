@@ -8,6 +8,7 @@ Combine multiple fasta files into one file
 **Parameters:**
   * Repeat element Fasta files
 * The prefix type: Add prefix in the format of Dataset_number/alphabet_ or no prefix according to the type
+
 **Outputs:**
 * output in fasta format
 

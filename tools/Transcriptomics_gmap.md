@@ -8,6 +8,7 @@ align the DNA sequence to reference genome
 
 **Parameters:**
 * Input name: species
+
 **Outputs:**
 * output in sam format
 

@@ -8,6 +8,7 @@ Write a fasta file with spliced exons for each GFF transcript
 
 **Parameters:**
 * Input name: species
+
 **Outputs:**
 * output in fasta format
 

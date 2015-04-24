@@ -8,6 +8,7 @@ Using mzIdentML-Lib to convert mzIdentML to CSV format.
 
 **Parameters:**
 * Input name: exportType
+
 **Outputs:**
 * output in csv format
 

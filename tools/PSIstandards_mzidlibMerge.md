@@ -16,6 +16,7 @@ Using mzIdentML-Lib to combine mzIdentML result files from different search engi
 
 * Input name: decoyRegex
 * Input name: decoyValue
+
 **Outputs:**
 * output in mzid format
 

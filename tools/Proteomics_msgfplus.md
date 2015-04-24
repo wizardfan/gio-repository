@@ -24,6 +24,7 @@ Run an MSGF+ Search
 * Input name: instrument
 * Precursor ion tolerance: Precursor Ion Tolerance (Da or ppm)
 * Input name: precursor_tolu
+
 **Outputs:**
 * output in mzid format
 

@@ -7,6 +7,7 @@ Calculate the molecular weight and hydrophobicity for peptides within a fasta fi
 * Input peptide fasta file in fasta format
 
 **Parameters:**
+
 **Outputs:**
 * output in tabular format
 

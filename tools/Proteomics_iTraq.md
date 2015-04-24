@@ -16,6 +16,7 @@ Execute iTraq4plex quantitation method via X-Tracker
 
 * m/z range: The m/z range defining the area to calculate quantity for reported ion intensity
 * Input name: integration
+
 **Outputs:**
 * output in mzq format
 

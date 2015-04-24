@@ -15,6 +15,7 @@ The tool links sam file to the peptide identification file with the defined regu
   * CUFF\\.\\d+\\.\\d+
 
 * The maximum fold change to be capped
+
 **Outputs:**
 * outputGff in gff3 format
 * outputFasta in fasta format

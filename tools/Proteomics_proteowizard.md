@@ -14,6 +14,7 @@ Convert non PSI standard mass spectral file into the PSI standard format mzML
   * mzML
 
 * The output file format: The format to which the original file(s) will be converted
+
 **Outputs:**
 * output in the one of the listed formats: mzml, mgf
 

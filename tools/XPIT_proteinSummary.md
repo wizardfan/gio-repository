@@ -7,6 +7,7 @@ Provides a tabular summary of the characteristics of protein sequence files
 
 **Parameters:**
   * Repeat element protein sequence files
+
 **Outputs:**
 * output in tabular format
 
