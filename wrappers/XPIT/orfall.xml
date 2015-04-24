@@ -11,11 +11,11 @@
     <inputs>
 	<param  format="fasta" name="input" type="data" label="Input DNA file"/>
         <param name = "minMain" size="6" value="200" type="integer" label="the minimum length for the main ORFs in bps"/>
-    	<param name="start" type="select" label="Start type: ">
+    	<param name="start" type="select" label="Start type">
 	    <option value="M" selected = "true">Start codon</option>
 	    <option value="-">Stop codon</option>
         </param>
-    	<param name="stop" type="select" label="Stop type: ">
+    	<param name="stop" type="select" label="Stop type">
 	    <option value="M">Start codon</option>
 	    <option value="-" selected = "true">Stop codon</option>
 	    </param>
