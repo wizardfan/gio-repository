@@ -3,7 +3,7 @@ use strict;
 
 #parameter checking
 my $lenArgv = scalar @ARGV;
-unless( $lenArgv >1 && $lenArgv<9 ){
+unless( $lenArgv >1 && $lenArgv<11 ){
 	print "Error: Wrong number of parameters\n";
 	&usage();
 	exit 1;
@@ -20,6 +20,7 @@ open OUT,">$ARGV[1]" or die "Can not open the output file $ARGV[1]";
 my $unique = 1;
 my $maxLength = 10000;
 my $minLength = 1;
+my $miscleavage = 0;
 
 for (my $i=2;$i<$lenArgv;$i+=2){
 	if(lc($ARGV[$i]) eq "-unique"){
@@ -34,8 +35,13 @@ for (my $i=2;$i<$lenArgv;$i+=2){
 		}
 	}elsif (lc($ARGV[$i]) eq "-maxlength"){
 		$maxLength = $ARGV[$i+1];
+		checkIntegers($maxLength,"maxLength");
 	}elsif (lc($ARGV[$i]) eq "-minlength"){
 		$minLength = $ARGV[$i+1];
+		checkIntegers($minLength,"minLength");
+	}elsif (lc($ARGV[$i]) eq "-miscleavage"){
+		$miscleavage = $ARGV[$i+1];
+		checkIntegers($miscleavage,"miscleavage");
 	}else{
 		print "Error: Unrecognized option: $ARGV[$i]\n";
 		&usage();
@@ -53,7 +59,6 @@ my %peptidesCount;
 my $id;
 my $seq="";
 my $countProtein=0;
-my $countPep=0;
 
 while(my $line=<IN>){
 	chomp $line;
@@ -95,20 +100,36 @@ foreach (@lens){
 	print "$_\t$distri{$_}\n";
 }
 
+sub checkIntegers(){
+	my ($value, $name) = @_;
+	unless ($value=~/^\d+$/){
+		print "The value $value given for the parameter $name is not valid, only integers allowed.\n\n";
+		&usage();
+		exit 6;
+	}
+}
+
 sub digest(){
 	my ($header,$seq) = @_;
 	$header =~ s/\s.*//;#only keeps the part before the first white space
 	$seq=~s/\s+//g;
 	my @frags = split /(?<=[KR])(?=[^P])/,$seq;
-	$countPep += scalar @frags;
-	for(my $i=1;$i<=scalar @frags;$i++){
-		my $pep = $frags[$i-1];
-		if(exists $peptides{$pep}){ #not unique
-			$peptidesCount{$pep}++;
-			$peptides{$pep} .= ";$header-pep$i";
-		}else{
-			$peptidesCount{$pep} = 1;
-			$peptides{$pep} = "$header-pep$i";
+	my $len = scalar @frags;
+	for (my $mis = 0; $mis <= $miscleavage; $mis++){
+		for(my $i=1;$i<=$len-$mis;$i++){
+			my $pep = $frags[$i-1];
+			for (my $curr=1;$curr<=$mis;$curr++){
+				$pep .= $frags[$i-1+$curr];
+			}
+			my $pepHeader = "$header-mis$mis-pep$i";
+#			my $pepHeader = "$header-pep$i";
+			if(exists $peptides{$pep}){ #not unique
+				$peptidesCount{$pep}++;
+				$peptides{$pep} .= ";$pepHeader";
+			}else{
+				$peptidesCount{$pep} = 1;
+				$peptides{$pep} = "$pepHeader";
+			}
 		}
 	}
 }
@@ -120,6 +141,8 @@ sub usage(){
 	print "-unique [yes|no]  whether only output proteotypic peptides. The default value is no\n";
 	print "-maxLength integer to limit the maximum length of peptide, default is 10000 which means include every peptide.\n";
 	print "-minLength integer to limit the minimum length of peptide, default is 1 which means include every peptide.\n";
+	print "-miscleavage integer to indicate the allowed maximum cleavage, default is 0 which means no miscleavage allowed.\n";
 	print "Example 1: perl digest.pl uniprot_sprot_human.fasta\t\t this will digest the human swissprot data and output all sequences\n";
 	print "Example 2: perl digest.pl uniprot_sprot_human.fasta -unique yes -minLength 4 -maxLength 24\t\t this will only output proteotypic peptides having AA between 4 and 24 inclusive, which is more likely to be observed on a MS machine\n";
+	print "Example 3: perl digest.pl uniprot_sprot_human.fasta -miscleavage 1\t\t this will allow maximum one miscleavage.\n";
 }
