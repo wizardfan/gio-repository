@@ -17,8 +17,13 @@
 
 **What it does**
 
-This tool calculates the detectability of peptides via CONSeQuence.
-
+This tool calculates the detectability of peptides in the Mass Spectrometry via CONSeQuence 2, which utilizes three different machine learning models: Random forest, Adaptive model, and Neural network to predict the detectability of peptides. CONSeQuence 2 The predicted score ranges between 0-1, higher values mean higher chance to be detected.
 The input files are expected to be the output file of other tools under Targeted Proteomics section, which has the first column as Peptide.
+
+----
+
+**References**
+
+http://www.ncbi.nlm.nih.gov/pubmed/?term=21813416
 	</help>
 </tool>

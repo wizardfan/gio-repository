@@ -1,6 +1,6 @@
 <tool id="intercalc" name="Calculate interference" force_history_refresh="True">
 	<description>Tool for calculating possible background interference for a set of target peptides</description>
-	<command interpreter="python">$__root_dir__/../gio_applications/inclusion/intercalc.py $target $background $output $massaccuracy $peakwidth -v</command>
+	<command>python -W ignore $__root_dir__/../gio_applications/inclusion/intercalc.py $target $background $output $massaccuracy $peakwidth -v</command>
 	<inputs>
 		<param name="target" type="data" format="tabular" label="Input file containing target peptides"/>
 		<param name="background" type="data" format="tabular" label="Input file containing background peptides"/>

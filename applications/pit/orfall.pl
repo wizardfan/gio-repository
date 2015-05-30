@@ -228,7 +228,9 @@ sub doORF(){
 					$orfs{$orfCount}{"stop"}=$currStopPosi-3*$strand;#the stop codon is not accounted in the orf
 					push (@orfs,$orf);
 				}
-
+				#the main ORF can be determined purely by the length and start and stop codon above
+				#however the uORFs need to be within certain range of main ORFs, which cannot be determined here
+				#therefore just put all potential uORFs into uorf5 and uorf3 hashes
 				if($need5uorf && $orfLen >= $min5AA && $orfLen <= $max5AA){
 					$u5count++;
 					$u5orfNegaMaxIndex = $u5count if ($frame < 0);
