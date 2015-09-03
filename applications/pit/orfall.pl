@@ -215,6 +215,7 @@ sub doORF(){
 		for(my $i=0;$i<scalar @segments;$i++){
 			$currStopPosi += ((length $segments[$i])+1)*3*$strand;
 			my $pos = index($segments[$i],$start);#locate the first start codon, which should be the longest ORF for the current stop codon
+			$pos = 0 if ($start eq $stop);
 			if($pos >-1){ #if found, the current segment has both start and stop codon, could be an ORF, judge the length
 				my $orfLen = (length $segments[$i])-$pos;#because $pos is the actual value - 1
 				if($orfLen >= $minAA){#main orf found
