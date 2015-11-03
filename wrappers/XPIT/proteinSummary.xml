@@ -1,4 +1,4 @@
-<tool id="PIT:proteinSummary" name="PIT:Protein Summary" force_history_refresh="True" version="1.0.0">
+<tool id="PIT:proteinSummary" name="PIT:Protein Summary" force_history_refresh="True" version="1.0.1">
     <description>Provides a tabular summary of the characteristics of protein sequence files</description>
     <command interpreter="perl">$__root_dir__/../gio_applications/pit/proteinSummaryGalaxy.pl 
 	#for $i, $s in enumerate( $fastas )
@@ -9,7 +9,22 @@
     <inputs>
         <repeat name="fastas" title="protein sequence files" min="1">
             <param name = "file" type="data" label="fasta file" help="The protein sequence file to be summaried" format="fasta"/>
-            <param name = "display" size="30" type="text" value="Noname" label="Display name in the result file"/>
+            <param name = "display" size="30" type="text" value="Noname" label="Display name in the result file">
+                <sanitizer>
+                    <valid initial="string.printable">
+                        <remove value="\"/>
+                        <remove value="("/>
+                        <remove value=")"/>
+                        <remove value=" "/>
+                    </valid>
+                    <mapping initial="none">
+                        <add source="\" target="\\"/>
+                        <add source="(" target="\("/>
+                        <add source=")" target="\)"/>
+                        <add source=" " target="_"/>
+                    </mapping>
+                </sanitizer>    
+            </param>
         </repeat>
     </inputs>
     <outputs>

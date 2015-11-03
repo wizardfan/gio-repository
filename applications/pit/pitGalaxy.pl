@@ -8,7 +8,11 @@ use POSIX;
 #suffix "_nm": not mapping result in SAM file (GMAP), could indicate that the transcript is from another species rather than the one trying to be mapped in GMAP
 #suffix "_np": the ORF is found in the transcript, but no identified peptide to support
 #suffix "_wp": the ORF with identified peptide support
-
+my $numArg = scalar @ARGV;
+unless ($numArg == 9) {
+	print "Wrong number of arguments.\n";
+	&usage();
+}
 # the sam file
 #my $samFile = "human.sam";
 my $samFile = $ARGV[0];
@@ -97,12 +101,12 @@ while (my $line = <IN>){#peptide file
 	}
 	#now the last char of peptide_info is ";" or " " (no optional header), which is removed in the next line
 	$peptide_info = substr($peptide_info, 0, (length $peptide_info) - 1);
-	
 	my $protein_name = $elmts[1];#Protein, e.g. >96407_5 [2245 - 587] (REVERSE SENSE);>96409_5 [2116 - 566] (REVERSE SENSE);>96408_5 [2043 - 613] (REVERSE SENSE),96410_5 [2172 - 742] (REVERSE SENSE)
 	$protein_name =~ s/,/>/g; #replace , with > 
 	$protein_name =~ s/;/>/g; #replace ; with > 
 	$protein_name =~ s/"//g; #remove " 
 #	print "proteins: $protein_name\npeptide info $peptide_info";
+
 	#The , and ; can be caused by two situations: from ORF tool (e.g. ORFall, same ORF predicted from multiple transcripts) or from identification (identified peptide exists in more than one protein, then multiple transcripts involved)
 	#sam file is transcript based, so needs to be split 
 	my @protein_entries = split(/>/, $protein_name); 
@@ -124,6 +128,14 @@ while (my $line = <IN>){#peptide file
 		$maxConfidence = $score if ($score>$maxConfidence);
 	}
 }
+#print "line 131: All hits:\n";
+#foreach my $abc(keys %hits){
+#	print "In protein $abc\n";
+#	my %hash = %{$hits{$abc}};
+#	foreach my $aaa(keys %hash){
+#		print "Peptide info: <$aaa> found $hash{$aaa} time(s)\n";
+#	}
+#}
 
 #output the new sam which combines the identification/quantitation from the search result with the original sam file
 open OUT, ">$samOutFile";
@@ -176,7 +188,7 @@ sub cigar_analysis(){
 
 	#one sam record from the newly generated sam file
 	my $sam=$_[0];
-#	print "$sam\n";
+#	print "full sam line:\n<$sam>\n";
 #	exit;
 	my @sam = split("\t",$sam);
 	my $id = $sam[0];
@@ -206,13 +218,15 @@ sub cigar_analysis(){
 			push(@peptides,$peptide);
 			$peptideInfo{$peptide}{'score'} = $2;
 			$peptideInfo{$peptide}{'quant'} = $3;
+#			print "line 221 peptide <$1> score <$2> quant <$3>\n";
 			my $rest = $';
 			$peptideInfo{$peptide}{'rest'} = $rest;
 #			print "Rest: $rest\n";
 			if ($rest=~/;ORF=(.+)$/){
 				$peptideInfo{$peptide}{'orf'} = $1;
-				unless (exists $orfSeqs{$1}){ 
-					if (exists $seqs{$1}){
+#				print "line 227 ORF <$1>\n";
+				unless (exists $orfSeqs{$1}){#one ORF may link to multiple peptides
+					if (exists $seqs{$1}){#get from input ORF file
 						$orfSeqs{$1} = $seqs{$1};
 					}else{
 						print "Error: protein $1 cannot be found in the fasta file $fastaIn\n"; #could be caused by decoy protein
@@ -253,6 +267,7 @@ sub cigar_analysis(){
 		foreach (values %orfSeqs){
 			if (index($translation, $_)>-1){
 				$found = 1;
+#				print "line 270 in translated sequence frame $offset found\n<$_>\nin translation <$translation>\n";
 				last;
 			}
 		}
@@ -276,6 +291,7 @@ sub cigar_analysis(){
 		my $found = 0;
 		foreach (values %orfSeqs){
 			if (index($translation, $_)>-1){
+#				print "line 294 in translated sequence frame $offset found\n<$_>\nin translation <$translation>\n";
 				$found = 1;
 				last;
 			}
@@ -287,7 +303,7 @@ sub cigar_analysis(){
 #	foreach (sort {$a<=>$b} keys %frames){
 #		print "Frame $_:\n$frames{$_}\n";
 #	}
-#	print "peptides: @peptides\n";
+#	print "peptides: @peptides\nFound frames <@foundFrames>\n";
 
 	#find the peptide-corresponding transcript location in the mapped genome sequence and output the ORFs
 	#link ORF translated from the transcript with identified peptides
@@ -435,6 +451,7 @@ sub cigar_analysis(){
 				#the special only one element case is that the peptide is at the end of translation, which only generate one element which is the whole sequence without the splitting peptide
 				my @hits = split("$peptide",$translation);
 				my $hitsLen = scalar @hits;
+#				print "peptide <$peptide> found in translation <$translation> ".($hitsLen-1)." times\n";
 				next unless ($hitsLen > 1 || $hits[0] ne $translation);
 				#locate the DNA position for the peptide
 				my $pepLen = length $peptide;
@@ -484,10 +501,11 @@ sub cigar_analysis(){
 #	foreach (sort keys %peptideStart){
 #		print "Peptide: $_\t@{$peptideStart{$_}}\n";
 #	}
+
 #	print "orfPeptides\n";
 #	foreach my $aa(sort keys %orfPeptides){
 #		my %tmp = %{$orfPeptides{$aa}};
-#		print "orf: $aa\n";
+#		print "orf id: $aa\n";
 #		foreach my $bb(sort keys %tmp){
 #			print "peptide $bb\t count $tmp{$bb}\n";
 #		}
@@ -508,12 +526,13 @@ sub cigar_analysis(){
 			if (exists $orfSeqs{$orfNames[$i]}){#not in the ORF file used to search => decoy sequence
 				my $orf= "${orfNames[$i]}_nm";
 				my $orfSeq = $orfSeqs{$orfNames[$i]};
+#				print "line 529 orf <$orf>\norf seq: <$orfSeq>\n";
 				if (exists $totalORFs{$orfSeq}){
 					$totalORFs{$orfSeq}.=";$orf";
 				}else{
 					$totalORFs{$orfSeq} = ">$orf";
 				}
-				my @peps = keys %{$orfPeptides{$orf}};
+				my @peps = keys %{$orfPeptides{$orfNames[$i]}};
 				my $numPeps = scalar @peps;
 				my $peps = join (",",@peps);
 				print TSV "$orf\tNot mapped to genome\t$orfSeq\t$transcript_seq\t$numPeps\t$peps\n";
@@ -724,7 +743,7 @@ sub cigar_analysis(){
 }
 
 sub usage(){
-	print "Usage: perl pit.pl <sam file> <identification file in the tsv format> <matching pattern> <fasta file> <max fold change>\n\n";
+	print "Usage: perl pitGalaxy.pl <sam file> <identification file in the tsv format> <matching pattern> <fasta file> <max fold change> <output gff> <output sam> <output fasta> <output result>\n\n";
 	print "The script uses the given pattern to link the identified peptides in the identification file with the transcripts which have been mapped to the reference genomes";
 	print "calculates the exact location for the identified peptides and outputs the ORF and GFF3 files. The latter can be visualized in IGV.\n";
 	print "The sam file provides the reference=genome-mapping information\n";

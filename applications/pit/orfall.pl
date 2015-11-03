@@ -215,6 +215,7 @@ sub doORF(){
 		for(my $i=0;$i<scalar @segments;$i++){
 			$currStopPosi += ((length $segments[$i])+1)*3*$strand;
 			my $pos = index($segments[$i],$start);#locate the first start codon, which should be the longest ORF for the current stop codon
+			$pos = 0 if ($start eq $stop);
 			if($pos >-1){ #if found, the current segment has both start and stop codon, could be an ORF, judge the length
 				my $orfLen = (length $segments[$i])-$pos;#because $pos is the actual value - 1
 				if($orfLen >= $minAA){#main orf found
@@ -228,7 +229,9 @@ sub doORF(){
 					$orfs{$orfCount}{"stop"}=$currStopPosi-3*$strand;#the stop codon is not accounted in the orf
 					push (@orfs,$orf);
 				}
-
+				#the main ORF can be determined purely by the length and start and stop codon above
+				#however the uORFs need to be within certain range of main ORFs, which cannot be determined here
+				#therefore just put all potential uORFs into uorf5 and uorf3 hashes
 				if($need5uorf && $orfLen >= $min5AA && $orfLen <= $max5AA){
 					$u5count++;
 					$u5orfNegaMaxIndex = $u5count if ($frame < 0);
