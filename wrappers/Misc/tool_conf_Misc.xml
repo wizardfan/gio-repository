@@ -3,4 +3,5 @@
 	<tool file="gio/Misc/replace_with_original.xml" />
 	<tool file="gio/Misc/combineFasta.xml" />
 	<tool file="gio/Misc/sort_chromosome.xml" />
+	<tool file="gio/Misc/proviralCsvParser.xml" />
     </section>

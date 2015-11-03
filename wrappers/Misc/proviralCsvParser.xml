@@ -1,0 +1,17 @@
+<tool id="proviral_csvParser" name="CSV Parser" version="1.0.0">
+    <description>Parse the CSV result file generate by mzidLib CSV converter</description>
+    <command interpreter="perl">$__root_dir__/../gio_applications/misc/getNumbersFromCSV_automatic $input > $output
+    </command>
+    <inputs>	
+	      <param  format="csv" name="input" type="data" label="Input file"/>
+    </inputs>
+
+    <outputs>
+	      <data format="tabular" name="output"/>
+    </outputs>
+
+    <help>
+The tool is to get number of identified peptides and proteins for each species in the CSV result file and order the species according to the number of identified proteins and peptides.
+    </help>
+
+</tool>

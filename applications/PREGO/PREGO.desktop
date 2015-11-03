@@ -1,0 +1,7 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=PREGO
+Exec=/bin/sh "/home/galaxy/gio_applications/PREGO/PREGO"
+Icon=/home/galaxy/gio_applications/PREGO/.install4j/PREGO.png
+Categories=Application;

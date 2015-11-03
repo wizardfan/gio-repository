@@ -1,0 +1,30 @@
+<tool id="prego" name="PREGO" version="1.0.0">
+    <description>A software tool that predicts high responding peptides for SRM experiments</description>
+        <command interpreter="perl">$__root_dir__/../gio_applications/PREGO/prego.pl $type.input $type.input_type $output.id $__root_dir__/../gio_applications/PREGO/ $output</command>
+    <inputs>
+    	<conditional name="type">
+      	    <param name="input_type" type="select" label="Input Type">
+                <option value="fasta">fasta</option>
+	       	    <option value="tsv">tsv</option>
+            </param>
+            <when value="fasta">
+                <param format="fasta" name="input" type="data" multiple="false" label="Input fasta file"/>
+            </when>
+            <when value="tsv">
+                <param format="tsv" name="input" type="data" multiple="false" label="Input TSV file"/>
+            </when>
+        </conditional>
+    </inputs>
+    <outputs>
+	<data name="output" format="tabular"/>
+    </outputs>
+	<help>
+	PREGO (https://github.com/briansearle/intensity_predictor) predicts peptide responses with an artificial neural network trained using 11 minimally redundant, maximally relevant properties. Crucial to its success, PREGO is trained using fragment ion intensities of equimolar synthetic peptides extracted from data independent acquisition (DIA) experiments. 
+
+----
+
+**References**
+
+B.C. Searle et al Using data independent acquisition to model high-responding peptides for targeted proteomics experiments.
+doi: 10.1074/mcp.M115.051300	</help>
+</tool>

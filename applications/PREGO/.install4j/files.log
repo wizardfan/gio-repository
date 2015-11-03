@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fileLog>
+<createdFiles>
+<entry name="lib/.DS_Store" shared="false" uninstallMode="0"/>
+<entry name="lib/ml-0.921.jar" shared="false" uninstallMode="0"/>
+<entry name=".install4j/MessagesDefault" shared="false" uninstallMode="2"/>
+<entry name="lib/neuroph-ocr-2.9.jar" shared="false" uninstallMode="0"/>
+<entry name="lib/commons-math-2.0.jar" shared="false" uninstallMode="0"/>
+<entry name="PREGO.vmoptions" shared="false" uninstallMode="3"/>
+<entry name=".install4j/uninstall.png" shared="false" uninstallMode="2"/>
+<entry name="lib/neuroph-core-2.9.jar" shared="false" uninstallMode="0"/>
+<entry name="lib/slf4j-api-1.6.4.jar" shared="false" uninstallMode="0"/>
+<entry name=".install4j/i4jparams.conf" shared="false" uninstallMode="2"/>
+<entry name=".install4j/inst_jre.cfg" shared="false" uninstallMode="0"/>
+<entry name=".install4j/i4j_extf_2_1hzmq6o_1fd455l.png" shared="false" uninstallMode="2"/>
+<entry name="lib/google-collections-1.0.jar" shared="false" uninstallMode="0"/>
+<entry name="lib/slf4j-nop-1.6.4.jar" shared="false" uninstallMode="0"/>
+<entry name="lib/neuroph-imgrec-2.9.jar" shared="false" uninstallMode="0"/>
+<entry name="lib/commons-lang-2.6.jar" shared="false" uninstallMode="0"/>
+<entry name="lib/commons-logging-1.1.1.jar" shared="false" uninstallMode="0"/>
+<entry name="albumin.txt" shared="false" uninstallMode="0"/>
+<entry name=".install4j/i4jruntime.jar" shared="false" uninstallMode="2"/>
+<entry name=".install4j/stats.properties" shared="false" uninstallMode="2"/>
+<entry name="lib/collections-generic-4.01.jar" shared="false" uninstallMode="0"/>
+<entry name="lib/commons-collections-20040616.jar" shared="false" uninstallMode="0"/>
+<entry name="lib/trove4j-3.0.3.jar" shared="false" uninstallMode="0"/>
+<entry name="classify.vmoptions" shared="false" uninstallMode="3"/>
+<entry name="lib/example_proteins.fasta" shared="false" uninstallMode="0"/>
+<entry name="uninstall" shared="false" uninstallMode="0"/>
+<entry name="lib/neuroph-adapters-2.9.jar" shared="false" uninstallMode="0"/>
+<entry name=".install4j/i4j_extf_1_1hzmq6o_120ae8d.png" shared="false" uninstallMode="2"/>
+<entry name="/home/galaxy/.local/share/applications/PREGO-0.desktop" shared="false" uninstallMode="2"/>
+<entry name=".install4j/i4j_extf_4_1hzmq6o_2u4mva.png" shared="false" uninstallMode="2"/>
+<entry name="lib/trees-1.031.jar" shared="false" uninstallMode="0"/>
+<entry name=".install4j/i4j_extf_3_1hzmq6o_yem736.png" shared="false" uninstallMode="2"/>
+<entry name=".install4j/i4j_extf_0_1hzmq6o.utf8" shared="false" uninstallMode="2"/>
+<entry name="PREGO.desktop" shared="false" uninstallMode="2"/>
+<entry name=".install4j/installation.log" shared="false" uninstallMode="0"/>
+<entry name=".install4j/autoUninstall.0" shared="false" uninstallMode="0"/>
+<entry name="lib/runutils-0.911.jar" shared="false" uninstallMode="0"/>
+<entry name="lib/neuroph-samples-2.9.jar" shared="false" uninstallMode="0"/>
+<entry name="lib/stats-0.931.jar" shared="false" uninstallMode="0"/>
+<entry name="lib/annotations-7.0.3.jar" shared="false" uninstallMode="0"/>
+<entry name=".install4j/s_1h0qdxg.png" shared="false" uninstallMode="2"/>
+<entry name="lib/neuroph-contrib-2.9.jar" shared="false" uninstallMode="0"/>
+<entry name=".install4j/user.jar" shared="false" uninstallMode="2"/>
+<entry name=".install4j/PREGO.png" shared="false" uninstallMode="2"/>
+<entry name="lib/prego.jar" shared="false" uninstallMode="0"/>
+<entry name="lib/README.txt" shared="false" uninstallMode="0"/>
+<entry name="lib/JSAP-2.0a-ds1.jar" shared="false" uninstallMode="0"/>
+<entry name="PREGO" shared="false" uninstallMode="0"/>
+<entry name=".install4j/install.prop" shared="false" uninstallMode="0"/>
+<entry name=".install4j/response.varfile" shared="false" uninstallMode="0"/>
+<entry name="lib/albumin.txt" shared="false" uninstallMode="0"/>
+<entry name="lib/dsutils-1.051.jar" shared="false" uninstallMode="0"/>
+<entry name="classify" shared="false" uninstallMode="0"/>
+<entry name="lib/conja-1.061.jar" shared="false" uninstallMode="0"/>
+<entry name="example_proteins.fasta" shared="false" uninstallMode="0"/>
+<entry name="README.txt" shared="false" uninstallMode="0"/>
+</createdFiles>
+<createdDirs>
+<entry name="lib" shared="false" uninstallMode="0"/>
+<entry name=".install4j" shared="false" uninstallMode="0"/>
+<entry name="." shared="false" uninstallMode="0"/>
+</createdDirs>
+</fileLog>

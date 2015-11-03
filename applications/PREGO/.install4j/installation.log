@@ -1,0 +1,204 @@
+[INFO] logger started at Fri Oct 30 03:22:46 GMT 2015
+[INFO] executable name: /home/galaxy/Downloads/prego/PREGO_unix_0_1_2.sh
+[INFO] install4j version: 5.1.12 (build 5707)
+[INFO] Properties: 
+-- listing properties --
+java.runtime.name=OpenJDK Runtime Environment
+exe4j.moduleName=/home/galaxy/Downloads/prego/PREGO_un...
+sun.boot.library.path=/usr/lib/jvm/java-7-openjdk-i386/jre/...
+java.vm.version=24.75-b04
+java.vm.vendor=Oracle Corporation
+java.vendor.url=http://java.oracle.com/
+path.separator=:
+java.vm.name=OpenJDK Client VM
+file.encoding.pkg=sun.io
+user.country=GB
+sun.java.launcher=SUN_STANDARD
+sun.os.patch.level=unknown
+install4j.exeDir=/home/galaxy/Downloads/prego/
+java.vm.specification.name=Java Virtual Machine Specification
+user.dir=/home/galaxy/Downloads/prego/PREGO_un...
+java.runtime.version=1.7.0_75-b13
+java.awt.graphicsenv=sun.awt.X11GraphicsEnvironment
+java.endorsed.dirs=/usr/lib/jvm/java-7-openjdk-i386/jre/...
+os.arch=i386
+java.io.tmpdir=/tmp
+line.separator=
+
+java.vm.specification.vendor=Oracle Corporation
+os.name=Linux
+exe4j.totalDataLength=7138678
+sun.java2d.noddraw=true
+sun.jnu.encoding=UTF-8
+java.library.path=/usr/java/packages/lib/i386:/usr/lib/...
+sun.awt.enableExtraMouseButtons=true
+java.specification.name=Java Platform API Specification
+java.class.version=51.0
+sun.management.compiler=HotSpot Client Compiler
+os.version=3.13.0-46-generic
+i4j.vpt=true
+user.home=/home/galaxy
+install4j.cwd=/home/galaxy/Downloads/prego
+user.timezone=Europe/London
+java.awt.printerjob=sun.print.PSPrinterJob
+java.specification.version=1.7
+install4j.jvmDir=/usr
+file.encoding=UTF-8
+user.name=galaxy
+java.class.path=i4jruntime.jar:user.jar
+java.vm.specification.version=1.7
+sun.arch.data.model=32
+java.home=/usr/lib/jvm/java-7-openjdk-i386/jre
+sun.java.command=com.install4j.runtime.launcher.Launch...
+java.specification.vendor=Oracle Corporation
+user.language=en
+awt.toolkit=sun.awt.X11.XToolkit
+java.vm.info=mixed mode, sharing
+java.version=1.7.0_75
+java.ext.dirs=/usr/lib/jvm/java-7-openjdk-i386/jre/...
+sun.boot.class.path=/usr/lib/jvm/java-7-openjdk-i386/jre/...
+java.vendor=Oracle Corporation
+i4j.vmov=true
+install4j.appDir=/home/galaxy/Downloads/prego/
+file.separator=/
+java.vendor.url.bug=http://bugreport.sun.com/bugreport/
+sun.cpu.endian=little
+sun.io.unicode.encoding=UnicodeLittle
+sun.font.fontmanager=sun.awt.X11FontManager
+sun.desktop=gnome
+sun.cpu.isalist=
+[INFO] com.install4j.runtime.beans.actions.misc.RequestPrivilegesAction [ID 13]: Execute action
+       Property allRequested: false
+       Property failIfNotObtainedMac: true
+       Property failIfNotObtainedWin: true
+       Property failIfNotRootUnix: false
+       Property obtainIfAdminMac: false
+       Property obtainIfAdminWin: true
+       Property obtainIfNormalMac: false
+       Property obtainIfNormalWin: false
+       Property rollbackSupported: false
+       Execute action successful after 1 ms
+[INFO] com.install4j.runtime.beans.screens.StartupScreen [ID 1]: command: move 1 screens, executing actions, checking condition
+[INFO] com.install4j.runtime.beans.screens.WelcomeScreen [ID 2]: Show screen
+       thread name AWT-EventQueue-0
+[INFO] com.install4j.runtime.beans.screens.WelcomeScreen [ID 2]: command: move 1 screens, executing actions, checking condition
+[INFO] com.install4j.runtime.beans.screens.InstallationDirectoryScreen [ID 4]: Show screen
+       Variable changed: sys.installationDir=/home/galaxy/gio_applications/PREGO[class java.lang.String]
+       checking writable with maximum
+[INFO] com.install4j.runtime.beans.actions.misc.LoadResponseFileAction [ID 5]: Execute action
+       Property excludedVariables: [sys.installationDir]
+       Property overwrite: true
+       Property file: null
+       Property rollbackSupported: true
+       Response file /home/galaxy/gio_applications/PREGO/.install4j/response.varfile does not exist
+       Execute action successful after 1 ms
+[INFO] com.install4j.runtime.beans.screens.InstallationDirectoryScreen [ID 4]: command: move 1 screens, executing actions, checking condition
+[INFO] com.install4j.runtime.beans.screens.StandardProgramGroupScreen [ID 7]: Show screen
+       Variable changed: sys.symlinkDir=/usr/local/bin[class java.lang.String]
+       Variable changed: sys.programGroupDisabled=false[class java.lang.Boolean]
+[INFO] com.install4j.runtime.beans.screens.StandardProgramGroupScreen [ID 7]: command: move 1 screens, executing actions, checking condition
+[INFO] com.install4j.runtime.beans.screens.InstallationScreen [ID 8]: Show screen
+[INFO] com.install4j.runtime.beans.actions.InstallFilesAction [ID 9]: Execute action
+       Property validateApplicationId: false
+       Property checkFreeSpace: true
+       Property sizeCalculatorScript: null
+       Property installRuntime: true
+       Property saveDownloadedFiles: false
+       Property updateBundledJre: true
+       Property directoryResolverScript: null
+       Property fileFilterScript: null
+       Property showFileNames: true
+       Property triggerReboot: true
+       Property delay: false
+       Property rollbackSupported: true
+       Install file: /home/galaxy/gio_applications/PREGO/.install4j/PREGO.png; size: 16508 bytes; exists: false
+       File options set to: [fileTime: Fri Jun 26 10:40:10 BST 2015, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: Always, delayIfNecessary: false]
+       Install file: /home/galaxy/gio_applications/PREGO/.install4j/s_1h0qdxg.png; size: 35020 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/.install4j/uninstall.png; size: 5320 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/PREGO; size: 10580 bytes; exists: false
+       File options set to: [fileTime: Fri Jun 26 10:40:10 BST 2015, mode: 755, overwriteMode: If newer otherwise ask, shared: false, uninstallMode: If created, delayIfNecessary: false]
+       Install file: /home/galaxy/gio_applications/PREGO/PREGO.vmoptions; size: 243 bytes; exists: false
+       File options set to: [fileTime: Fri Jun 26 10:40:10 BST 2015, mode: 644, overwriteMode: Never, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/galaxy/gio_applications/PREGO/README.txt; size: 1763 bytes; exists: false
+       File options set to: [fileTime: Fri Jun 26 10:40:00 BST 2015, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, delayIfNecessary: false]
+       Install file: /home/galaxy/gio_applications/PREGO/albumin.txt; size: 842 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/classify; size: 10495 bytes; exists: false
+       File options set to: [fileTime: Fri Jun 26 10:40:10 BST 2015, mode: 755, overwriteMode: If newer otherwise ask, shared: false, uninstallMode: If created, delayIfNecessary: false]
+       Install file: /home/galaxy/gio_applications/PREGO/classify.vmoptions; size: 243 bytes; exists: false
+       File options set to: [fileTime: Fri Jun 26 10:40:10 BST 2015, mode: 644, overwriteMode: Never, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/galaxy/gio_applications/PREGO/example_proteins.fasta; size: 4235 bytes; exists: false
+       File options set to: [fileTime: Fri Jun 26 10:40:00 BST 2015, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, delayIfNecessary: false]
+       Install file: /home/galaxy/gio_applications/PREGO/lib/.DS_Store; size: 6148 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/JSAP-2.0a-ds1.jar; size: 69323 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/README.txt; size: 1763 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/albumin.txt; size: 842 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/annotations-7.0.3.jar; size: 5594 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/collections-generic-4.01.jar; size: 531557 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/commons-collections-20040616.jar; size: 563060 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/commons-lang-2.6.jar; size: 284220 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/commons-logging-1.1.1.jar; size: 60686 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/commons-math-2.0.jar; size: 759268 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/conja-1.061.jar; size: 31483 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/dsutils-1.051.jar; size: 308643 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/example_proteins.fasta; size: 4235 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/google-collections-1.0.jar; size: 639592 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/ml-0.921.jar; size: 199419 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/neuroph-adapters-2.9.jar; size: 17119 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/neuroph-contrib-2.9.jar; size: 35243 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/neuroph-core-2.9.jar; size: 201706 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/neuroph-imgrec-2.9.jar; size: 22882 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/neuroph-ocr-2.9.jar; size: 11334 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/neuroph-samples-2.9.jar; size: 61141 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/prego.jar; size: 357858 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/runutils-0.911.jar; size: 40755 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/slf4j-api-1.6.4.jar; size: 25962 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/slf4j-nop-1.6.4.jar; size: 4811 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/stats-0.931.jar; size: 57818 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/trees-1.031.jar; size: 84541 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/lib/trove4j-3.0.3.jar; size: 2523218 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/uninstall; size: 11164 bytes; exists: false
+       File options set to: [fileTime: Fri Jun 26 10:40:10 BST 2015, mode: 700, overwriteMode: If newer otherwise ask, shared: false, uninstallMode: If created, delayIfNecessary: false]
+       Install file: /home/galaxy/gio_applications/PREGO/.install4j/inst_jre.cfg; size: 37 bytes; exists: false
+       File options set to: [fileTime: Fri Oct 30 03:23:53 GMT 2015, mode: 644, overwriteMode: Always, shared: false, uninstallMode: If created, delayIfNecessary: false]
+       Install file: /home/galaxy/gio_applications/PREGO/.install4j/i4jruntime.jar; size: 975819 bytes; exists: false
+       File options set to: [fileTime: Fri Oct 30 03:23:53 GMT 2015, mode: 644, overwriteMode: Always, shared: false, uninstallMode: Always, delayIfNecessary: false]
+       Install file: /home/galaxy/gio_applications/PREGO/.install4j/MessagesDefault; size: 32732 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/.install4j/i4jparams.conf; size: 19702 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/.install4j/stats.properties; size: 438 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/.install4j/user.jar; size: 3475 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/.install4j/i4j_extf_3_1hzmq6o_yem736.png; size: 8563 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/.install4j/i4j_extf_4_1hzmq6o_2u4mva.png; size: 16508 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/.install4j/i4j_extf_0_1hzmq6o.utf8; size: 32732 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/.install4j/i4j_extf_2_1hzmq6o_1fd455l.png; size: 5499 bytes; exists: false
+       Install file: /home/galaxy/gio_applications/PREGO/.install4j/i4j_extf_1_1hzmq6o_120ae8d.png; size: 4359 bytes; exists: false
+       Execute action successful after 703 ms
+[INFO] com.install4j.runtime.beans.actions.desktop.CreateProgramGroupAction [ID 10]: Execute action
+       Property allUsers: true
+       Property linkDirectory: /usr/local/bin
+       Property programGroupName: 
+       Property unixSymlinks: true
+       Property categories: Application
+       Property programGroupEntryConfigs: []
+       Property uninstallerMenuName: PREGO Peptide Response Predictor Uninstaller
+       Property addDefaultLauncherLinks: true
+       Property addUninstaller: true
+       Property failForSymlinksNotCreated: false
+       Property unixMenuEntries: true
+       Property rollbackSupported: true
+       Install file: /home/galaxy/gio_applications/PREGO/PREGO.desktop; size: 211 bytes; exists: false
+       File options set to: [fileTime: Fri Oct 30 03:23:53 GMT 2015, mode: 755, overwriteMode: Always, shared: false, uninstallMode: Always, delayIfNecessary: false]
+       Install file: /home/galaxy/.local/share/applications/PREGO-0.desktop; size: 211 bytes; exists: false
+       File options set to: [fileTime: Fri Oct 30 03:23:53 GMT 2015, mode: 644, overwriteMode: Always, shared: false, uninstallMode: Always, delayIfNecessary: false]
+       Execute action successful after 11 ms
+[INFO] com.install4j.runtime.beans.actions.desktop.RegisterAddRemoveAction [ID 11]: Execute action
+       Property itemName: PREGO Peptide Response Predictor 0.1.2
+       Property icon: null
+       Property persistentProperties: {}
+       Property rollbackSupported: true
+       Execute action successful after 1 ms
+[INFO] com.install4j.runtime.beans.screens.InstallationScreen [ID 8]: Rollback barrier reached
+       command: move 1 screens, executing actions, checking condition
+[INFO] com.install4j.runtime.beans.screens.FinishedScreen [ID 12]: Show screen
+[INFO] com.install4j.runtime.beans.screens.FinishedScreen [ID 12]: command: finish
+       cleaning up
+       Finished

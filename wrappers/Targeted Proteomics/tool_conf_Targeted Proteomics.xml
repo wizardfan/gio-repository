@@ -3,4 +3,5 @@
 	<tool file="gio/Targeted Proteomics/peptideMW.xml" />
 	<tool file="gio/Targeted Proteomics/intercalc.xml" />
 	<tool file="gio/Targeted Proteomics/consequence.xml" />
+	<tool file="gio/Targeted Proteomics/prego.xml" />
     </section>
