@@ -1,11 +1,19 @@
 <tool id="intercalc" name="Calculate interference" force_history_refresh="True">
 	<description>Tool for calculating possible background interference for a set of target peptides</description>
-	<command>python -W ignore $__root_dir__/../gio_applications/inclusion/intercalc.py $target $background $output $massaccuracy $peakwidth -v</command>
+	<command>python -W ignore $__root_dir__/../gio_applications/inclusion/intercalc.py $target $background $output $massaccuracy $peakwidth $targetz $z1pc $z2pc $z3pc -v</command>
 	<inputs>
 		<param name="target" type="data" format="tabular" label="Input file containing target peptides"/>
 		<param name="background" type="data" format="tabular" label="Input file containing background peptides"/>
 		<param name="massaccuracy" type="float" size="5" value="0.1" min="0" label="mass accuracy in Daltons"/>
-		<param name="peakwidth" type="float" size="5" value="1" min="0" label="width of eluction peaks in hydrophobicity units"/>
+		<param name="peakwidth" type="float" size="5" value="1" min="0" label="width of elution peaks in hydrophobicity units"/>
+        <param name = "targetz" type="select" label="charge state of target peptides">
+			<option value="1">1</option>
+			<option value="2" selected = "true">2</option>
+			<option value="3">3</option>
+		</param>
+		<param name="z1pc" type="float" size="5" value="0.05" min="0" max="1" label="proportion of background peptides expected to singly charged"/>
+		<param name="z2pc" type="float" size="5" value="0.85" min="0" max="1" label="proportion of background peptides expected to doubly charged"/>
+		<param name="z3pc" type="float" size="5" value="0.1" min="0" max="1" label="proportion of background peptides expected to triply charged"/>
 	</inputs>
 	<outputs>
 		<data name="output" format="tabular"  label="#echo os.path.splitext (str ($target.name))[0]#-interference.tsv"/>

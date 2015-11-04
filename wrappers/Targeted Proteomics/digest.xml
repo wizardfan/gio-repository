@@ -1,24 +1,32 @@
 <tool id="digest" name="Digest" force_history_refresh="True" version="0.1.0">
     <description>Theoretically digest all protein sequences from a FASTA file by trypsin</description>
-    <command interpreter="perl">$__root_dir__/../gio_applications/inclusion/digestGalaxy.pl $input $output -minLength $minLength -maxLength $maxLength -unique $unique -miscleavage $miscleavage</command>
+    <command interpreter="perl">$__root_dir__/../gio_applications/inclusion/digestGalaxy.pl $input $output -minLength $minLength -maxLength $maxLength -unique $unique -miscleavage $miscleavage -outputFormat $out_type</command>
     <inputs>
 		<param  format="fasta" name="input" type="data" label="Input file"/>
         <param name = "miscleavage" type="select" label="the number of maximum allowed miscleavage">
-		<option value="0" selected = "true">0</option>
-		<option value="1">1</option>
-		<option value="2">2</option>
-	</param>
+			<option value="0" selected = "true">0</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+		</param>
         <param name = "minLength" size="6" value="4" type="integer" label="the minimum length for the digested peptides to be included in the result file"/>
         <param name = "maxLength" size="6" value="25" type="integer" label="the maximum length for the digested peptides to be included in the result file"/>
     	<param name="unique" type="select" label="Only keeps proteotypic peptides?">
 		    <option value="yes" selected = "true">Yes</option>
 		    <option value="no">No</option>
 		</param>
-    </inputs>
+        <param name = "out_type" type="select" label="The output file format" multiple="False" help="The format of the output file">
+	    	<option value="tsv">TSV</option>
+	    	<option value="fasta">Fasta</option>
+		</param>
+   	</inputs>
     <outputs>
-		<data format="fasta" name="output" label="#echo os.path.splitext (str ($input.name))[0]#-digestedPeptides.fasta"/>
+		<data format="tabular" name="output" label="#echo os.path.splitext (str ($input.name))[0]#-digestedPeptides.#echo $out_type#">
+	    	<change_format>
+	     		<when input="out_type" value="fasta" format="fasta"/>
+	    	</change_format>
+		</data>
 	</outputs>
 	<help>
-	     This tool digests protein sequences passed to in FASTA format and outputs the results of this digest as individual entries in a new FASTA file where the entries are named &lt;protein&gt;-pep&lt;peptide_number&gt;.  The additional filters for peptide length and proteotypic peptides are useful for SRM (Selected Reaction Monitoring) to filter out the peptides won't be observed on a specific MS/MS instrument.
+	     This tool digests protein sequences theoritically by trypsin and outputs into either TSV or Fasta format. In TSV format, the first column is the protein accession and the second column is the tryptic peptids. In Fasta format, the digested peptides form individual entries with the headers in the form of &lt;protein&gt;-mis&lt;miscleavage_number&gt;-pep&lt;peptide_number&gt;.  The additional filters for peptide length and proteotypic peptides are useful for SRM (Selected Reaction Monitoring) to filter out the peptides won't be observed on a specific MS/MS instrument.
 	</help>
 </tool>

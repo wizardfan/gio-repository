@@ -3,7 +3,7 @@ use strict;
 
 #parameter checking
 my $lenArgv = scalar @ARGV;
-unless( $lenArgv >1 && $lenArgv<11 ){
+unless( $lenArgv >1 && $lenArgv<13 ){
 	print "Error: Wrong number of parameters\n";
 	&usage();
 	exit 1;
@@ -21,6 +21,7 @@ my $unique = 1;
 my $maxLength = 10000;
 my $minLength = 1;
 my $miscleavage = 0;
+my $outputFormat = "fasta";
 
 for (my $i=2;$i<$lenArgv;$i+=2){
 	if(lc($ARGV[$i]) eq "-unique"){
@@ -42,6 +43,12 @@ for (my $i=2;$i<$lenArgv;$i+=2){
 	}elsif (lc($ARGV[$i]) eq "-miscleavage"){
 		$miscleavage = $ARGV[$i+1];
 		checkIntegers($miscleavage,"miscleavage");
+	}elsif(lc($ARGV[$i]) eq "-outputformat"){
+		$outputFormat = lc($ARGV[$i+1]);
+		unless ($outputFormat eq "fasta" || $outputFormat eq "tsv"){
+			print "Error: Unrecognized value for parameter outputFormat which only allows fasta or tsv";
+			exit 7;
+		}
 	}else{
 		print "Error: Unrecognized option: $ARGV[$i]\n";
 		&usage();
@@ -53,6 +60,9 @@ if($minLength > $maxLength){
 	print "Error: The minimum length is greater than the maximum length\n";
 	exit 5;
 }
+
+print OUT "Protein\tPeptide\n" if ($outputFormat eq "tsv");
+
 #real business
 my %peptides;
 my %peptidesCount;
@@ -77,6 +87,8 @@ unless(length $seq==0){
 	&digest($id,$seq);
 	$countProtein++;
 }
+
+exit if ($outputFormat eq "tsv");
 
 my @uniquePep = sort {
 	if((length $a)<(length $b)) {return -1;}
@@ -118,6 +130,10 @@ sub digest(){
 	for (my $mis = 0; $mis <= $miscleavage; $mis++){
 		for(my $i=1;$i<=$len-$mis;$i++){
 			my $pep = $frags[$i-1];
+			if ($mis == 0 && $outputFormat eq "tsv"){
+				my $len = length $pep;
+				print OUT "$header\t$pep\n" if($minLength <= $len && $len <= $maxLength);
+			}
 			for (my $curr=1;$curr<=$mis;$curr++){
 				$pep .= $frags[$i-1+$curr];
 			}
@@ -142,6 +158,7 @@ sub usage(){
 	print "-maxLength integer to limit the maximum length of peptide, default is 10000 which means include every peptide.\n";
 	print "-minLength integer to limit the minimum length of peptide, default is 1 which means include every peptide.\n";
 	print "-miscleavage integer to indicate the allowed maximum cleavage, default is 0 which means no miscleavage allowed.\n";
+	print "-outputFormat determines what file format the ouput file will be, either fasta (default) or tsv.\n";
 	print "Example 1: perl digest.pl uniprot_sprot_human.fasta\t\t this will digest the human swissprot data and output all sequences\n";
 	print "Example 2: perl digest.pl uniprot_sprot_human.fasta -unique yes -minLength 4 -maxLength 24\t\t this will only output proteotypic peptides having AA between 4 and 24 inclusive, which is more likely to be observed on a MS machine\n";
 	print "Example 3: perl digest.pl uniprot_sprot_human.fasta -miscleavage 1\t\t this will allow maximum one miscleavage.\n";

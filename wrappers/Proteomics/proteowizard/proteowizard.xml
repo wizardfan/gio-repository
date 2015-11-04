@@ -29,9 +29,9 @@ ${s.file_name} #end for
             </when>
         </conditional>
         <param name = "out_type" type="select" label="The output file format" multiple="False" help="The format to which the original file(s) will be converted">
-	    <option value="mzML">mzML</option>
-	    <option value="mgf">mgf</option>
-	</param>
+	       <option value="mzML">mzML</option>
+	       <option value="mgf">mgf</option>
+	    </param>
     </inputs>
     <outputs>
 	<data name="output" format="mzml">

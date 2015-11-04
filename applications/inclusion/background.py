@@ -23,24 +23,31 @@ class Background:
     import math
     return (1/math.sqrt(2*variance2*math.pi))*math.exp(-((targetH-x)**2)/(2*variance2))
 
-  # interference method returns total interfence inormation for a given parameter set
-  def interference(self, mass, h, verbose):
+  # interference method returns total interference information for a given parameter set
+  def interference(self, mass, targetz, h, z1pc, z2pc, z3pc, verbose):
     from constants import *
     # calculate mass boundaries from the parameters
+    
+    # correct mass for charge state
+    # no need to add hydrogens to anything because all masses are one hydrogen down
+    mass = mass/targetz
     minmass = mass - self.massaccuracy
     maxmass = mass + self.massaccuracy
 
-    # create a new peptide list containing only those peptides that might interfere   
-    filteredlist = [pep for pep in self.peplist if ((float(pep[MOLWEIGHT_COL]) >= minmass) and (float(pep[MOLWEIGHT_COL]) <= maxmass))]
-    if verbose:
-      print "Target has", len(filteredlist), "potentially interfering peptides."
+    ip = [0,0,0,0]  # declare array to store interferent probability
+    # calculate contributon from each background charge state
+    for z in range(1,4):
+      # create a new peptide list containing only those peptides that might interfere   
+      filteredlist = [pep for pep in self.peplist if ((float(pep[MOLWEIGHT_COL])/z >= minmass) and (float(pep[MOLWEIGHT_COL])/z <= maxmass))]
+      if verbose:
+        print "Target has", len(filteredlist), "potentially interfering", z, "+ peptides."
 
-    # step through each matching peptide and work out the probability of each peptide at the specified hydrophobiticy
-    ptotal = 0  # zero initial probability
-    for pep in filteredlist:
-      # number of proteins associated with each peptide found by number of separators (;) in accession list
-      numproteins = 1 + pep[PROTEIN_COL].count(";")
-      ptotal += self.__gaussian(h,float(pep[HYDRO_COL]),self.peakwidth)*numproteins
+      # step through each matching peptide and work out the probability of each peptide at the specified hydrophobiticy
+      for pep in filteredlist:
+        # number of proteins associated with each peptide found by number of separators (;) in accession list
+        numproteins = 1 + pep[PROTEIN_COL].count(";")
+        ip[z] += self.__gaussian(h,float(pep[HYDRO_COL]),self.peakwidth)*numproteins
+      ptotal = ip[1]*z1pc + ip[2]*z2pc + ip[3]*z3pc
     return ptotal
 
   

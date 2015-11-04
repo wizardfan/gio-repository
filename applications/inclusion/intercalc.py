@@ -15,6 +15,10 @@ parser.add_argument("backgroundfile", help="input file containing background pep
 parser.add_argument("outputfile", help="output file containing target peptides with interference information")
 parser.add_argument("massaccuracy", help="mass accuracy in Daltons", type=float)
 parser.add_argument("peakwidth", help="width of eluction peaks in hydrophobicity units", type=float)
+parser.add_argument("targetz", help="charge state of target peptides (integer)", type=int)
+parser.add_argument("z1pc", help="proportion of background peptides expected to singly charged", type=float)
+parser.add_argument("z2pc", help="proportion of background peptides expected to doubly charged", type=float)
+parser.add_argument("z3pc", help="proportion of background peptides expected to triply charged", type=float)
 parser.add_argument("-v", "--verbose", action="store_true", help="print progress information to console")
 args = parser.parse_args()
 
@@ -31,7 +35,7 @@ outfile = open(args.outputfile, "w")  # output always called intercalc.tsv
 infile = open(args.targetfile, "r")
 
 # append interferent probablity column heading
-outfile.write(infile.readline().rstrip()+"\tInteferent score\n")
+outfile.write(infile.readline().rstrip()+"\tInterferent score\n")
 if args.verbose:
   print "Annotating targets with interference data "
 
@@ -42,7 +46,7 @@ for line in infile:
   mass = float(splitline[MOLWEIGHT_COL])
   h = float(splitline[HYDRO_COL])
   # ask background object for peptide-specific interfrence information
-  ptotal = b.interference(mass, h, args.verbose)
+  ptotal = b.interference(mass, args.targetz, h, args.z1pc, args.z2pc, args.z3pc, args.verbose)
   # write peptide line with appended ptotal to new file
   outfile.write(line.rstrip() + "\t" + str(ptotal) + "\n")
 
