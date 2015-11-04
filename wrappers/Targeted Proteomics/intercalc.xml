@@ -1,4 +1,4 @@
-<tool id="intercalc" name="Calculate interference" force_history_refresh="True">
+<tool id="intercalc" name="Calculate interference" force_history_refresh="True" version="1.1.0">
 	<description>Tool for calculating possible background interference for a set of target peptides</description>
 	<command>python -W ignore $__root_dir__/../gio_applications/inclusion/intercalc.py $target $background $output $massaccuracy $peakwidth $targetz $z1pc $z2pc $z3pc -v</command>
 	<inputs>

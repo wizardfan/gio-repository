@@ -1,4 +1,4 @@
-<tool id="digest" name="Digest" force_history_refresh="True" version="0.1.0">
+<tool id="digest" name="Digest" force_history_refresh="True" version="1.0.0">
     <description>Theoretically digest all protein sequences from a FASTA file by trypsin</description>
     <command interpreter="perl">$__root_dir__/../gio_applications/inclusion/digestGalaxy.pl $input $output -minLength $minLength -maxLength $maxLength -unique $unique -miscleavage $miscleavage -outputFormat $out_type</command>
     <inputs>
