@@ -33,40 +33,72 @@ my %retentionCoefficientNterm = ("A" => -1.5, "R" => 8.0, "N" => 5.0, "D" => 9.0
 
 #parameter checking
 my $lenArgv = scalar @ARGV;
-unless( $lenArgv == 2 ){
+unless( $lenArgv == 3 ){
 	print "Wrong number of parameters\n";
 	&usage();
 	exit 1;
 }
 
-open IN,"$ARGV[0]" or die "Can not find the file $ARGV[0]";
-open OUT,">$ARGV[1]" or die "Can not open the output file $ARGV[1]";
-print OUT "Peptide\tProtein\tMolecular weight\tHydrophobicity\n";
-my $id;
-my $seq="";
+my $in = $ARGV[0];
+my $type = $ARGV[1];
+my $out = $ARGV[2];
 
-while(my $line=<IN>){
-	chomp $line;
-	if($line=~/^>/){
-		unless(length $seq==0){
-			&calculate($id,$seq);
-			$seq="";
+unless ($type eq "fasta" || $type eq "tsv"){
+	print "Wrong input file format selection, only can be fasta or tsv\n";
+	exit 1;
+}
+
+open IN,"$in" or die "Can not find the file $in";
+open OUT,">$out" or die "Can not open the output file $out";
+
+if ($type eq "fasta"){
+	print OUT "Protein\tPeptide\tMolecular weight\tHydrophobicity\n";
+	my $id;
+	my $seq="";
+
+	while(my $line=<IN>){
+		chomp $line;
+		if($line=~/^>/){
+			unless(length $seq==0){
+				$seq=~s/\s+//g;
+				my $mw = &calcMW($seq);
+				my $hydro = &calcHydro($seq);
+				print OUT "$id\t$seq\t$mw\t$hydro\n";
+				$seq="";
+			}
+			$id=substr($line,1);
+		}else{
+        		$seq .= $line; # add sequence
 		}
-		$id=substr($line,1);
-	}else{
-        	$seq .= $line; # add sequence
 	}
-}
-unless(length $seq==0){
-	&calculate($id,$seq);
-}
+	unless(length $seq==0){
+		$seq=~s/\s+//g;
+		my $mw = &calcMW($seq);
+		my $hydro = &calcHydro($seq);
+		print OUT "$id\t$seq\t$mw\t$hydro\n";
+	}
+}else{
+	my $pepPosi = 1; #second column, index 1  which is the case in the new layout
+	my $header = <IN>;
+	chomp $header;
+	my ($first) = split("\t",$header);
+	$pepPosi = 0 if (lc($first) eq "peptide");#first column, index 0, which is the case in the old layout
+	print OUT "$header\tMolecular weight\tHydrophobicity\n";
 
-sub calculate(){
-	my ($header,$seq) = @_;
-	$seq=~s/\s+//g;
-	my $mw = &calcMW($seq);
-	my $hydro = &calcHydro($seq);
-	print OUT "$seq\t$header\t$mw\t$hydro\n";
+	while (my $line=<IN>){
+		chomp $line;
+		my ($first,$second) = split("\t", $line);
+		my $pep;
+		if ($pepPosi == 1){
+			$pep = $second;
+		}else{
+			$pep = $first;
+		}
+		my $mw = &calcMW($pep);
+		my $hydro = &calcHydro($pep);
+		print OUT "$line\t$mw\t$hydro\n";
+	}
+
 }
 
 sub calcMW(){
@@ -100,8 +132,8 @@ sub calcHydro(){
         $hydrophobicity = $hydrophobicity - 0.3*($hydrophobicity-38) if ($hydrophobicity>38);
         return $hydrophobicity;
 }
+
 sub usage(){
 	print "This script is to calculate peptide mass and hydrophobicity\n";
-	print "Usage: perl pepMW.pl <peptide fasta file> <output result file>\n";
-	print "Example: perl pepMW.pl peptideDigest.fasta\nThe peptideDigest.fasta is the result file from digestGalaxy\n";
+	print "Usage: perl pepMW.pl <input file> <input file format> <output result file>\n";
 }

@@ -5,7 +5,7 @@
     	<conditional name="type">
       	    <param name="input_type" type="select" label="Input Type">
                 <option value="fasta">fasta</option>
-	       	    <option value="tsv">tsv</option>
+	       	<option value="tsv">tsv</option>
             </param>
             <when value="fasta">
                 <param format="fasta" name="input" type="data" multiple="false" label="Input fasta file"/>

@@ -1,11 +1,22 @@
 <tool id="pepMW" name="Peptide MW and hydrophobicity" force_history_refresh="True" version="1.0.0">
     <description>Calculate the molecular weight and hydrophobicity for peptides within a fasta file</description>
-    <command interpreter="perl">$__root_dir__/../gio_applications/inclusion/pepMW.pl $input $output</command>
+    <command interpreter="perl">$__root_dir__/../gio_applications/inclusion/pepMW.pl $type.input $type.input_type  $output</command>
     <inputs>
-		<param  format="fasta" name="input" type="data" label="Input peptide fasta file"/>
+    	<conditional name="type">
+      	    <param name="input_type" type="select" label="Input Type">
+	       	<option value="tsv">TSV</option>
+                <option value="fasta">fasta</option>
+            </param>
+            <when value="fasta">
+                <param format="fasta" name="input" type="data" multiple="false" label="Input fasta file"/>
+            </when>
+            <when value="tsv">
+                <param format="tsv" name="input" type="data" multiple="false" label="Input TSV file"/>
+            </when>
+        </conditional>
     </inputs>
     <outputs>
-		<data format="tabular" name="output" label="#echo os.path.splitext (str ($input.name))[0]#-MW.tsv"/>
+		<data format="tabular" name="output" label="#echo os.path.splitext (str ($type.input.name))[0]#-MW.tsv"/>
     </outputs>
 	<help>
 		This tool reads in each peptide sequences in the FASTA file, calculates the monoisotopic molecular weight and hydrophobicity using Krokin et 2004 algorithm and outputs the result in a tsv file
