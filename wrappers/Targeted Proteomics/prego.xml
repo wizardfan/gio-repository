@@ -11,7 +11,7 @@
                 <param format="fasta" name="input" type="data" multiple="false" label="Input fasta file"/>
             </when>
             <when value="tsv">
-                <param format="tsv" name="input" type="data" multiple="false" label="Input TSV file"/>
+                <param format="tabular" name="input" type="data" multiple="false" label="Input TSV file"/>
             </when>
         </conditional>
     </inputs>
