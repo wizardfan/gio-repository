@@ -1,4 +1,5 @@
     <section name="GIO:Targeted proteomics" id="gio_inclusion">
+	<tool file="gio/Targeted Proteomics/mcpred.xml" />
 	<tool file="gio/Targeted Proteomics/digest.xml" />
 	<tool file="gio/Targeted Proteomics/peptideMW.xml" />
 	<tool file="gio/Targeted Proteomics/intercalc.xml" />

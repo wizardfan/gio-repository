@@ -1,0 +1,18 @@
+<tool id="mcpred" name="MC:pred" version="1.0.0">
+    <description>Predicts the missed cleavage of tryptic bonds within protein sequences</description>
+        <command interpreter="perl">$__root_dir__/../gio_applications/mcpred/mcpred.pl $input $output.id $__root_dir__/../gio_applications/mcpred/ $output</command>
+    <inputs>
+	<param format="fasta" name="input" type="data" multiple="false" label="Input fasta file"/>
+    </inputs>
+    <outputs>
+	<data name="output" format="tabular"/>
+    </outputs>
+	<help>
+	MC:pred (http://king.smith.man.ac.uk/mcpred/) is based on a Support Vector Machine (SVM) trained on observed peptides in Peptide Atlas (S. cerevisiae, C. elegans and D. melanogaster). The output from the SVM approach is a score from 0-1, with the missed cleavages resulting in a higher score. A binary threshold of 0.5 can be applied to distinguish missed from cleaved sites. 
+
+----
+
+**References**
+
+Lawless C, Hubbard SJ. Prediction of Missed Proteolytic Cleavages for the Selection of Surrogate Peptides for Quantitative Proteomics. OMICS. Sep 2012. 16(9)</help>
+</tool>

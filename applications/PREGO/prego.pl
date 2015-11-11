@@ -36,12 +36,16 @@ if ($type eq "fasta"){
 
 	while (my $line=<IN>){
 		chomp $line;
-		my ($first,$second) = split("\t", $line);
-		if ($pepPosi == 1){
-			print TMP "$first\t$second\n";
-		}else{
-			print TMP "$second\t$first\n";
+		my ($pro,$pep) = split("\t", $line);
+		if ($pepPosi == 0){
+			my $tmp = $pro;					
+			$pro = $pep;
+			$pep = $tmp;
 		}
+		if ($pro=~/^\S+/){
+			$pro = $&;
+		}
+		print TMP "$pro\t$pep\n";
 	}
 	close TMP;
 
@@ -50,31 +54,34 @@ if ($type eq "fasta"){
 	my %prego;
 	open IN, "$tmp_outfile";
 	<IN>;
+#	print OUT "\n\nNow dealing with tmp output\n";
 	while (my $line=<IN>){
 		chomp $line;
 		my ($pro,$rank,$pep,$score) = split("\t",$line);
+#		print OUT "Protein <$pro>\tPeptide <$pep>\tRank <$rank>\tScore <$score>\n";
 		$prego{$pro}{$pep}{'rank'}=$rank;
 		$prego{$pro}{$pep}{'score'}=$score;
 	}
+
 	#add prego result to the input tsv file to form the new tsv file
 	open IN, "$in";
 	$header = <IN>;
 	chomp $header;
 	open OUT, ">$out";
+	
 	print OUT "$header\tPrego rank\tPrego score\n";
 	while (my $line=<IN>){
 		chomp $line;
-		my ($first,$second) = split("\t", $line);
-		my $pep;
-		my $pro;
-		if ($pepPosi == 1){
-			$pep = $second;
-			$pro = $first;
-		}else{
-			$pep = $first;
-			$pro = $second;
+		my ($pro,$pep) = split("\t", $line);
+		if ($pepPosi == 0){
+			my $tmp = $pro;					
+			$pro = $pep;
+			$pep = $tmp;
 		}
-#print "$line\nProtein $pro\tPeptide $pep\n";
+		if ($pro=~/^\S+/){#in the middle file, the sequence header has already been dealt with, not the original one.
+			$pro = $&;
+		}
+
 		my $rank = $prego{$pro}{$pep}{'rank'};
 		my $score = $prego{$pro}{$pep}{'score'};
 		print OUT "$line\t$rank\t$score\n";
@@ -82,5 +89,5 @@ if ($type eq "fasta"){
 }
 
 sub usage(){
-	print "Usage: prego.pl <input file> <input format> <output file>\n";
+	print "Usage: prego.pl <input file> <input format> <job id> <prego path> <output file>\n";
 }
