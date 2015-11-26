@@ -35,8 +35,9 @@ while (my $line = <IN>){
 	}
 }
 
-my %result;
+#my %result;
 my $printed = 1;
+open OUT, ">$outFile";
 foreach my $protein (keys %proteins){
 	my $seq;
 	if(exists $seqs{$protein}){
@@ -49,17 +50,18 @@ foreach my $protein (keys %proteins){
 		print "Protein $protein not in the sequences\n";
 		next;
 	}
-	if(exists $result{$seq}){
-		$result{$seq} .= ",$protein";
-	}else{
-		$result{$seq} = "$protein";
-	}
+#	if(exists $result{$seq}){
+#		$result{$seq} .= ",$protein";
+#	}else{
+#		$result{$seq} = "$protein";
+#	}
+	print OUT ">$protein\n$seq\n";
 }
 
-open OUT, ">$outFile";
-foreach my $seq(sort {$a cmp $b} keys %result){
-	print OUT ">$result{$seq}\n$seq\n";
-}
+#open OUT, ">$outFile";
+#foreach my $seq(sort {$a cmp $b} keys %result){
+#	print OUT ">$result{$seq}\n$seq\n";
+#}
 close(OUT);
 
 sub readFasta(){

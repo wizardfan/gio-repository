@@ -5,11 +5,11 @@
     </command>
     <inputs>	
 	<param  format="mzid" name="input" type="data" label="Input file"/>
-    	<param name="exportType" type="select" format="text">
-      	    <option value="exportProteinGroups" selected = "true">exportProteinGroups</option>
-      	    <option value="exportPSMs">exportPSMs</option>
-      	    <option value="exportProteinsOnly">exportProteinsOnly</option>
-      	    <option value="exportRepProteinPerPAGOnly">exportRepProteinPerPAGOnly</option>
+    	<param name="exportType" type="select" format="text" label="Export type">
+      	    <option value="exportProteinGroups" selected = "true">Protein Groups</option>
+      	    <option value="exportPSMs">Peptide Spectra Matches</option>
+      	    <option value="exportProteinsOnly">Proteins</option>
+      	    <option value="exportRepProteinPerPAGOnly">Representive Protein Per Protein Group</option>
 	</param>
     </inputs>
 
