@@ -1,6 +1,6 @@
 <tool id="proviral_csvParser" name="CSV Parser" version="1.0.0">
     <description>Parse the CSV result file generate by mzidLib CSV converter</description>
-    <command interpreter="perl">$__root_dir__/../gio_applications/misc/getNumbersFromCSV_PAG $input > $output
+    <command interpreter="perl">$__root_dir__/../gio_applications/misc/getNumbersFromCSV_PAG.pl $input > $output
     </command>
     <inputs>	
 	      <param  format="csv" name="input" type="data" label="Input file"/>
