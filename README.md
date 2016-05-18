@@ -19,8 +19,9 @@ Installation instructions are provided below. These instructions assume that you
     * Quit Galaxy (by pressing Ctrl-C in the terminal window you used to open it)
   2. Make sure git is installed by typing the command "git". If not, to install git, type "sudo apt-get install git" and follow the instructions.
   3. Make sure java is installed as well, if not, type the command "sudo apt-get install default-jre"
-  4. Download [this jar file version Apr 2015](https://github.com/wizardfan/gio_installer/blob/master/gio_installer-180516.jar?raw=true) to your hard drive (we recommend you put it in a newly created folder). At the command line, enter the folder and execute the jar file with the command `java -jar gio-installer-<version>.jar`. If you did not install Galaxy in its default folder, you can supply the folder name by using `java -jar gio-installer-<version>.jar /your/galaxy/folder`. The Java program will install GIO automatically. 
-  5. Start Galaxy. If installation was successful, you will see the **Galaxy Integrated Omics** collection of tools in the tools panel on the left panel of the Galaxy window.
+  4. Download [this jar file version May 2016](https://github.com/wizardfan/gio_installer/blob/master/gio_installer-180516.jar?raw=true) to your hard drive (we recommend you put it in a newly created folder). At the command line, enter the folder and execute the jar file with the command `java -jar gio_installer-<version>.jar`. If you did not install Galaxy in its default folder, you can supply the folder name by using `java -jar gio_installer-<version>.jar /your/galaxy/folder`. The Java program will install GIO automatically.
+  5. At the end of the automatic process, a script will be executed to check the compatibility of all tools included. If some tool is not compatible with your system, please compile the source codes by yourself. 
+  6. Start Galaxy. If installation was successful, you will see the **Galaxy Integrated Omics** collection of tools in the tools panel on the left panel of the Galaxy window.
 
 Though gio-installer is designed to be as automatic as possible, it is currently necessary to install some tools separately, particularly those tools requiring locally installed databases/data. Please check the following instructions for these tools:
   * [MS-GF+ based](../wiki/setup/SetupMSGFplus.md): MSGFplus
@@ -28,7 +29,7 @@ Though gio-installer is designed to be as automatic as possible, it is currently
   * [BLAST based](../wiki/setup/SetupBLAST.md): Species Finding
 
 ## Updating GIO
-To update GIO, simply repeat step 4 above (ensure that Galaxy is not running at the time). Any pre-existing GIO installation will be overwritten, but other tools, data etc. will be unaffected.
+New tools are added from time to time. To keep your local GIO toolset up-to-date, simply repeat step 4 above and restart the Galaxy server. Any pre-existing GIO installation will be overwritten, but other tools, data etc. will be unaffected.
 
 ## Using GIO
 A list of current tools and descriptions of these can be found [here](../wiki/tool_document.md). More accessible tutorials can be found at [gio.sbcs.qmul.ac.uk](http://gio.sbcs.qmul.ac.uk).
@@ -36,4 +37,4 @@ A list of current tools and descriptions of these can be found [here](../wiki/to
 ## Acknowledgements ##
 GIO is a collaboration between [Conrad Bessant's lab](http://www.bessantlab.org) at Queen Mary, University of London and [David Matthews](http://www.bristol.ac.uk/cellmolmed/research/infect-immune/matthews.html) at the University of Bristol. Jun Fan is lead developer. The project is supported by BBSRC (project number BB/K016075/1).
 
-As well as novel code, GIO will include a number of already existing tools produced by other groups. We will acknowledge these groups in full here when the list of tools is stable.
+As well as novel codes, GIO will include a number of already existing tools produced by other groups. We will acknowledge these groups in full here when the list of tools is stable.
