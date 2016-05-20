@@ -20,7 +20,6 @@ Installation instructions are provided below. These instructions assume that you
   2. Make sure git is installed by typing the command "git". If not, to install git, type "sudo apt-get install git" and follow the instructions.
   3. Make sure java is installed as well, if not, type the command "sudo apt-get install default-jre"
   4. Download [this jar file version May 2016](https://github.com/wizardfan/gio_installer/blob/master/gio_installer-180516.jar?raw=true) to your hard drive (we recommend you put it in a newly created folder). At the command line, enter the folder and execute the jar file with the command `java -jar gio_installer-<version>.jar`. If you did not install Galaxy in its default folder, you can supply the folder name by using `java -jar gio_installer-<version>.jar /your/galaxy/folder`. The Java program will install GIO automatically.
-  5. At the end of the automatic process, a script will be executed to check the compatibility of all tools included. If some tool is not compatible with your system, please compile the source codes by yourself. 
   6. Start Galaxy. If installation was successful, you will see the **Galaxy Integrated Omics** collection of tools in the tools panel on the left panel of the Galaxy window.
 
 Though gio-installer is designed to be as automatic as possible, it is currently necessary to install some tools separately, particularly those tools requiring locally installed databases/data. Please check the following instructions for these tools:
