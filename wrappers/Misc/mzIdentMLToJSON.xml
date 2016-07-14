@@ -1,0 +1,16 @@
+<tool id="mzIdentMLToJSON" name="mzIdentMLToJSON" version="1.0.0">
+  <description>visualise Protein, Peptide and PSM </description>
+  <command interpreter="python">
+    mzIdentMLToJSON.py  --filename="$input" --datasetid=$__app__.security.encode_id($input.id)
+  </command>
+  <inputs>
+    <param format="mzid" name="input" type="data" label="Source file(mzIdentML)"/>
+  </inputs>
+  <outputs>
+    <data format="txt" name="output_dataset" />
+  </outputs>
+  <help>
+    This tool enables instant visualisation of mzIdentML with MzIdentML Viewer visualisation plugin
+  </help>
+</tool>
+
