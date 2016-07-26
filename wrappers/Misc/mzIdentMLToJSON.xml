@@ -1,7 +1,7 @@
 <tool id="mzIdentMLToJSON" name="mzIdentMLToJSON" version="1.0.0">
   <description>The tool to accelerate mzIdentML Viewer visualization plugin</description>
   <command interpreter="python">
-    $__root_dir__/../gio_applications/misc/mzIdentMLToJSON.py  --filename="$input" --datasetid=$__app__.security.encode_id($input.id)
+    $__root_dir__/../gio_applications/misc/mzIdentMLToJSON.py  --filename="$input" --datasetid=$__app__.security.encode_id($input.id) --root=$__root_dir__
   </command>
   <inputs>
     <param format="mzid" name="input" type="data" label="Source file(mzIdentML)"/>
@@ -10,7 +10,7 @@
     <data format="txt" name="output_dataset" />
   </outputs>
   <help>
-    This tool extracts the proteomic information from mzIdentML file and convert into JSON files, which would bring instant visualisation effect with MzIdentML Viewer visualisation plugin
+    This tool extracts the proteomic information from mzIdentML file and convert into JSON files, which would bring instant visualisation effect to the MzIdentML Viewer visualisation plugin
   </help>
 </tool>
 
