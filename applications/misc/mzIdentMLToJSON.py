@@ -1,17 +1,19 @@
 #!/usr/bin/env python
 
 """
-Convert mzIdentML to JSON
+Purpose 	: Convert mzIdentML to JSON
+Description : This script invokes ProExtractor.jar java library to read mzIdentML file and
+			  generates four json files which inclides protein, peptide,  PSM and metadata.
+Date   		: Sep 2, 2016
+@author     : Suresh Hewapathirana
 
-This script invokes mzidParser.jar java library to read mzIdentML file and generate four json files
-which inclides protein, peptide,  PSM and metadata.
-
-usage: ProViewer.py  --filename="$input" --datasetid=$__app__.security.encode_id($input.id) --root=$__root_dir__
+usage       : mzIdentMLToJSON.py  --filename="$input" --datasetid=$__app__.security.encode_id($input.id) --root=$__root_dir__
 """
 import optparse
 import os
 import subprocess
-
+# python 2.7
+import ConfigParser
 
 def __main__():
 
@@ -21,32 +23,30 @@ def __main__():
 	parser.add_option( '-D', '--datasetid', dest='datasetid', help='datasetid' )
 	parser.add_option( '-R', '--root', dest='root', help='root directory of the galaxy instance' )
    	(options, args) = parser.parse_args()
-	inputfile = options.filename
-	datasetId = options.datasetid
-	root = options.root
+	inputfile 		= options.filename
+	datasetId 		= options.datasetid
+	root 			= options.root
+	print "ProViewer INFO:Root folder of the Galaxy: " + root
 
-	outputfile = root + "/config/plugins/visualizations/protviewer/static/data/"
-	tempFile = root + "/config/plugins/visualizations/protviewer/static/data/" + datasetId+ "_protein.json"
-	javalib = root + "/tools/mzIdentMLToJSON/mzIdentMLExtractor.jar"
-
-	# debuging purpose only
-	print "Root directory: " + root
-	print "outputfile : "+ outputfile
-	print "tempFile : "+ tempFile
-	print "javalib : "+ javalib
-
-	multithreading = "true"
+	# get settings from configuration settings file
+	config 			= ConfigParser.ConfigParser()
+	print config.read(root + '/config/proviewer_setttings.ini')
+	outputfile 		= config.get('MzIdentML', 'output_dir')
+	javalib 		= config.get('MzIdentML', 'javalib')
+	multithreading 	= config.get('MzIdentML', 'multithreading')
+	maxMemory		= config.get('MzIdentML', 'maxMemory')
+	tempFile 		= outputfile + datasetId + "_protein.json"
+	print "ProViewer INFO:java -jar " + javalib + " " + inputfile + " " + outputfile + " " + datasetId + " " + multithreading
 
 	try:
 		# if file not already exists
 		if os.path.isfile(tempFile) == False:
-			# execute mzIdentMLExtractor java library
-			print "MzIdentML Viewer INFO:java -jar " + javalib + " " + inputfile + " " + outputfile + " " + datasetId + " " + multithreading
-			return subprocess.call(['java', '-jar',javalib, inputfile, outputfile, datasetId, multithreading])
+			# execute ProExtractor java library as a seperate process(Command-line)
+			return subprocess.call(['java', '-jar', maxMemory, javalib, inputfile, outputfile, datasetId, multithreading])
 		else:
-			print "MzIdentML Viewer INFO: Data loaded from the cache!"
+			print "ProViewer INFO: Data loaded from the cache!"
 	except Exception as err:
-		print("MzIdentML Viewer ERROR: Java library execution error\n: {0}".format(err))
+		print("ProViewer ERROR: Java library execution error\n: {0}".format(err))
 
 if __name__ == "__main__":
     __main__()
