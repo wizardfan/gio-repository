@@ -13,7 +13,7 @@ print "OS: $os\n";
 #http://perldoc.perl.org/perlport.html#DOS-and-Derivatives
 my $removeCmd = "";
 if($os eq "mswin32" || $os eq "cygwin" || $os eq "dos" || $os eq "os2"){
-	my $tmpFolder = "C:\\lwr_staging\\tmp";
+	my $tmpFolder = "C:\\pulsar_staging\\tmp";
 	if($inputSize == 1){
 		system("copy $ARGV[0] $tmpFolder\\tmp_$id.$type");
 		system("msconvert $tmpFolder\\tmp_$id.$type --$outputType --outfile tmp_$id.$outputType -o $tmpFolder");

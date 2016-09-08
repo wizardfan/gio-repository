@@ -89,7 +89,7 @@ foreach my $db(@dbsIn){
 	push (@dbs, $db) unless ($db eq FINAL);
 }
 #push (@dbs, FINAL);
-print "BLAST databases:\n@dbs\n";
+print "BLAST databases to be searched:\n@dbs\n";
 
 #start real business here
 #1.	For each sequence in the fasta file, generate a temp fasta file only containing one sequence with an incremental sequence id
@@ -243,6 +243,7 @@ sub usage(){
 	print "Description: This script calls a series of BLAST on the given species databases to decide which species does the protein sequences belong to. A threshold is required from the user.\n";
 	print "Usage:perl speciesFinding.pl <protein fasta file> <threshold> <output> [species BLAST database 1] [species BLAST database 2] [...]\n";
 	print "If no database is given, the default swissprot will be BLASTed against.\n";
+	&getAvailableBLASTdbs();
 	&printAvailableBLASTdbs();
 }
 

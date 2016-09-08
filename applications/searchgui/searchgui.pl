@@ -12,6 +12,7 @@ my $omssa_result = $ARGV[4];
 my $msgf_result = $ARGV[5];
 my $tandem_result = $ARGV[6];
 
+open OUT,">$output";
 my $version="1.19.1";
 my $applicationPath = "$path/../../../gio_applications";
 my $jarFile = "$applicationPath/searchgui/SearchGUI/SearchGUI-${version}-javaLib.jar";
@@ -20,7 +21,6 @@ unless (-e $jarFile){
 	exit 1;
 }
 
-open OUT,">$output";
 print OUT "New file folder: $path\n";
 print OUT "New job id: $id\n\n";
 
