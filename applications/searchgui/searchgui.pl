@@ -130,7 +130,7 @@ for (my $i=0;$i < scalar @spectra;$i++){
 		system("cp ${prefix}.msgf.mzid $msgf_result");
 	}
 	if($omssa == 1){
-		$cmd = "$javaStr -jar $applicationPath/mzidlib/mzidlib-1.6.11-javaLib.jar Omssa2mzid ${prefix}.omx ${prefix}-omssa.mzid -outputFragmentation false -decoyRegex REVERSED -omssaModsFile $tmpFolder/result$id/mods.xml -userModsFile $tmpFolder/result$id/usermods.xml -compress false";
+		$cmd = "$javaStr -jar $applicationPath/mzidlib/mzidlib-1.6.11-javaLib.jar Omssa2mzid ${prefix}.omx ${prefix}-omssa.mzid -outputFragmentation false -decoyRegex REVERSED -omssaModsFile $tmpFolder/result$id/omssa_mods.xml -userModsFile $tmpFolder/result$id/omssa_usermods.xml -compress false";
 		print OUT "OMSSA conversion: $cmd\n";
 		system ($cmd);
 		system("cp ${prefix}-omssa.mzid $omssa_result");

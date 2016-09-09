@@ -48,8 +48,8 @@ if(-e "$appFolder/proteowizard/msconvert"){
 }
 
 #omssacl		searchgui/SearchGUI/resources/OMSSA/omssa-2.1.9.linux
-print "\nOMSSA: $appFolder/searchgui/SearchGUI/resources/OMSSA/omssa-2.1.9.linux/omssacl\n";
-$result = `$appFolder/searchgui/SearchGUI/resources/OMSSA/omssa-2.1.9.linux/omssacl 2>&1`;
+print "\nOMSSA: $appFolder/searchgui/SearchGUI/resources/OMSSA/linux/omssacl\n";
+$result = `$appFolder/searchgui/SearchGUI/resources/OMSSA/linux/omssacl 2>&1`;
 my $flagOMSSA = 0;
 $flagOMSSA = 1 if($result=~/to print detailed descriptions/);
 if ($flagOMSSA == 0){
