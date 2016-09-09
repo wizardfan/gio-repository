@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<bioml label="x! taxon-to-file matching list">
+	<taxon label="all">
+		<file format="peptide" URL="/tmp/searchgui/seq_000_5_concatenated_target_decoy.fasta" />
+	</taxon>
+</bioml>

@@ -3,5 +3,5 @@
 	<tool file="gio/Proteomics/msgfplus/msgfplus.xml" />
 	<tool file="gio/Proteomics/xtracker/emPAI.xml" />
 	<tool file="gio/Proteomics/xtracker/iTraq.xml" />
-<!--	<tool file="gio/Proteomics/SearchGUI/searchgui.xml" />-->
+	<tool file="gio/Proteomics/SearchGUI/searchgui.xml" />
     </section>

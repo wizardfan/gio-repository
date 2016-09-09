@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<bioml>
+	<note type="input" label="list path, default parameters">parameters_searchGUI.xml</note>
+	<note type="input" label="list path, taxonomy information">taxonomy_searchGUI.xml</note>
+	<note type="input" label="protein, taxon">all</note>
+	<note type="input" label="spectrum, path">/home/galaxy/delme/example.mgf</note>
+	<note type="input" label="output, path">/tmp/searchgui/result34/.SearchGUI_temp/example.t.xml</note>
+</bioml>

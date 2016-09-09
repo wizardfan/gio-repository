@@ -13,7 +13,7 @@ my $msgf_result = $ARGV[5];
 my $tandem_result = $ARGV[6];
 
 open OUT,">$output";
-my $version="1.19.1";
+my $version="3.1.0";
 my $applicationPath = "$path/../../../gio_applications";
 my $jarFile = "$applicationPath/searchgui/SearchGUI/SearchGUI-${version}-javaLib.jar";
 unless (-e $jarFile){
@@ -24,6 +24,7 @@ unless (-e $jarFile){
 print OUT "New file folder: $path\n";
 print OUT "New job id: $id\n\n";
 
+my $javaStr = "java -Xmx1024M";
 my $line;
 open IN,"$config";
 my @spectra;
@@ -63,8 +64,8 @@ print OUT "Decoy: $decoy\n";
 unless (-e $decoy){
 	print OUT ("cp $database $original\n") if ($type eq "upload");
 	system("cp $database $original") if ($type eq "upload");
-	print OUT "java -cp $jarFile eu.isas.searchgui.cmd.FastaCLI -in $original -decoy\n";
-	system("java -cp $jarFile eu.isas.searchgui.cmd.FastaCLI -in $original -decoy");
+	print OUT "$javaStr -cp $jarFile eu.isas.searchgui.cmd.FastaCLI -in $original -decoy\n";
+	system("$javaStr -cp $jarFile eu.isas.searchgui.cmd.FastaCLI -in $original -decoy");
 	system("rm $original") if ($type eq "upload");	
 }
 
@@ -74,7 +75,7 @@ $line=<IN>;#header line
 $line=<IN>;
 chomp $line;
 my $identification = $line;
-my $cmd = "java -cp $jarFile eu.isas.searchgui.cmd.IdentificationParametersCLI -db $decoy -out $tmpFolder/search_$id ";
+my $cmd = "$javaStr -cp $jarFile eu.isas.searchgui.cmd.IdentificationParametersCLI -db $decoy -out $tmpFolder/search_$id ";
 if($identification =~/ \-fixed_mods (.+) \-variable_mods (.+)$/){
 	$cmd .= $`;
 	$cmd .= " -fixed_mods \"$1\"" unless ($1 eq "None");
@@ -100,39 +101,42 @@ if($search =~ /-xtandem (\d) -msgf (\d) -omssa (\d)/){
 }
 print OUT ("mkdir $tmpFolder/result$id\n");
 system("mkdir $tmpFolder/result$id");
-my $searchCmd = "java -cp $jarFile eu.isas.searchgui.cmd.SearchCLI -spectrum_files ";
+my $searchCmd = "$javaStr -cp $jarFile eu.isas.searchgui.cmd.SearchCLI -spectrum_files ";
 my @mgf;
 my @historyIDs;
 for (my $i=0;$i<scalar @spectra;$i++){
 	my ($spectra,$hid) = split(" ",$spectra[$i]);
 	my $mgf = "$tmpFolder/spectra_${id}_$i.mgf";
+	print OUT "cp $spectra $mgf\n";
 	system ("cp $spectra $mgf");
 	push (@mgf, $mgf); 
 	push (@historyIDs, $hid);
 }
 my $spectraStr = join(",", @mgf);
-$searchCmd .= "$spectraStr -output_folder $tmpFolder/result$id -id_params $tmpFolder/search_$id.parameters -ms_amanda 0 -mgf_splitting 8000 $search 2> /dev/null";
+$searchCmd .= "$spectraStr -output_folder $tmpFolder/result$id -id_params $tmpFolder/search_$id.par -mgf_splitting 8000 $search 2> /dev/null";
 print OUT "search command: $searchCmd\n\n\n";
 #open CMD, "$searchCmd |";
 #while(<CMD>){
 #	print OUT "$_";
 #}
 system ($searchCmd);
+system ("unzip $tmpFolder/result$id/searchgui_out.zip -d $tmpFolder/result$id");
+print OUT "unzip $tmpFolder/result$id/searchgui_out.zip -d $tmpFolder/result$id\n";
 
 #deal with the result files
 for (my $i=0;$i < scalar @spectra;$i++){
 	my $prefix = "$tmpFolder/result$id/spectra_${id}_$i";
 	if($msgf == 1){
-		system("cp ${prefix}.mzid $msgf_result");
+		system("cp ${prefix}.msgf.mzid $msgf_result");
 	}
 	if($omssa == 1){
-		$cmd = "java -jar $applicationPath/mzidlib/mzidlib-1.6.8-javaLib.jar Omssa2mzid ${prefix}.omx ${prefix}-omssa.mzid -outputFragmentation false -decoyRegex REVERSED -omssaModsFile $tmpFolder/result$id/mods.xml -userModsFile $tmpFolder/result$id/usermods.xml -compress false";
+		$cmd = "$javaStr -jar $applicationPath/mzidlib/mzidlib-1.6.11-javaLib.jar Omssa2mzid ${prefix}.omx ${prefix}-omssa.mzid -outputFragmentation false -decoyRegex REVERSED -omssaModsFile $tmpFolder/result$id/mods.xml -userModsFile $tmpFolder/result$id/usermods.xml -compress false";
 		print OUT "OMSSA conversion: $cmd\n";
 		system ($cmd);
 		system("cp ${prefix}-omssa.mzid $omssa_result");
 	}
 	if($xtandem == 1){
-		$cmd = "java -jar $applicationPath/mzidlib/mzidlib-1.6.8-javaLib.jar Tandem2mzid ${prefix}.t.xml ${prefix}-tandem.mzid -outputFragmentation false -decoyRegex REVERSED -databaseFileFormatID MS:1001348 -massSpecFileFormatID MS:1001062 -idsStartAtZero false -proteinCodeRegex \\\\S+ -compress false";
+		$cmd = "$javaStr -jar $applicationPath/mzidlib/mzidlib-1.6.11-javaLib.jar Tandem2mzid ${prefix}.t.xml ${prefix}-tandem.mzid -outputFragmentation false -decoyRegex REVERSED -databaseFileFormatID MS:1001348 -massSpecFileFormatID MS:1001062 -idsStartAtZero false -proteinCodeRegex \\\\S+ -compress false";
 		print OUT "Tandem conversion: $cmd\n";
 		system ($cmd);
 		system("cp ${prefix}-tandem.mzid $tandem_result");
@@ -151,7 +155,7 @@ foreach my $file(@files){
 }
 
 #clear all temp files
-system("rm $tmpFolder/search_$id.parameters");
+system("rm $tmpFolder/search_$id.par");
 system("rm -rf $tmpFolder/result$id");
 for (my $i=0;$i<scalar @spectra;$i++){
 	system ("rm $tmpFolder/spectra_${id}_$i.mgf*");
