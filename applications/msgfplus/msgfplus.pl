@@ -55,7 +55,7 @@ if ($data_source eq "built-in"){
 	$fasta_file = "/$path/tmp_$id.fasta";
 }
 #old /$path/../../../gio_applications/msgfplus/MSGFPlus.jar
-my $str = "java -Xmx3500M -jar /$path/../../../gio_applications/searchgui/SearchGUI/resources/MSGF+/MSGFPlus.jar -s /$path/tmp_$id.$type -d $fasta_file -o /$path/tmp_$id.mzid -mod /$path/tmp_$id.mods $args";
+my $str = "java -Xmx3500M -jar /$path/../../../gio_applications/searchgui/SearchGUI/resources/MS-GF+/MSGFPlus.jar -s /$path/tmp_$id.$type -d $fasta_file -o /$path/tmp_$id.mzid -mod /$path/tmp_$id.mods $args";
 #print "$str\n";
 system($str);
 system("mv /$path/tmp_$id.mzid $output");
