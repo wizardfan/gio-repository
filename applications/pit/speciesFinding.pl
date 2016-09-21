@@ -9,6 +9,7 @@ my $coreSetting = "";
 
 my $argLen = scalar @ARGV;
 if($argLen < 3){
+	print "Error: Not enough parameters\n";
 	&usage();
 	exit 1;
 }
@@ -51,10 +52,12 @@ if($os eq "mswin32" || $os eq "cygwin" || $os eq "dos" || $os eq "os2"){
 	}
 	pop @kept;
 	my $abc = join("\/",@kept);
+#	the line below is for execution outside Galaxy
+#	$abc = "/home/galaxy";
 	$cmdLocation = "$abc/gio_applications/pit/";
 	close IN;
-	
-	open IN, "$abc/gio_applications/coreSetting.conf";
+	print "Command location: $cmdLocation\n";
+	open IN, "$abc/gio_applications/coreSetting.conf" or die "Could not find coreSetting.conf under gio_applications folder which is distributed with gio-repository";
 	while ($line=<IN>){
 		next if($line=~/^#/);
 		chomp ($line);
@@ -67,6 +70,7 @@ if($os eq "mswin32" || $os eq "cygwin" || $os eq "dos" || $os eq "os2"){
 	
 	print "OS system detected as Unix-based\n";
 }
+
 if(length $blastDBdir == 0){
 	print "No environment variable found for BLASTDB which tells the program where the BLAST db is. Please ask the admin to set up properly\n";
 	exit 2;
@@ -74,10 +78,9 @@ if(length $blastDBdir == 0){
 #print "program blastp location: $cmdLocation\n";
 my %availableDBs;
 &getAvailableBLASTdbs();
+&printAvailableBLASTdbs();
 
 my @dbs;
-#print "Fasta file: $file\n";
-#print "Threshold: $threshold\n";
 $"="\n";
 #check whether the selected BLAST database is available on the server to use
 foreach my $db(@dbsIn){
@@ -92,163 +95,197 @@ foreach my $db(@dbsIn){
 print "BLAST databases to be searched:\n@dbs\n";
 
 #start real business here
-#1.	For each sequence in the fasta file, generate a temp fasta file only containing one sequence with an incremental sequence id
-#2.	For each database in the list excluding  the all-species one
-#	a.	BLAST all one-sequence fasta files
-#	b.	Get the top hit(s) and the highest identity percentage. 
+#   Background:
+#   In the BLAST analysis, tabular file format is used to retrieve information easily
+#       Among the columns, qseqid (query sequence id) is important which helps to identify the protein header in 
+#   the qseqid is the part before the first white space in the fasta header, e.g. qseqid sp|P17535|JUND_HUMAN for the header >sp|P17535|JUND_HUMAN Transcription factor jun-D OS=Homo sapiens GN=JUND PE=1 SV=3
+#       To simplify things, first convert into auto_incremental numbers
+#   if no hits found for one sequence, no qseqid in the result, i.e. got omitted
+#       e.g. the query sequence is too short, therefore all_species_ident could be null 
+#   using -max_target_seqs <num_top_hits> option to reduce computation time by only calculating the top hit(s)
+#       however multiple hits from the same protein will be included
+#       for a single species database, num_top_hits = 3 to indicate whether it is a conserved segment shared by proteins
+#       for all species database (FINAL one) use 5 instead to include more proteins
+#   Algorithm:
+#   1. Replace the original fasta header with serial number and saved into a new temp file
+#	2. Blast the whole temp fasta file against each database in the given list excluding the all-species one
+#   3. Parse the blast result file to get the top hit(s) and the highest identity percentage. 
 #		i.	If the score is no less than the threshold, 1) record the identity percentage and the hit protein 2) remove from the list for all-species BLAST. If more than one hit sharing the same highest identity percentage, keep all of them, separate by “,”
 #		ii.	If the score is below the threshold, record NA for both protein hit and identity percentage
-#3.	Output the result
+#   4. Generate the fasta file for sequences which need to blast against all species database. Likewise do step 3 blast result analysis
+#         the clever part is that use database FINAL as the hash key which make it possible to re-use the two subroutines
+#   5. Output the result
 #	a.	The header is sequence id, protein sequence, species 1 hit proteins, species 1 hit identity percentage, …, all-species hit protein, all-species hit identity percentage, all-species search needed
 #	b.	For those with at least one significant hit from the selected species BLASTs, output the corresponding data before the column of all-species hit protein
 #	c.	Assign the value of No to column all-species search needed
 #	d.	Get the highest identity percentage from all available species BLAST search and assign as the value for column of all-species hit identity percentage with the corresponding hit protein
-#4.	For each remaining sequence in the list of all-species BLAST, do BLAST against the all-species swissprot database, record the top hit(s) and the score to be assigned to all-species hit and identity percentage, assign Yes to column All-species search needed, NA to all species search column.
 
-#open OUT, ">species_finding_result_$file.tsv";
+#step 1
+open IN, "$file";
+my $tmpFile = "$file-".localtime.".tmp";
+$tmpFile=~s/\s+/_/g;
+$tmpFile=~s/:/_/g;
+open TMP, ">$tmpFile" or die "Could not write into file <$tmpFile>";
+my $proteinCount = 0;#protein serial number
+my $header = "";
+my $seq = "";
+my %result;#the first keys are the information type and the second keys are the serial numbers in the temp fasta file
+while (my $line = <IN>){
+	$line=~s/\r?\n$//;#similar to chomp function but better in the case of reading windows file in Linux (different line ending char)
+	if ($line=~/^>/){
+		unless (length $seq == 0){
+			$seq=~s/\s+//g;
+			$result{'need_all_species'}{$proteinCount} = $seq;
+			$result{'sequence'}{$proteinCount} = $seq;
+			$seq = "";
+		}
+		$proteinCount++;
+		$header=substr($line,1);
+		$result{'headers'}{$proteinCount}=$header;
+		$result{'all_max_ident'}{$proteinCount} = -1; # max identity percentage 
+		$result{'all_max_hit'}{$proteinCount} = ""; # max identity protein accession
+		$result{'all_max_title'}{$proteinCount} = ""; # max identity protein description
+		print TMP ">$proteinCount\n";
+	}else{
+       	$seq .= $line; # add sequence
+       	print TMP "$line\n";
+	}
+}
+$seq=~s/\s+//g;
+$result{'need_all_species'}{$proteinCount} = $seq;
+$result{'sequence'}{$proteinCount} = $seq;
+close TMP;
+#print "\n$proteinCount\n$result{'need_all_species'}{$proteinCount}\n";
+#step 2 and 3
 open OUT, ">$output";
 print OUT "Serial\tProtein\tSequence";
 foreach my $db(@dbs){
 	print OUT "\t$db hit\t$db identity";
+	my $blastFile = "blast_result_$db.tsv";
+	system ("${cmdLocation}blastp -db $db -query $tmpFile $coreSetting -outfmt \"6 qseqid sacc stitle pident\" -max_target_seqs 3 -out $blastFile");
+	&parseBLASTresult($db,$blastFile);
 }
-print OUT "\tAll species hit\tAll sepcies identity\tHit titles\tAll species search needed\n";
-my $proteinCount = 0;#protein serial number
-open IN, "$file";
-my $header = "";
-my $seq = "";
-while (my $line = <IN>){
-	chomp $line;
-	if ($line=~/^>/){
-		unless (length $seq == 0){
-			$proteinCount++;
-			$seq=~s/\s+//g;
-			&doBLAST($proteinCount,$header,$seq);
-			$seq = "";
-		}
-		$header=substr($line,1);
-	}else{
-       	$seq .= $line; # add sequence
+system ("$deleteCmd $tmpFile");
+print OUT "\tBest hit from all searches\tBest identity from all searches\tHit titles\tAll species search needed\n";
+#step 4
+#now deal with sequences need to be blasted against all species
+my %tmp = %{$result{'need_all_species'}};
+my @tmp = sort {$a <=> $b} keys %tmp;
+if (scalar @tmp>0){
+	my $tmpFile = "all_species.fasta";
+	my $blastFile = "all_species_result.tsv";
+	open TMP, ">$tmpFile";
+	foreach my $curr(@tmp){
+		print TMP ">$curr\n$tmp{$curr}\n";
 	}
+	close TMP;
+	system ("${cmdLocation}blastp -db ".FINAL." -query $tmpFile $coreSetting -outfmt \"6 qseqid sacc stitle pident\" -max_target_seqs 5 -out $blastFile");
+	&parseBLASTresult(FINAL,$blastFile);
 }
-$proteinCount++;
-$seq=~s/\s+//g;
-&doBLAST($proteinCount,$header,$seq);
-
-sub doBLAST(){
-	my ($proteinCount,$header,$seq) = @_;
-#step 1 generate the individual fasta file
-	my $fastaFile = "seq_$proteinCount.fasta";
-	open FASTA,">$fastaFile";
-#	print FASTA ">$header\n";
-	print FASTA "$seq\n";
-	close FASTA;
-
-	print OUT "$proteinCount\t$header\t$seq";
-	my $foundSpecies = 0;
-	my $allMaxIdent = -1;
-	my $allMaxHits;
-	my $allMaxTitles;
-#do the actual BLAST
-#2.	For each database in the list excluding  the all-species one
+#step 5
+#finish populating the result data structure, now do the output.
+for (my $i=1;$i<=$proteinCount;$i++){
+	print OUT "$i\t$result{'headers'}{$i}\t$result{'sequence'}{$i}";
 	foreach my $db(@dbs){
-#	a.	BLAST all one-sequence fasta files
-		my $blastFile = "seq_${proteinCount}_blast_result_$db.tsv";
-#		system ("blastp -db $db -query $fastaFile -outfmt \"6 sacc stitle qlen qstart qend slen sstart send evalue score pident\" -out $blastFile");
-		system ("${cmdLocation}blastp -db $db -query $fastaFile $coreSetting -outfmt \"6 sacc stitle pident\" -out $blastFile");
-#	b.	Get the top hit(s) and the highest identity percentage. 
-#		i.	If the score is no less than the threshold, 1) record the identity percentage and the hit protein 2) remove from the list for all-species BLAST. If more than one hit sharing the same highest identity percentage, keep all of them, separate by “;”
-#		ii.	If the score is below the threshold, record NA for both protein hit and identity percentage
-		#get the data
-		open RESULT, "$blastFile";
-		my $maxIdent = -1; #no identity will be below 0, which indicates no identity saved
-		my $hits = "";
-		my $titles = "";
-		while(my $line=<RESULT>){
-			chomp $line;
-			my @elmts = split("\t",$line);
-			my $ident = $elmts[-1];
-			if($maxIdent==-1){ # first line
-				$maxIdent = $ident;
-				$hits = $elmts[0];
-				$titles = $elmts[1];
-			}elsif ($maxIdent == $ident){
-				$hits .= ";$elmts[0]";
-				$titles .= ";$elmts[1]";
-			}else{
-				last;
-			}
-		}
-		close RESULT;
-		#do the judgement
-		if ($maxIdent >= $threshold){
-			$foundSpecies = 1;
-			if ($maxIdent > $allMaxIdent){
-				$allMaxIdent = $maxIdent;
-				$allMaxHits = $hits;
-				$allMaxTitles = $titles;
-			}elsif($maxIdent == $allMaxIdent){
-				$allMaxHits .= ";$hits";
-				$allMaxTitles .= ";$titles";
-			}
+		if (exists $result{$db}{$i}{'ident'}){
+			print OUT "\t$result{$db}{$i}{'ident'}\t$result{$db}{$i}{'hit'}";
 		}else{
-			$maxIdent = "NA";
-			$hits = "Not found";
+			print OUT "\tNA\tNot Found";
 		}
-		print OUT "\t$hits\t$maxIdent";
-		my $clear = "$deleteCmd $blastFile";
-		system($clear);
 	}
-	if($foundSpecies > 0){
-		print OUT "\t$allMaxHits\t$allMaxIdent\t$allMaxTitles\tNo\n";
+	if(exists $result{'need_all_species'}{$i}){
+		print "need all species: $i\n";
+		if(exists $result{FINAL}{$i}{'ident'}){
+			print OUT "\t$result{FINAL}{$i}{'ident'}\t$result{FINAL}{$i}{'hit'}\t$result{FINAL}{$i}{'title'}\tYes\n";
+		}else{
+			print OUT "\tNA\tNot Found\tNA\tYes\n";
+		}
 	}else{
-		my $blastFile = "seq_${proteinCount}_blast_result_swissprot.tsv";
-#		my $cmd = "blastp -db ".FINAL." -query $fastaFile $coreSetting -outfmt \"6 sacc qlen qstart qend slen sstart send evalue score pident\" -out $blastFile";
-		my $cmd = "${cmdLocation}blastp -db ".FINAL." -query $fastaFile -outfmt \"6 sacc stitle pident\" -out $blastFile";
-		system ($cmd);
-		open RESULT, "$blastFile";
-		my $maxIdent = -1; 
-		my $hits = "";
-		my $titles = "";
-		while(my $line=<RESULT>){
-			chomp $line;
-			my @elmts = split("\t",$line);
-			my $ident = $elmts[-1];
-			if($maxIdent==-1){ # first line
-				$maxIdent = $ident;
-				$hits = $elmts[0];
-				$titles = $elmts[1];
-			}elsif ($maxIdent == $ident){
-				$hits .= ";$elmts[0]";
-				$titles = ";$elmts[1]";
-			}else{
-				last;
-			}
-		}
-		close RESULT;
-		if($maxIdent == -1){
-			$maxIdent = "NA";
-			$hits = "Not found";
-			$titles = "Not found";
-		}
-		print OUT "\t$hits\t$maxIdent\t$titles\tYes\n";
-		my $clear = "$deleteCmd $blastFile";
-		system($clear);
+		print OUT "\t$result{'all_max_ident'}{$i}\t$result{'all_max_hit'}{$i}\t$result{'all_max_title'}{$i}\tNo\n";
 	}
-	my $clear = "$deleteCmd $fastaFile";
-	system($clear);
+}
+close OUT;
+#separate the result file into groups by the sequential seq ids
+sub parseBLASTresult(){
+	my ($db,$blastFile) = @_;
+	open RESULT, "$blastFile";
+	my $previous = 0;
+	my @curr; 
+	while(my $line=<RESULT>){
+		chomp $line;
+		#qseqid sacc stitle pident
+		my ($qseqid) = split("\t",$line);
+		if ($qseqid != $previous && $previous != 0){
+			&dealWithOneProtein($previous,$db,join(";",@curr));
+			@curr=();
+		}
+		$previous = $qseqid;
+		push (@curr,$line);
+	}
+	close RESULT;
+	&dealWithOneProtein($previous,$db,join(";",@curr));
+}
+#step 3 parse the BLAST result lines
+sub dealWithOneProtein(){
+	my $id = $_[0];
+	my $db = $_[1];
+	my @arr = split(";",$_[2]);
+	my $line = shift @arr;
+	my %tmp;
+#	print "record $id\n$line\nremaining\n";
+	my (undef,$acc,$title,$ident) = split("\t",$line);
+	$result{$db}{$id}{'ident'} = $ident;
+	$tmp{$acc} = $title;
+	#based on blast result file is organized by descending identity order
+	foreach my $line(@arr){
+		(undef,$acc,$title,$ident) = split("\t",$line);
+		if ($result{$db}{$id}{'ident'} == $ident){
+			$tmp{$acc} = $title;
+		}else{
+			last;
+		}
+#		print "$line\n";
+	}
+	my $hitStr = "";
+	my $titleStr = "";
+	foreach my $abc (keys %tmp){
+		$hitStr .= ";$abc";
+		$titleStr .= ";$tmp{$abc}";
+	}
+	$result{$db}{$id}{'hit'}=substr($hitStr,1);
+	$result{$db}{$id}{'title'} = substr($titleStr,1);
+
+#	print "\nidentity:<$result{$db}{$id}{'ident'}> from protein <$result{$db}{$id}{'hit'}>\n\n";
+	return if ($db eq FINAL);
+		#do the judgement
+	if ($result{$db}{$id}{'ident'} >= $threshold){
+		#pass the threshold, no need to do all species search
+		delete $result{'need_all_species'}{$id} if (exists $result{'need_all_species'}{$id}); 
+		if ($result{$db}{$id}{'ident'} > $result{'all_max_ident'}{$id}){#ident from current database is greater than the saved one
+			$result{'all_max_ident'}{$id} = $result{$db}{$id}{'ident'};
+			$result{'all_max_hit'}{$id} = $result{$db}{$id}{'hit'};
+			$result{'all_max_title'}{$id} = $result{$db}{$id}{'title'};
+		}elsif($result{$db}{$id}{'ident'} == $result{'all_max_ident'}{$id}){
+			$result{'all_max_hit'}{$id} .= ";$result{$db}{$id}{'hit'}";
+			$result{'all_max_title'}{$id} .= ";$result{$db}{$id}{'title'}";
+		}
+	}else{
+		delete $result{$db}{$id}{'ident'}; #use delete because when no hit for one sequence, $result{$db}{$id}{'ident'} is not initialized
+#			$maxIdent = "NA";
+#			$hits = "Not found";
+	}
 }
 
-#blastp -db $db -queue $fasta -outfmt \"6 sacc qlen qstart qend slen sstart send evalue score pident" -out $out.tsv
 sub usage(){
 	print "Description: This script calls a series of BLAST on the given species databases to decide which species does the protein sequences belong to. A threshold is required from the user.\n";
 	print "Usage:perl speciesFinding.pl <protein fasta file> <threshold> <output> [species BLAST database 1] [species BLAST database 2] [...]\n";
-	print "If no database is given, the default swissprot will be BLASTed against.\n";
+	print "If no database is given, the default ".FINAL." will be BLASTed against.\n";
 	&getAvailableBLASTdbs();
 	&printAvailableBLASTdbs();
 }
 
 sub getAvailableBLASTdbs(){
-	opendir DIR, "$blastDBdir" or die "Unable to open BLAST db folder $blastDBdir\n";
+	opendir DIR, "$blastDBdir" or die "Unable to open BLAST db folder <$blastDBdir>\n";
 	my @files = readdir DIR;
 	my %multiple;
 	foreach my $file(@files){

@@ -1,4 +1,4 @@
-<tool id="searchgui" name="Peptide spectrum matching" version="1.0.0" force_history_refresh="True">
+<tool id="searchgui" name="Peptide spectrum matching" version="1.1.0" force_history_refresh="True">
 	<description>
 		Using SearchGUI to perform MS/MS search via X!Tandem, OMSSA and MS-GF+
 	</description>
@@ -132,7 +132,7 @@ Search
 	<help>
 **What it does**
 
-Runs multiple search engines (X!Tandem, OMSSA and MS-GF+) on any number of MGF peak lists using the SearchGUI application. All result files are automatically converted to the PSI standard format mzIdentML
+Runs multiple search engines (X!Tandem, OMSSA and MS-GF+) on any number of MGF peak lists using the SearchGUI application. All result files are automatically converted to the PSI standard format mzIdentML.
 
 	</help>
 </tool>

@@ -44,7 +44,7 @@ if(-e "$appFolder/proteowizard/msconvert"){
 		print "msconvert: ok\n";
 	}
 }else{
-	print "msconvert not found on this server, therefore LWR must be used\n";
+	print "msconvert not found on this server, therefore Pulsar must be used\n";
 }
 
 #omssacl		searchgui/SearchGUI/resources/OMSSA/omssa-2.1.9.linux
@@ -78,11 +78,11 @@ if ($flagMakeblastdb == 1){
 
 #tandem		searchgui/SearchGUI/resources/XTandem/linux_32bit
 #tandem		searchgui/SearchGUI/resources/XTandem/linux_64bit
-print "\nXTandem 64bit: $appFolder/searchgui/SearchGUI/resources/XTandem/linux_64bit/tandem\n";
+print "\nXTandem 64bit: $appFolder/searchgui/SearchGUI/resources/XTandem/linux/linux_64bit/tandem\n";
 
 my $in;
 my $out;
-open2 $out, $in, "$appFolder/searchgui/SearchGUI/resources/XTandem/linux_64bit/tandem 2>&1";
+open2 $out, $in, "$appFolder/searchgui/SearchGUI/resources/XTandem/linux/linux_64bit/tandem 2>&1";
 print $in "\n";
 $result = "";
 while (<$out>){
@@ -93,8 +93,8 @@ $flagTandem = 1 if($result=~/USAGE: tandem/);
 if ($flagTandem == 1){
 	print "64bit tandem: ok\n";
 }else{
-	print "\nXTandem 32bit: $appFolder/searchgui/SearchGUI/resources/XTandem/linux_32bit/tandem\n";
-	open2 $out, $in, "$appFolder/searchgui/SearchGUI/resources/XTandem/linux_32bit/tandem 2>&1";
+	print "\nXTandem 32bit: $appFolder/searchgui/SearchGUI/resources/XTandem/linux/linux_32bit/tandem\n";
+	open2 $out, $in, "$appFolder/searchgui/SearchGUI/resources/XTandem/linux/linux_32bit/tandem 2>&1";
 	print $in "\n";
 	$result = "";
 	while (<$out>){
