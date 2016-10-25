@@ -80,7 +80,7 @@ while(my $line=<IN>){
 		}
 		$id=substr($line,1);
 	}else{
-        	$seq .= $line; # add sequence
+        $seq .= $line; # add sequence
 	}
 }
 unless(length $seq==0){
@@ -129,22 +129,24 @@ sub digest(){
 	my $len = scalar @frags;
 	for (my $mis = 0; $mis <= $miscleavage; $mis++){
 		for(my $i=1;$i<=$len-$mis;$i++){
+			#generate peptide according to the current miscleavage value 
 			my $pep = $frags[$i-1];
-			if ($mis == 0 && $outputFormat eq "tsv"){
-				my $len = length $pep;
-				print OUT "$header\t$pep\n" if($minLength <= $len && $len <= $maxLength);
-			}
 			for (my $curr=1;$curr<=$mis;$curr++){
 				$pep .= $frags[$i-1+$curr];
 			}
-			my $pepHeader = "$header-mis$mis-pep$i";
-#			my $pepHeader = "$header-pep$i";
-			if(exists $peptides{$pep}){ #not unique
-				$peptidesCount{$pep}++;
-				$peptides{$pep} .= ";$pepHeader";
+			#tsv format conventionally uses the original protein header 
+			if ($outputFormat eq "tsv"){
+				my $len = length $pep;
+				print OUT "$header\t$pep\n" if($minLength <= $len && $len <= $maxLength);
 			}else{
-				$peptidesCount{$pep} = 1;
-				$peptides{$pep} = "$pepHeader";
+				my $pepHeader = "$header-mis$mis-pep$i";
+				if(exists $peptides{$pep}){ #not unique
+					$peptidesCount{$pep}++;
+					$peptides{$pep} .= ";$pepHeader";
+				}else{
+					$peptidesCount{$pep} = 1;
+					$peptides{$pep} = "$pepHeader";
+				}
 			}
 		}
 	}
@@ -159,7 +161,7 @@ sub usage(){
 	print "-minLength integer to limit the minimum length of peptide, default is 1 which means include every peptide.\n";
 	print "-miscleavage integer to indicate the allowed maximum cleavage, default is 0 which means no miscleavage allowed.\n";
 	print "-outputFormat determines what file format the ouput file will be, either fasta (default) or tsv.\n";
-	print "Example 1: perl digest.pl uniprot_sprot_human.fasta\t\t this will digest the human swissprot data and output all sequences\n";
-	print "Example 2: perl digest.pl uniprot_sprot_human.fasta -unique yes -minLength 4 -maxLength 24\t\t this will only output proteotypic peptides having AA between 4 and 24 inclusive, which is more likely to be observed on a MS machine\n";
-	print "Example 3: perl digest.pl uniprot_sprot_human.fasta -miscleavage 1\t\t this will allow maximum one miscleavage.\n";
+	print "Example 1: perl digest.pl uniprot_sprot_human.fasta output.fasta\t\t this will digest the human swissprot data and output all sequences as Fasta format\n";
+	print "Example 2: perl digest.pl uniprot_sprot_human.fasta output.fasta -unique yes -minLength 4 -maxLength 24\t\t this will only output proteotypic peptides having AA between 4 and 24 inclusive, which is more likely to be observed on a MS machine\n";
+	print "Example 3: perl digest.pl uniprot_sprot_human.fasta output.tsv -miscleavage 1 -outputFormat tsv\t\t this will allow maximum one miscleavage and outputs into a tsv file.\n";
 }

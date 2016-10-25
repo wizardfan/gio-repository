@@ -10,7 +10,7 @@
 		</param>
         <param name = "minLength" size="6" value="4" type="integer" label="the minimum length for the digested peptides to be included in the result file"/>
         <param name = "maxLength" size="6" value="25" type="integer" label="the maximum length for the digested peptides to be included in the result file"/>
-    	<param name="unique" type="select" label="Remove identical peptides?" help="This option only applies when the output format is fasta">
+    	<param name="unique" type="select" label="Remove identical peptides?" help="Based on the fact that duplicate peptides cannot uniquely identify one particular protein, the Yes option will remove all duplicates and the No option will keep only one peptide copy. Note this option only applies when the output format is fasta">
 		    <option value="yes" selected = "true">Yes</option>
 		    <option value="no">No</option>
 		</param>
