@@ -6,6 +6,7 @@
 		<tool file="gio/PSIstandards/mzidlib/mzidlibFDR.xml" />
 		<tool file="gio/PSIstandards/mzidlib/mzidlibThreshold.xml" />
 		<tool file="gio/PSIstandards/mzidlib/mzidlibProteoGroup.xml" />
+		<tool file="gio/PSIstandards/mzid_tools.xml" />
 
     <label text="mzQuantML" id="gio_standard_mzq"/>
 		<tool file="gio/PSIstandards/mzqlib/converter.xml" />

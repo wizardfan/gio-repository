@@ -1,0 +1,62 @@
+<tool id="mzid_tools" name="MzIdentML tools" version="1.0.0">
+    <description> provides various functions to make workflows dealing with mzid files run smoothly</description>
+        <command>java -jar $__root_dir__/../gio_applications/misc/mzid_tools-javaLib.jar 
+#if $type.input_type=="getFasta": 
+    $input $seq getFasta
+    #if $type.database.source_select=="upload":
+    ${type.database.fasta_file}
+    #else
+    ${type.database.dbkey}
+    #end if
+#elif $type.input_type=="validate":
+    $input null validate > $report
+#elif $type.input_type=="correct":
+    $input $remove correct
+#end if</command>
+    <inputs>
+	<param name="input" type="data" format="mzid" label="Input mzIdentML file"/>
+	<conditional name="type">
+      	    <param name="input_type" type="select" label="Input Type">
+        	<option value="getFasta">Add protein sequences</option>
+        	<option value="correct">Remove empty modification params</option>
+        	<option value="validate">Validate</option>
+	    </param>
+	    <when value="getFasta">
+		<conditional name="database">
+		    <param name="source_select" type="select" label="Database source">
+			<option value="upload">Your Upload File</option>
+			<option value="built_in">Built-In Databases</option>
+		    </param>
+		    <when value="upload">
+			<param name="fasta_file" type="data" format="fasta" label="Uploaded FASTA file" />
+		    </when>
+		    <when value="built_in">
+			<param name="dbkey" type="select" format="text" >
+			    <label>Database</label>
+			    <options from_file="gio_proteomes.loc">
+				<column name="name" index="1" />
+				<column name="value" index="2" />
+			    </options>
+			</param>
+		    </when>
+		</conditional>
+	    </when>
+	    <when value="correct"/>
+	    <when value="validate"/>
+	</conditional>
+    </inputs>
+    <outputs>
+	<data format="txt" name="report" label="mzIdTools validation on ${on_string}">
+	    <filter>type['input_type'] == "validate"</filter>
+	</data>
+	<data format="mzid" name="seq" label="mzIdTools add protein sequences on ${on_string}">
+	    <filter>type['input_type'] == "getFasta"</filter>
+	</data>
+	<data format="mzid" name="remove" label="mzIdTools Remove empty on ${on_string}">
+	    <filter>type['input_type'] == "correct"</filter>
+	</data>
+    </outputs>
+	<help>
+	Add protein sequences function will make it possible to view protein sequences in ProViewer. MS-GF+ currently generates empty ModificationParams which make it invalid, which can be corrected by the Remove empty modification params function. Validate function provides a very basic validation to make sure the file is a valid one.
+	</help>
+</tool>
