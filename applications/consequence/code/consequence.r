@@ -58,6 +58,7 @@ AA.interest <- readLines("feature_map.txt")
 
 peptide.aa <- as.data.frame(returnAA(peptide.matrix[, "Peptide"], AA.interest))
 colnames(peptide.aa) <- paste("f", 1:length(AA.interest), sep = "")
+peptide.aa <- peptide.aa[1:nrow(peptide.aa), ]
 
 for (predictor.interest in models){
 	setwd(predictor.dir)
