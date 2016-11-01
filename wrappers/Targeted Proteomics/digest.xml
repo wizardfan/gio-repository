@@ -1,32 +1,42 @@
-<tool id="digest" name="Digest" force_history_refresh="True" version="1.1.0">
+<tool id="digest" name="Digest" force_history_refresh="True" version="1.2.0">
     <description>Theoretically digest all protein sequences from a FASTA file by trypsin</description>
-    <command interpreter="perl">$__root_dir__/../gio_applications/inclusion/digestGalaxy.pl $input $output -minLength $minLength -maxLength $maxLength -unique $unique -miscleavage $miscleavage -outputFormat $out_type</command>
+    <command interpreter="perl">#if $type.out_type == 'fasta':
+$__root_dir__/../gio_applications/inclusion/digestGalaxy.pl $input $output_fasta -minLength $minLength -maxLength $maxLength -unique $type.unique -miscleavage $miscleavage -outputFormat fasta
+#else
+$__root_dir__/../gio_applications/inclusion/digestGalaxy.pl $input $output_tsv -minLength $minLength -maxLength $maxLength -miscleavage $miscleavage -outputFormat tsv
+#end if</command>
     <inputs>
-		<param  format="fasta" name="input" type="data" label="Input file"/>
+	<param  format="fasta" name="input" type="data" label="Input file"/>
         <param name = "miscleavage" type="select" label="the number of maximum allowed miscleavage">
-			<option value="0" selected = "true">0</option>
-			<option value="1">1</option>
-			<option value="2">2</option>
-		</param>
+	    <option value="0" selected = "true">0</option>
+	    <option value="1">1</option>
+	    <option value="2">2</option>
+	</param>
         <param name = "minLength" size="6" value="4" type="integer" label="the minimum length for the digested peptides to be included in the result file"/>
         <param name = "maxLength" size="6" value="25" type="integer" label="the maximum length for the digested peptides to be included in the result file"/>
-    	<param name="unique" type="select" label="Remove identical peptides?" help="Based on the fact that duplicate peptides cannot uniquely identify one particular protein, the Yes option will remove all duplicates and the No option will keep only one peptide copy. Note this option only applies when the output format is fasta">
+	<conditional name="type">
+      	    <param name="out_type" type="select" label="The output file format" help="The format of the output file">
+		<option value="tsv" selected="True">TSV</option>
+		<option value="fasta">Fasta</option>
+	    </param>
+	    <when value="fasta">
+    		<param name="unique" type="select" label="Remove identical peptides?" help="Based on the fact that duplicate peptides cannot uniquely identify one particular protein, the Yes option will remove all duplicates and the No option will keep only one peptide copy.">
 		    <option value="yes" selected = "true">Yes</option>
 		    <option value="no">No</option>
 		</param>
-        <param name = "out_type" type="select" label="The output file format" multiple="False" help="The format of the output file">
-	    	<option value="tsv">TSV</option>
-	    	<option value="fasta">Fasta</option>
-		</param>
-   	</inputs>
+	    </when>
+	    <when value="tsv"/>
+	</conditional>
+    </inputs>
     <outputs>
-		<data format="tabular" name="output" label="#echo os.path.splitext (str ($input.name))[0]#-digestedPeptides.#echo $out_type#">
-	    	<change_format>
-	     		<when input="out_type" value="fasta" format="fasta"/>
-	    	</change_format>
-		</data>
-	</outputs>
-	<help>
+	<data format="tabular" name="output_tsv" label="#echo os.path.splitext (str ($input.name))[0]#-digestedPeptides.tsv">
+	    <filter>type['out_type'] == "tsv"</filter>
+	</data>
+	<data format="fasta" name="output_fasta" label="#echo os.path.splitext (str ($input.name))[0]#-digestedPeptides.fasta">
+	    <filter>type['out_type'] == "fasta"</filter>
+	</data>
+    </outputs>
+    <help>
 	     This tool digests protein sequences theoretically by trypsin and outputs into either TSV or Fasta format. In TSV format, the first column is the protein accession before the first whitespace and the second column is the tryptic peptids. In Fasta format, the digested peptides form individual entries with the headers in the form of &lt;protein&gt;-mis&lt;miscleavage_number&gt;-pep&lt;peptide_number&gt;.  The additional filters for peptide length and proteotypic peptides are useful for SRM (Selected Reaction Monitoring) to filter out the peptides won't be observed on a specific MS/MS instrument.
-	</help>
+    </help>
 </tool>
