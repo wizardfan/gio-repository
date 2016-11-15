@@ -1,10 +1,11 @@
-<tool id="emPAI" name="emPAI analysis in X-Tracker" version="0.2.1">
+<tool id="emPAI" name="emPAI analysis in X-Tracker" version="0.5.1">
     <!--updates from 0.1.0:
         1. allow select different spectra and identification format
 	2. set the file type properly after installing the data types
     -->
     <description>Execute emPAI quantitation method within X-Tracker</description>
         <command >java -jar $__root_dir__/../gio_applications/xtracker/xTracker-javaLib.jar $mzq $__root_dir__/../gio_applications/xtracker/ $output</command>
+<!--	<command interpreter="perl">../../show.pl $quant $output</command>-->
     <inputs>
     	<conditional name="spectra">
       	    <param name="spectra_type" type="select" label="Spectral File Type">
@@ -31,8 +32,8 @@
 		<param format="xml" name="file" type="data" label="Mascot identification file"/>
             </when>
 	</conditional>
-        <param name = "minimum" size="6" value="500" type="integer" label="the minimum molecular weight to be observed"/>
-        <param name = "maximum" size="6" value="3200" type="integer" label="the maximum molecular weight to be observed"/>
+        <param name = "minimum" size="6" value="500" type="integer" label="The minimum molecular weight to be observed"/>
+        <param name = "maximum" size="6" value="3200" type="integer" label="The maximum molecular weight to be observed"/>
         <!--
                 <xs:element name="enzyme">
                         <xs:simpleType>
@@ -42,8 +43,27 @@
                         </xs:simpleType>
                 </xs:element>
         -->
-        <repeat name="fastas" title="protein database" min="1">
-            <param name = "database" type="data" label="fasta file" help="The protein database used to search the spectra against" format="fasta"/>
+        <repeat name="fastas" title="Protein database" min="1">
+		<conditional name="database">
+			<param name="source_select" type="select" label="Database source">
+				<option value="built_in">Built-In Databases</option>
+				<option value="upload">Your Upload File</option>
+			</param>
+			<when value="built_in">
+				<param name="dbkey" type="select" format="text" >
+					<label>Database</label>
+					<options from_file="gio_proteomes.loc">
+						<column name="name" index="1" />
+						<column name="value" index="2" />
+					</options>
+				</param>
+			</when>
+			<when value="upload">
+				<param name="fasta_file" type="data" format="fasta" label="Uploaded FASTA file" help="The protein database to search the spectra against, which must NOT contain any decoy sequence"/>
+			</when>
+		</conditional>
+
+
         </repeat>
 	</inputs>
 	<outputs>
@@ -126,7 +146,11 @@
 	</peptideMwRange>
 	<fastaFiles>
 		#for $i, $s in enumerate( $fastas )
-			<fastaFile>${s.database.file_name}</fastaFile>
+			#if $s.database.source_select=="built_in":
+			<fastaFile>$s.database.dbkey</fastaFile>
+			#else
+			<fastaFile>$s.database.fasta_file</fastaFile>
+			#end if
 		#end for
 	</fastaFiles>
 	<enzyme>Trypsin</enzyme>
