@@ -1,4 +1,4 @@
-<tool id="msgfplus" name="MSGF+ MSMS Search" version="0.6.0">
+<tool id="msgfplus" name="MSGF+ MSMS Search" version="0.6.1">
 <!--update from 0.5.0: change the dataset label-->
     <description>Run an MSGF+ Search</description>
     <command interpreter="perl">
@@ -102,8 +102,8 @@ $__root_dir__/../gio_applications/msgfplus/msgfplus.pl $input $type.input_type u
 
 	<param name="instrument" type="select" format="text">
 	    <label>Instrument Type</label>
-	    <option value="0">Low-res LCQ/LTQ (Default for CID  and ETD)</option>
-	    <option value="1">High-res LTQ(Default for HCD)</option>
+	    <option value="0">Low-res LCQ/LTQ (Default for CID  and ETD), e.g. linear ion trap</option>
+	    <option value="1">High-res LTQ(Default for HCD), e.g. Orbitrap</option>
 	    <option value="2">TOF</option>
 	    <option value="3">Q-Exactive</option>
 	</param>
@@ -131,12 +131,12 @@ $variable_mods</configfile>
     <help>
 **What it does**
 
-Runs an MS/MS database search using the MSGFPlus search engine.
+Runs an MS/MS database search using the MSGFPlus search engine. 
 
 ----
 
 **References**
 
-Please see http://proteomics.ucsd.edu/Software/MSGFPlus/ for details of the MSGFPlus search engine and references describing its algorithm
+Please see http://www.nature.com/ncomms/2014/141031/ncomms6277/full/ncomms6277.html for paper and http://proteomics.ucsd.edu/Software/MSGFPlus/ for more details of the MSGFPlus search engine and references describing its algorithm
     </help>
 </tool>
