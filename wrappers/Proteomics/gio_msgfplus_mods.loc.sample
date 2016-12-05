@@ -18,6 +18,8 @@ Carboxymethyl(C)	58.005479:C:Any:Carboxymethyl
 Cation:Na(C-term)	21.981943:*:C-term:Cation:Na
 Cation:Na(DE)	21.981943:DE:Any:Cation:Na
 Crotonyl(K)	68.026215:K:Any:Crotonyl
+Cysteinylation(C)	119.004099:C:Any:Cysteinylation with free L-cysteine
+Cysteine disulfide(C)	305.068156:C:Any:Cystine crosslink
 cysTMT6plex(C)	304.177202:C:Any:cysTMT6plex
 Deamidated(QN)	0.984016:QN:Any:Deamidated
 Dehydrated(N-term C)	-18.010565:C:N-term:Dehydrated
@@ -83,8 +85,9 @@ SILAC:2H(4)(K)	4.025:K:Any:Heavy-Lysine-2H4
 Sulfo(STY)	79.956815:STY:Any:Sulfo
 TMT2plex(K)	225.155833:K:Any:TMT2plex
 TMT2plex(N-term)	225.155833:*:N-term:TMT2plex
-TMT6plex(K)	229.162932:K:Any:TMT6plex
-TMT6plex(N-term)	229.162932:*:N-term:TMT6plex
+TMT6/10plex(K)	229.162932:K:Any:TMT6/10plex
+TMT6/10plex(N-term)	229.162932:*:N-term:TMT6/10plex
+
 #
 #Standard MSGFPlus syntax is
 #
